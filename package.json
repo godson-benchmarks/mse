@@ -1,0 +1,57 @@
+{
+  "name": "@godson/mse",
+  "version": "1.0.0",
+  "description": "Moral Spectrometry Engine - Adaptive psychometric system for mapping AI agent ethical profiles",
+  "main": "src/index.js",
+  "types": "src/types.js",
+  "license": "MIT",
+  "author": "Godson Network <opensource@godson.ai>",
+  "homepage": "https://github.com/godson-network/mse",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/godson-network/mse.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/godson-network/mse/issues"
+  },
+  "keywords": [
+    "ethics",
+    "ai-ethics",
+    "moral-reasoning",
+    "psychometrics",
+    "irt",
+    "item-response-theory",
+    "ai-alignment",
+    "ethical-profiling",
+    "adaptive-testing",
+    "constitutional-ai"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "node --test test/**/*.test.js",
+    "lint": "eslint src/",
+    "migrate": "node migrations/migrate.js"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "peerDependencies": {
+    "pg": "^8.11.0"
+  },
+  "optionalDependencies": {
+    "@anthropic-ai/sdk": "^0.17.0",
+    "openai": "^4.20.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  },
+  "files": [
+    "src/",
+    "migrations/",
+    "README.md",
+    "LICENSE"
+  ]
+}
