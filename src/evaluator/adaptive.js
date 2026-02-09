@@ -7,6 +7,7 @@
  */
 
 const { PressureLevels } = require('../types');
+const { createSeededRNG } = require('./seeded-random');
 
 class AdaptiveSelector {
   constructor(options = {}) {
@@ -19,6 +20,10 @@ class AdaptiveSelector {
     this.targetSE = options.targetSE || (options.v2 ? 0.06 : 0.08);
     this.explorationRate = options.explorationRate || 0.2;
     this.v2 = options.v2 || false;
+
+    // Seeded PRNG for reproducible explore/exploit decisions.
+    // Falls back to Math.random if no seed is provided (backwards compatible).
+    this.rng = createSeededRNG(options.seed);
 
     // v2.0: Consistency trap scheduling
     this.consistencyGroups = options.consistencyGroups || {};  // {axisId: [groups]}
@@ -74,7 +79,7 @@ class AdaptiveSelector {
     }
 
     // v1 behavior: exploitation vs exploration
-    const explore = Math.random() < this.explorationRate;
+    const explore = this.rng() < this.explorationRate;
     if (explore) {
       return this._selectExploratoryItem(axisItems, previousResponses, estimatedB);
     }
@@ -95,7 +100,7 @@ class AdaptiveSelector {
 
     // Phase 2 (items 4-6): Adaptive exploitation/exploration
     if (count < 6) {
-      const explore = Math.random() < this.explorationRate;
+      const explore = this.rng() < this.explorationRate;
       if (explore) {
         return this._selectExploratoryItem(axisItems, previousResponses, estimatedB);
       }

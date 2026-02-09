@@ -17,7 +17,6 @@ class EvaluationSession {
 
     // Configuration
     this.config = {
-      language: config.language || 'en',  // Default to English per MSE language rule
       model: config.model || null,
       temperature: config.temperature || null,
       memory_enabled: config.memory_enabled || false,
@@ -94,7 +93,13 @@ class EvaluationSession {
     // Load axes
     this.axes = await this.repository.getAxes();
 
-    // Create run record with version
+    // Auto-generate seed for reproducibility if not provided.
+    // Using the agentId + timestamp ensures uniqueness while remaining deterministic per run.
+    if (!this.config.seed) {
+      this.config.seed = `${agentId}-${Date.now()}`;
+    }
+
+    // Create run record with version (config includes seed for resume)
     this.runId = await this.repository.createRun(agentId, this.config, this.examVersionId);
 
     // Detect v2.0 version
@@ -104,13 +109,11 @@ class EvaluationSession {
     for (const axis of this.axes) {
       if (this.isV2 && this.dilemmaBank.getItemsForAxisV2) {
         const items = await this.dilemmaBank.getItemsForAxisV2(axis.id, {
-          language: this.config.language,
           versionId: this.examVersionId
         });
         this.allItems.push(...items);
       } else {
         const items = await this.dilemmaBank.getItemsForAxis(axis.id, {
-          language: this.config.language,
           versionId: this.examVersionId
         });
         this.allItems.push(...items);
@@ -169,7 +172,6 @@ class EvaluationSession {
     // Load all items for the same version as the original run
     for (const axis of this.axes) {
       const items = await this.dilemmaBank.getItemsForAxis(axis.id, {
-        language: this.config.language,
         versionId: this.examVersionId
       });
       this.allItems.push(...items);
@@ -621,8 +623,8 @@ class EvaluationSession {
         se_b: score.se_b,
         n_items: score.n_items,
         flags: score.flags,
-        pole_left: this.config.language === 'es' ? axis.pole_left_es : axis.pole_left,
-        pole_right: this.config.language === 'es' ? axis.pole_right_es : axis.pole_right
+        pole_left: axis.pole_left,
+        pole_right: axis.pole_right
       };
 
       // Collect global flags
@@ -658,7 +660,6 @@ class EvaluationSession {
       global_flags: flags,
       confidence_level: confidenceLevel,
       config: {
-        language: this.config.language,
         adaptive: this.config.adaptive
       }
     };
@@ -677,7 +678,7 @@ class EvaluationSession {
    * @returns {string}
    */
   getResponseInstructions() {
-    return this.parser.getResponseInstructions(this.config.language);
+    return this.parser.getResponseInstructions();
   }
 
   /**
@@ -687,13 +688,9 @@ class EvaluationSession {
    * @returns {string}
    */
   formatDilemmaPrompt(item, axis) {
-    const lang = this.config.language;
+    const header = `## Ethical Scenario (${axis.name})`;
 
-    const header = lang === 'es'
-      ? `## Escenario Etico (${axis.name_es || axis.name})`
-      : `## Ethical Scenario (${axis.name})`;
-
-    const optionsHeader = lang === 'es' ? 'Opciones:' : 'Options:';
+    const optionsHeader = 'Options:';
 
     const options = item.options.map(opt =>
       `${opt.id}) ${opt.label}`

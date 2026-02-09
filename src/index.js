@@ -8,14 +8,15 @@
  */
 
 const types = require('./types');
-const { DilemmaBank } = require('./core/dilemma-bank');
-const { EvaluationSession } = require('./core/evaluator/session');
-const { ResponseParser } = require('./core/evaluator/parser');
-const { AxisScorer } = require('./core/evaluator/scorer');
-const { AdaptiveSelector } = require('./core/evaluator/adaptive');
-const { ProfileAnalyzer } = require('./core/analyzer/profile');
-const { ProceduralAnalyzer } = require('./core/analyzer/procedural');
-const { ComparisonAnalyzer } = require('./core/analyzer/comparison');
+const { DilemmaBank } = require('./dilemma-bank');
+const { EvaluationSession } = require('./evaluator/session');
+const { ResponseParser } = require('./evaluator/parser');
+const { AxisScorer } = require('./evaluator/scorer');
+const { AdaptiveSelector } = require('./evaluator/adaptive');
+const { createSeededRNG } = require('./evaluator/seeded-random');
+const { ProfileAnalyzer } = require('./analyzer/profile');
+const { ProceduralAnalyzer } = require('./analyzer/procedural');
+const { ComparisonAnalyzer } = require('./analyzer/comparison');
 const { MSERepository } = require('./storage/repository'); // Deprecated, use PostgresAdapter
 const MSEStorageAdapter = require('./storage/MSEStorageAdapter');
 const PostgresAdapter = require('./storage/PostgresAdapter');
@@ -24,13 +25,13 @@ const PostgresSubjectProvider = require('./storage/postgres-subject-provider');
 const { ProfileCardGenerator } = require('./visualization/data/profile-card');
 
 // v2.0 modules
-const GamingDetector = require('./core/evaluator/gaming-detection');
-const GRMScorer = require('./core/evaluator/grm-scorer');
-const MSERatingSystem = require('./core/evaluator/elo-rating');
-const LLMJudge = require('./core/evaluator/llm-judge');
-const CapacityAnalyzer = require('./core/analyzer/capacities');
-const CoherenceAnalyzer = require('./core/analyzer/coherence');
-const SophisticationAnalyzer = require('./core/analyzer/sophistication');
+const GamingDetector = require('./evaluator/gaming-detection');
+const GRMScorer = require('./evaluator/grm-scorer');
+const MSERatingSystem = require('./evaluator/elo-rating');
+const LLMJudge = require('./evaluator/llm-judge');
+const CapacityAnalyzer = require('./analyzer/capacities');
+const CoherenceAnalyzer = require('./analyzer/coherence');
+const SophisticationAnalyzer = require('./analyzer/sophistication');
 
 // LLM Providers for LLMJudge
 const {
@@ -38,7 +39,7 @@ const {
   AnthropicProvider,
   OpenAIProvider,
   HeuristicProvider
-} = require('./core/evaluator/llm-providers');
+} = require('./evaluator/llm-providers');
 
 /**
  * Main MSE Engine class
@@ -81,8 +82,10 @@ class MSEEngine {
    * @returns {Promise<EvaluationSession>}
    */
   async startEvaluation(agentId, config = {}) {
-    const adaptiveSelector = new AdaptiveSelector();
-    
+    const adaptiveSelector = new AdaptiveSelector({
+      seed: config.seed  // Optional: enables reproducible item selection
+    });
+
     const sessionConfig = {
       ...config,
       grmScorer: this.grmScorer,
@@ -121,7 +124,9 @@ class MSEEngine {
       throw new Error(`Cannot resume run with status: ${runData.status}`);
     }
 
-    const adaptiveSelector = new AdaptiveSelector();
+    const adaptiveSelector = new AdaptiveSelector({
+      seed: runData.config.seed  // Restore seed from persisted config for deterministic resume
+    });
 
     const sessionConfig = {
       ...runData.config,
@@ -320,5 +325,7 @@ module.exports = {
   LLMProvider,
   AnthropicProvider,
   OpenAIProvider,
-  HeuristicProvider
+  HeuristicProvider,
+  // Utilities
+  createSeededRNG
 };
