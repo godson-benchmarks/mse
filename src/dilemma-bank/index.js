@@ -20,7 +20,7 @@ class DilemmaBank {
    * @returns {Promise<Object[]>}
    */
   async getItemsForAxis(axisId, options = {}) {
-    const { includeInactive = false, language = 'en', limit = null, excludeIds = [], versionId = null } = options;
+    const { includeInactive = false, limit = null, excludeIds = [], versionId = null } = options;
 
     // Build version join if versionId is specified
     const versionJoin = versionId
@@ -34,13 +34,11 @@ class DilemmaBank {
         di.family_id,
         di.pressure_level,
         di.params,
-        di.prompt_en,
-        di.prompt_es,
+        di.prompt,
         di.options,
         di.version,
         di.is_anchor,
-        df.name as family_name,
-        df.name_es as family_name_es
+        df.name as family_name
       FROM mse_dilemma_items di
       ${versionJoin}
       LEFT JOIN mse_dilemma_families df ON di.family_id = df.id
@@ -67,17 +65,16 @@ class DilemmaBank {
     }
 
     const result = await this.db.query(query, params);
-    return result.rows.map(row => this._formatItem(row, language));
+    return result.rows.map(row => this._formatItem(row));
   }
 
   /**
    * Get anchor items (L1 and L5) for an axis
    * @param {number} axisId
-   * @param {string} language
    * @param {number} versionId - Filter by exam version ID
    * @returns {Promise<{low: Object, high: Object}>}
    */
-  async getAnchorItems(axisId, language = 'en', versionId = null) {
+  async getAnchorItems(axisId, versionId = null) {
     const versionJoin = versionId
       ? 'JOIN mse_version_items vi ON di.id = vi.item_id AND vi.version_id = $2'
       : '';
@@ -85,8 +82,7 @@ class DilemmaBank {
     const query = `
       SELECT
         di.*,
-        df.name as family_name,
-        df.name_es as family_name_es
+        df.name as family_name
       FROM mse_dilemma_items di
       ${versionJoin}
       LEFT JOIN mse_dilemma_families df ON di.family_id = df.id
@@ -98,7 +94,7 @@ class DilemmaBank {
 
     const params = versionId ? [axisId, versionId] : [axisId];
     const result = await this.db.query(query, params);
-    const items = result.rows.map(row => this._formatItem(row, language));
+    const items = result.rows.map(row => this._formatItem(row));
 
     // Find lowest and highest pressure anchors
     const low = items.find(i => i.pressure_level <= PressureLevels.L2) || items[0];
@@ -112,11 +108,10 @@ class DilemmaBank {
    * @param {number} axisId
    * @param {number} targetPressure - Target pressure level (0-1)
    * @param {string[]} excludeIds - Item IDs to exclude
-   * @param {string} language
    * @param {number} versionId - Filter by exam version ID
    * @returns {Promise<Object|null>}
    */
-  async getItemNearPressure(axisId, targetPressure, excludeIds = [], language = 'en', versionId = null) {
+  async getItemNearPressure(axisId, targetPressure, excludeIds = [], versionId = null) {
     const versionJoin = versionId
       ? 'JOIN mse_version_items vi ON di.id = vi.item_id AND vi.version_id = $3'
       : '';
@@ -125,7 +120,6 @@ class DilemmaBank {
       SELECT
         di.*,
         df.name as family_name,
-        df.name_es as family_name_es,
         ABS(di.pressure_level - $2) as distance
       FROM mse_dilemma_items di
       ${versionJoin}
@@ -147,21 +141,19 @@ class DilemmaBank {
     const result = await this.db.query(query, params);
     if (result.rows.length === 0) return null;
 
-    return this._formatItem(result.rows[0], language);
+    return this._formatItem(result.rows[0]);
   }
 
   /**
    * Get a specific item by ID
    * @param {string} itemId
-   * @param {string} language
    * @returns {Promise<Object|null>}
    */
-  async getItem(itemId, language = 'en') {
+  async getItem(itemId) {
     const query = `
       SELECT
         di.*,
-        df.name as family_name,
-        df.name_es as family_name_es
+        df.name as family_name
       FROM mse_dilemma_items di
       LEFT JOIN mse_dilemma_families df ON di.family_id = df.id
       WHERE di.id = $1
@@ -170,21 +162,19 @@ class DilemmaBank {
     const result = await this.db.query(query, [itemId]);
     if (result.rows.length === 0) return null;
 
-    return this._formatItem(result.rows[0], language);
+    return this._formatItem(result.rows[0]);
   }
 
   /**
    * Get items by family
    * @param {string} familyId
-   * @param {string} language
    * @returns {Promise<Object[]>}
    */
-  async getItemsByFamily(familyId, language = 'en') {
+  async getItemsByFamily(familyId) {
     const query = `
       SELECT
         di.*,
-        df.name as family_name,
-        df.name_es as family_name_es
+        df.name as family_name
       FROM mse_dilemma_items di
       LEFT JOIN mse_dilemma_families df ON di.family_id = df.id
       WHERE di.family_id = $1
@@ -193,15 +183,14 @@ class DilemmaBank {
     `;
 
     const result = await this.db.query(query, [familyId]);
-    return result.rows.map(row => this._formatItem(row, language));
+    return result.rows.map(row => this._formatItem(row));
   }
 
   /**
    * Get all families
-   * @param {string} language
    * @returns {Promise<Object[]>}
    */
-  async getFamilies(language = 'en') {
+  async getFamilies() {
     const query = `
       SELECT
         f.*,
@@ -215,8 +204,8 @@ class DilemmaBank {
     const result = await this.db.query(query);
     return result.rows.map(row => ({
       id: row.id,
-      name: language === 'es' ? row.name_es : row.name,
-      description: language === 'es' ? row.description_es : row.description,
+      name: row.name,
+      description: row.description,
       item_count: parseInt(row.item_count, 10)
     }));
   }
@@ -285,15 +274,13 @@ class DilemmaBank {
   /**
    * Get items in a consistency group
    * @param {number} groupId
-   * @param {string} language
    * @returns {Promise<Object[]>}
    */
-  async getGroupItems(groupId, language = 'en') {
+  async getGroupItems(groupId) {
     const query = `
       SELECT
         di.*,
         df.name as family_name,
-        df.name_es as family_name_es,
         cgi.framing,
         cgi.variant_type
       FROM mse_consistency_group_items cgi
@@ -304,7 +291,7 @@ class DilemmaBank {
     `;
     const result = await this.db.query(query, [groupId]);
     return result.rows.map(row => ({
-      ...this._formatItem(row, language),
+      ...this._formatItem(row),
       framing: row.framing,
       variant_type: row.variant_type,
       dilemma_type: row.dilemma_type,
@@ -319,15 +306,13 @@ class DilemmaBank {
   /**
    * Get framing variants of an item (via consistency group)
    * @param {string} itemId
-   * @param {string} language
    * @returns {Promise<Object[]>}
    */
-  async getFramingVariants(itemId, language = 'en') {
+  async getFramingVariants(itemId) {
     const query = `
       SELECT
         di.*,
         df.name as family_name,
-        df.name_es as family_name_es,
         cgi2.framing,
         cgi2.variant_type
       FROM mse_consistency_group_items cgi1
@@ -339,7 +324,7 @@ class DilemmaBank {
     `;
     const result = await this.db.query(query, [itemId]);
     return result.rows.map(row => ({
-      ...this._formatItem(row, language),
+      ...this._formatItem(row),
       framing: row.framing,
       variant_type: row.variant_type
     }));
@@ -352,7 +337,7 @@ class DilemmaBank {
    * @returns {Promise<Object[]>}
    */
   async getItemsForAxisV2(axisId, options = {}) {
-    const { versionId = null, language = 'en', excludeIds = [] } = options;
+    const { versionId = null, excludeIds = [] } = options;
 
     const versionJoin = versionId
       ? 'JOIN mse_version_items vi ON di.id = vi.item_id AND vi.version_id = $2'
@@ -361,8 +346,7 @@ class DilemmaBank {
     let query = `
       SELECT
         di.*,
-        df.name as family_name,
-        df.name_es as family_name_es
+        df.name as family_name
       FROM mse_dilemma_items di
       ${versionJoin}
       LEFT JOIN mse_dilemma_families df ON di.family_id = df.id
@@ -382,7 +366,7 @@ class DilemmaBank {
 
     const result = await this.db.query(query, params);
     return result.rows.map(row => ({
-      ...this._formatItem(row, language),
+      ...this._formatItem(row),
       dilemma_type: row.dilemma_type || 'base',
       consistency_group_id: row.consistency_group_id,
       variant_type: row.variant_type,
@@ -397,10 +381,10 @@ class DilemmaBank {
    * Format item for API response
    * @private
    */
-  _formatItem(row, language) {
+  _formatItem(row) {
     const options = row.options.map(opt => ({
       id: opt.id,
-      label: language === 'es' ? opt.label_es : opt.label_en,
+      label: opt.label,
       pole: opt.pole
     }));
 
@@ -408,10 +392,10 @@ class DilemmaBank {
       id: row.id,
       axis_id: row.axis_id,
       family_id: row.family_id,
-      family_name: language === 'es' ? row.family_name_es : row.family_name,
+      family_name: row.family_name,
       pressure_level: parseFloat(row.pressure_level),
       params: row.params,
-      prompt: language === 'es' ? row.prompt_es : row.prompt_en,
+      prompt: row.prompt,
       options,
       version: row.version,
       is_anchor: row.is_anchor

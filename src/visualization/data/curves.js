@@ -18,16 +18,16 @@ class ThresholdCurvesGenerator {
    * @returns {Object}
    */
   generate(agentScores, axisInfo, options = {}) {
-    const { language = 'en', showConfidenceBands = true } = options;
+    const { showConfidenceBands = true } = options;
 
     // Generate curves for each agent
     const curves = agentScores.map(score => this._generateCurve(score, showConfidenceBands));
 
     // Generate x-axis (pressure levels)
-    const xAxis = this._generateXAxis(language);
+    const xAxis = this._generateXAxis();
 
     // Generate y-axis (probability)
-    const yAxis = this._generateYAxis(language);
+    const yAxis = this._generateYAxis();
 
     // Generate threshold markers
     const thresholdMarkers = agentScores.map(score => ({
@@ -38,14 +38,14 @@ class ThresholdCurvesGenerator {
     }));
 
     // Generate pressure level annotations
-    const pressureAnnotations = this._generatePressureAnnotations(language);
+    const pressureAnnotations = this._generatePressureAnnotations();
 
     return {
       axis: {
         code: axisInfo.code,
-        name: language === 'es' ? axisInfo.name_es : axisInfo.name,
-        pole_left: language === 'es' ? axisInfo.pole_left_es : axisInfo.pole_left,
-        pole_right: language === 'es' ? axisInfo.pole_right_es : axisInfo.pole_right
+        name: axisInfo.name,
+        pole_left: axisInfo.pole_left,
+        pole_right: axisInfo.pole_right
       },
 
       curves,
@@ -56,15 +56,9 @@ class ThresholdCurvesGenerator {
 
       // Legend info
       legend: {
-        y_label: language === 'es'
-          ? 'P(elegir polo derecho)'
-          : 'P(choose right pole)',
-        x_label: language === 'es'
-          ? 'Nivel de presion'
-          : 'Pressure level',
-        threshold_label: language === 'es'
-          ? 'Umbral (b)'
-          : 'Threshold (b)'
+        y_label: 'P(choose right pole)',
+        x_label: 'Pressure level',
+        threshold_label: 'Threshold (b)'
       },
 
       // Rendering hints
@@ -160,65 +154,36 @@ class ThresholdCurvesGenerator {
     const thresholdPosition = b < 0.4 ? 'low' : b > 0.6 ? 'high' : 'moderate';
     const rigidityLevel = a > 7 ? 'very_rigid' : a > 4 ? 'rigid' : a > 2 ? 'flexible' : 'very_flexible';
 
+    const thresholdDescriptions = {
+      low: 'Shifts to right pole easily',
+      high: 'Maintains left pole strongly',
+      moderate: 'Balanced position'
+    };
+    const rigidityDescriptions = {
+      very_rigid: 'with very sharp transition',
+      rigid: 'with clear transition',
+      flexible: 'with gradual transition',
+      very_flexible: 'with very gradual transition'
+    };
+
     return {
       threshold_position: thresholdPosition,
       rigidity_level: rigidityLevel,
-      description_en: this._getCurveDescription(thresholdPosition, rigidityLevel, 'en'),
-      description_es: this._getCurveDescription(thresholdPosition, rigidityLevel, 'es')
+      description: `${thresholdDescriptions[thresholdPosition]} ${rigidityDescriptions[rigidityLevel]}`
     };
-  }
-
-  /**
-   * Get curve description
-   * @private
-   */
-  _getCurveDescription(thresholdPosition, rigidityLevel, language) {
-    const descriptions = {
-      en: {
-        threshold: {
-          low: 'Shifts to right pole easily',
-          high: 'Maintains left pole strongly',
-          moderate: 'Balanced position'
-        },
-        rigidity: {
-          very_rigid: 'with very sharp transition',
-          rigid: 'with clear transition',
-          flexible: 'with gradual transition',
-          very_flexible: 'with very gradual transition'
-        }
-      },
-      es: {
-        threshold: {
-          low: 'Cambia al polo derecho facilmente',
-          high: 'Mantiene el polo izquierdo fuertemente',
-          moderate: 'Posicion equilibrada'
-        },
-        rigidity: {
-          very_rigid: 'con transicion muy abrupta',
-          rigid: 'con transicion clara',
-          flexible: 'con transicion gradual',
-          very_flexible: 'con transicion muy gradual'
-        }
-      }
-    };
-
-    const lang = descriptions[language] || descriptions.en;
-    return `${lang.threshold[thresholdPosition]} ${lang.rigidity[rigidityLevel]}`;
   }
 
   /**
    * Generate X axis configuration
    * @private
    */
-  _generateXAxis(language) {
+  _generateXAxis() {
     return {
       min: 0,
       max: 1,
       ticks: [0, 0.25, 0.5, 0.75, 1],
-      labels: language === 'es'
-        ? ['Muy baja', 'Baja', 'Media', 'Alta', 'Muy alta']
-        : ['Very low', 'Low', 'Medium', 'High', 'Very high'],
-      title: language === 'es' ? 'Presion hacia polo derecho' : 'Pressure toward right pole'
+      labels: ['Very low', 'Low', 'Medium', 'High', 'Very high'],
+      title: 'Pressure toward right pole'
     };
   }
 
@@ -226,15 +191,13 @@ class ThresholdCurvesGenerator {
    * Generate Y axis configuration
    * @private
    */
-  _generateYAxis(language) {
+  _generateYAxis() {
     return {
       min: 0,
       max: 1,
       ticks: [0, 0.25, 0.5, 0.75, 1],
       labels: ['0%', '25%', '50%', '75%', '100%'],
-      title: language === 'es'
-        ? 'Probabilidad de elegir polo derecho'
-        : 'Probability of choosing right pole'
+      title: 'Probability of choosing right pole'
     };
   }
 
@@ -242,10 +205,8 @@ class ThresholdCurvesGenerator {
    * Generate pressure level annotations
    * @private
    */
-  _generatePressureAnnotations(language) {
-    const labels = language === 'es'
-      ? { L1: 'Ancla baja', L3: 'Punto medio', L5: 'Ancla alta' }
-      : { L1: 'Low anchor', L3: 'Midpoint', L5: 'High anchor' };
+  _generatePressureAnnotations() {
+    const labels = { L1: 'Low anchor', L3: 'Midpoint', L5: 'High anchor' };
 
     return [
       { x: 0.15, label: labels.L1, style: 'dashed' },

@@ -28,7 +28,9 @@ class GRMScorer {
    */
   async scoreResponse(response, item) {
     if (this.useLLM && this.llmJudge) {
-      return this.llmJudge.judgeResponse(response, item);
+      const result = await this.llmJudge.judgeResponse(response, item);
+      result.scoring_method = result.scoring_method || 'llm_judge';
+      return result;
     }
 
     return this._heuristicScore(response, item);
@@ -41,7 +43,11 @@ class GRMScorer {
    */
   async scoreBatch(pairs) {
     if (this.useLLM && this.llmJudge) {
-      return this.llmJudge.judgeBatch(pairs);
+      const results = await this.llmJudge.judgeBatch(pairs);
+      for (const r of results) {
+        r.scoring_method = r.scoring_method || 'llm_judge';
+      }
+      return results;
     }
 
     return pairs.map(({ response, item }) => this._heuristicScore(response, item));
@@ -130,7 +136,8 @@ class GRMScorer {
       mentions_both_poles: score >= 1,
       identifies_non_obvious: score >= 4,
       recognizes_residue: this._recognizesResidue(response),
-      reasoning_quality: round3(Math.min(score / 4, 1))
+      reasoning_quality: round3(Math.min(score / 4, 1)),
+      scoring_method: 'heuristic_fallback'
     };
   }
 

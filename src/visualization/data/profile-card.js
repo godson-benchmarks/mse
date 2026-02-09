@@ -13,14 +13,14 @@ class ProfileCardGenerator {
    * @returns {Object} Profile card data
    */
   generate(profile, options = {}) {
-    const { language = 'en', includeFlags = true } = options;
+    const { includeFlags = true } = options;
 
     // Generate axis bars
     const moralAxes = [];
     const memoryAxes = [];
 
     for (const [code, axisData] of Object.entries(profile.axes)) {
-      const bar = this._generateAxisBar(code, axisData, language);
+      const bar = this._generateAxisBar(code, axisData);
 
       if (axisData.category === 'memory') {
         memoryAxes.push(bar);
@@ -34,13 +34,13 @@ class ProfileCardGenerator {
     memoryAxes.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
 
     // Generate procedural style radar
-    const proceduralRadar = this._generateProceduralRadar(profile.procedural, language);
+    const proceduralRadar = this._generateProceduralRadar(profile.procedural);
 
     // Generate flags summary
-    const flags = includeFlags ? this._generateFlagsSummary(profile.global_flags, language) : [];
+    const flags = includeFlags ? this._generateFlagsSummary(profile.global_flags) : [];
 
     // Generate summary stats
-    const summary = this._generateSummary(profile, language);
+    const summary = this._generateSummary(profile);
 
     return {
       agent_id: profile.agent_id,
@@ -70,10 +70,10 @@ class ProfileCardGenerator {
    * Generate data for a single axis bar
    * @private
    */
-  _generateAxisBar(code, axisData, language) {
-    const name = language === 'es' ? axisData.name_es : axisData.name;
-    const poleLeft = language === 'es' ? axisData.pole_left_es : axisData.pole_left;
-    const poleRight = language === 'es' ? axisData.pole_right_es : axisData.pole_right;
+  _generateAxisBar(code, axisData) {
+    const name = axisData.name;
+    const poleLeft = axisData.pole_left;
+    const poleRight = axisData.pole_right;
 
     // Calculate position relative to center
     const position = axisData.b;
@@ -122,21 +122,12 @@ class ProfileCardGenerator {
    * Generate procedural radar chart data
    * @private
    */
-  _generateProceduralRadar(procedural, language) {
+  _generateProceduralRadar(procedural) {
     if (!procedural) {
       return null;
     }
 
-    const labels = language === 'es' ? {
-      moral_sensitivity: 'Sensibilidad Moral',
-      info_seeking: 'Busqueda de Info',
-      calibration: 'Calibracion',
-      consistency: 'Consistencia',
-      principle_diversity: 'Diversidad de Principios',
-      reasoning_depth: 'Profundidad de Razonamiento',
-      transparency: 'Transparencia',
-      pressure_robustness: 'Robustez'
-    } : {
+    const labels = {
       moral_sensitivity: 'Moral Sensitivity',
       info_seeking: 'Info Seeking',
       calibration: 'Calibration',
@@ -173,18 +164,12 @@ class ProfileCardGenerator {
    * Generate flags summary
    * @private
    */
-  _generateFlagsSummary(globalFlags, language) {
+  _generateFlagsSummary(globalFlags) {
     if (!globalFlags || globalFlags.length === 0) {
       return [];
     }
 
-    const descriptions = language === 'es' ? {
-      high_uncertainty: 'Alta incertidumbre',
-      few_items: 'Pocos items',
-      out_of_range: 'Fuera de rango',
-      inconsistent: 'Respuestas inconsistentes',
-      non_monotonic: 'Patron no monotonico'
-    } : {
+    const descriptions = {
       high_uncertainty: 'High uncertainty',
       few_items: 'Few items',
       out_of_range: 'Out of range',
@@ -203,7 +188,7 @@ class ProfileCardGenerator {
    * Generate summary statistics
    * @private
    */
-  _generateSummary(profile, language) {
+  _generateSummary(profile) {
     const axes = Object.values(profile.axes);
 
     // Calculate averages
@@ -249,9 +234,7 @@ class ProfileCardGenerator {
       },
 
       // Confidence interpretation
-      confidence_description: language === 'es'
-        ? this._getConfidenceDescription(profile.confidence_level, 'es')
-        : this._getConfidenceDescription(profile.confidence_level, 'en')
+      confidence_description: this._getConfidenceDescription(profile.confidence_level)
     };
   }
 
@@ -259,21 +242,14 @@ class ProfileCardGenerator {
    * Get confidence level description
    * @private
    */
-  _getConfidenceDescription(level, language) {
+  _getConfidenceDescription(level) {
     const descriptions = {
-      es: {
-        high: 'Alta confianza en los resultados',
-        medium: 'Confianza moderada - algunos ejes pueden necesitar mas items',
-        low: 'Baja confianza - se recomienda completar mas escenarios'
-      },
-      en: {
-        high: 'High confidence in results',
-        medium: 'Moderate confidence - some axes may need more items',
-        low: 'Low confidence - completing more scenarios recommended'
-      }
+      high: 'High confidence in results',
+      medium: 'Moderate confidence - some axes may need more items',
+      low: 'Low confidence - completing more scenarios recommended'
     };
 
-    return descriptions[language]?.[level] || level;
+    return descriptions[level] || level;
   }
 }
 

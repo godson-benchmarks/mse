@@ -14,7 +14,6 @@ class TimelineGenerator {
    */
   generate(history, options = {}) {
     const {
-      language = 'en',
       showAxes = null,  // null = all axes
       includeDeltas = true
     } = options;
@@ -22,9 +21,7 @@ class TimelineGenerator {
     if (!history || history.length === 0) {
       return {
         empty: true,
-        message: language === 'es'
-          ? 'No hay historial de evaluaciones'
-          : 'No evaluation history'
+        message: 'No evaluation history'
       };
     }
 
@@ -288,7 +285,7 @@ class TimelineGenerator {
    * @returns {Object}
    */
   generateWaterfall(fromProfile, toProfile, options = {}) {
-    const { language = 'en', significanceThreshold = 0.05 } = options;
+    const { significanceThreshold = 0.05 } = options;
 
     const changes = [];
 
@@ -331,12 +328,7 @@ class TimelineGenerator {
         moved_right: changes.filter(c => c.direction === 'right').length,
         largest_change: changes[0] || null
       },
-      labels: language === 'es' ? {
-        from: 'Antes',
-        to: 'Despues',
-        change: 'Cambio',
-        no_change: 'Sin cambio'
-      } : {
+      labels: {
         from: 'Before',
         to: 'After',
         change: 'Change',

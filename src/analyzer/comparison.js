@@ -13,7 +13,7 @@ class ComparisonAnalyzer {
    * @returns {Promise<Object>}
    */
   async compare(repository, agentIds, options = {}) {
-    const { axes: selectedAxes = null, language = 'en' } = options;
+    const { axes: selectedAxes = null } = options;
 
     // Get profiles for all agents
     const profiles = [];
@@ -66,9 +66,9 @@ class ComparisonAnalyzer {
       clusters,
       axes_metadata: axesToCompare.map(a => ({
         code: a.code,
-        name: language === 'es' ? a.name_es : a.name,
-        pole_left: language === 'es' ? a.pole_left_es : a.pole_left,
-        pole_right: language === 'es' ? a.pole_right_es : a.pole_right
+        name: a.name,
+        pole_left: a.pole_left,
+        pole_right: a.pole_right
       }))
     };
   }
@@ -344,51 +344,28 @@ class ComparisonAnalyzer {
    * @param {string} language
    * @returns {string}
    */
-  generateReport(comparison, language = 'en') {
+  generateReport(comparison) {
     const lines = [];
 
-    if (language === 'es') {
-      lines.push('# Reporte de Comparacion de Perfiles Eticos\n');
+    lines.push('# Ethical Profile Comparison Report\n');
 
-      lines.push('## Agentes Comparados');
-      for (const agent of comparison.agents) {
-        lines.push(`- ${agent.agent_id} (evaluado: ${agent.snapshot_date})`);
-      }
+    lines.push('## Compared Agents');
+    for (const agent of comparison.agents) {
+      lines.push(`- ${agent.agent_id} (evaluated: ${agent.snapshot_date})`);
+    }
 
-      lines.push('\n## Principales Diferencias');
-      for (const diff of comparison.key_differences) {
-        const axis = comparison.axes_metadata.find(a => a.code === diff.axis_code);
-        lines.push(`\n### ${axis?.name || diff.axis_code}`);
-        lines.push(`- Rango de variacion: ${(diff.range * 100).toFixed(0)}%`);
-        lines.push(`- Mas hacia "${axis?.pole_left}": ${diff.extremes.left_leaning.agent_id}`);
-        lines.push(`- Mas hacia "${axis?.pole_right}": ${diff.extremes.right_leaning.agent_id}`);
-      }
+    lines.push('\n## Key Differences');
+    for (const diff of comparison.key_differences) {
+      const axis = comparison.axes_metadata.find(a => a.code === diff.axis_code);
+      lines.push(`\n### ${axis?.name || diff.axis_code}`);
+      lines.push(`- Variation range: ${(diff.range * 100).toFixed(0)}%`);
+      lines.push(`- More toward "${axis?.pole_left}": ${diff.extremes.left_leaning.agent_id}`);
+      lines.push(`- More toward "${axis?.pole_right}": ${diff.extremes.right_leaning.agent_id}`);
+    }
 
-      lines.push('\n## Similitudes');
-      for (const [key, sim] of Object.entries(comparison.similarities)) {
-        lines.push(`- ${sim.agent1} vs ${sim.agent2}: ${(sim.similarity * 100).toFixed(0)}% similares`);
-      }
-    } else {
-      lines.push('# Ethical Profile Comparison Report\n');
-
-      lines.push('## Compared Agents');
-      for (const agent of comparison.agents) {
-        lines.push(`- ${agent.agent_id} (evaluated: ${agent.snapshot_date})`);
-      }
-
-      lines.push('\n## Key Differences');
-      for (const diff of comparison.key_differences) {
-        const axis = comparison.axes_metadata.find(a => a.code === diff.axis_code);
-        lines.push(`\n### ${axis?.name || diff.axis_code}`);
-        lines.push(`- Variation range: ${(diff.range * 100).toFixed(0)}%`);
-        lines.push(`- More toward "${axis?.pole_left}": ${diff.extremes.left_leaning.agent_id}`);
-        lines.push(`- More toward "${axis?.pole_right}": ${diff.extremes.right_leaning.agent_id}`);
-      }
-
-      lines.push('\n## Similarities');
-      for (const [key, sim] of Object.entries(comparison.similarities)) {
-        lines.push(`- ${sim.agent1} vs ${sim.agent2}: ${(sim.similarity * 100).toFixed(0)}% similar`);
-      }
+    lines.push('\n## Similarities');
+    for (const [key, sim] of Object.entries(comparison.similarities)) {
+      lines.push(`- ${sim.agent1} vs ${sim.agent2}: ${(sim.similarity * 100).toFixed(0)}% similar`);
     }
 
     return lines.join('\n');

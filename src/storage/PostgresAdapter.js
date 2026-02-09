@@ -347,11 +347,8 @@ class PostgresAdapter extends MSEStorageAdapter {
         s.*,
         a.code as axis_code,
         a.name as axis_name,
-        a.name_es as axis_name_es,
         a.pole_left,
-        a.pole_left_es,
         a.pole_right,
-        a.pole_right_es,
         a.category
       FROM mse_axis_scores s
       JOIN mse_axes a ON s.axis_id = a.id
@@ -539,8 +536,7 @@ class PostgresAdapter extends MSEStorageAdapter {
     const query = `
       SELECT
         di.*,
-        df.name as family_name,
-        df.name_es as family_name_es
+        df.name as family_name
       FROM mse_dilemma_items di
       LEFT JOIN mse_dilemma_families df ON di.family_id = df.id
       WHERE di.id = $1
@@ -656,11 +652,8 @@ class PostgresAdapter extends MSEStorageAdapter {
         a.id as axis_id,
         a.code as axis_code,
         a.name as axis_name,
-        a.name_es as axis_name_es,
         a.pole_left,
-        a.pole_left_es,
         a.pole_right,
-        a.pole_right_es,
         a.category,
         a.display_order,
         COUNT(DISTINCT s.run_id) as sample_count,
@@ -673,8 +666,8 @@ class PostgresAdapter extends MSEStorageAdapter {
       FROM mse_axes a
       LEFT JOIN mse_axis_scores s ON s.axis_id = a.id
       WHERE a.is_active = true
-      GROUP BY a.id, a.code, a.name, a.name_es, a.pole_left, a.pole_left_es,
-               a.pole_right, a.pole_right_es, a.category, a.display_order
+      GROUP BY a.id, a.code, a.name, a.pole_left,
+               a.pole_right, a.category, a.display_order
       ORDER BY a.display_order, a.id
     `;
 
@@ -815,11 +808,8 @@ class PostgresAdapter extends MSEStorageAdapter {
         axisId: row.axis_id,
         axisCode: row.axis_code,
         axisName: row.axis_name,
-        axisNameEs: row.axis_name_es,
         poleLeft: row.pole_left,
-        poleLeftEs: row.pole_left_es,
         poleRight: row.pole_right,
-        poleRightEs: row.pole_right_es,
         category: row.category,
         sampleCount,
         avgThreshold,
@@ -936,14 +926,13 @@ class PostgresAdapter extends MSEStorageAdapter {
         a.id as axis_id,
         a.code as axis_code,
         a.name as axis_name,
-        a.name_es as axis_name_es,
         COUNT(vi.item_id) as item_count,
         COUNT(vi.item_id) FILTER (WHERE di.is_anchor = true) as anchor_count
       FROM mse_axes a
       LEFT JOIN mse_version_items vi ON vi.version_id = $1
       LEFT JOIN mse_dilemma_items di ON vi.item_id = di.id AND di.axis_id = a.id
       WHERE a.is_active = true
-      GROUP BY a.id, a.code, a.name, a.name_es
+      GROUP BY a.id, a.code, a.name
       ORDER BY a.display_order, a.id
     `;
 
@@ -952,7 +941,6 @@ class PostgresAdapter extends MSEStorageAdapter {
       axis_id: row.axis_id,
       axis_code: row.axis_code,
       axis_name: row.axis_name,
-      axis_name_es: row.axis_name_es,
       item_count: parseInt(row.item_count, 10),
       anchor_count: parseInt(row.anchor_count, 10)
     }));
@@ -1068,7 +1056,7 @@ class PostgresAdapter extends MSEStorageAdapter {
     const query = `
       SELECT
         cgi.*,
-        di.prompt_en, di.prompt_es, di.pressure_level, di.params,
+        di.prompt, di.pressure_level, di.params,
         di.options, di.axis_id, di.family_id, di.is_anchor,
         di.dilemma_type, di.non_obvious_factors,
         di.expert_disagreement, di.requires_residue_recognition,

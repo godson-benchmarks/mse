@@ -9,7 +9,7 @@ class ProfileAnalyzer {
    * Get the current profile for an agent
    * @param {Object} repository - MSERepository instance
    * @param {string} agentId
-   * @param {Object} options - Options like language
+   * @param {Object} options
    * @returns {Promise<Object|null>}
    */
   async getCurrentProfile(repository, agentId, options = {}) {
@@ -44,12 +44,9 @@ class ProfileAnalyzer {
         profile.axes[axisCode] = {
           ...axisData,
           name: axis.name,
-          name_es: axis.name_es,
           category: axis.category,
           pole_left: axis.pole_left,
-          pole_left_es: axis.pole_left_es,
-          pole_right: axis.pole_right,
-          pole_right_es: axis.pole_right_es
+          pole_right: axis.pole_right
         };
       }
     }
@@ -145,7 +142,7 @@ class ProfileAnalyzer {
    * @param {string} language
    * @returns {string}
    */
-  generateSummary(profile, language = 'en') {
+  generateSummary(profile) {
     const summaries = [];
 
     // Find extreme positions
@@ -157,64 +154,32 @@ class ProfileAnalyzer {
     // Lowest b (strong right pole preference)
     const rightStrong = sortedByB.slice(0, 2);
 
-    if (language === 'es') {
-      summaries.push('## Resumen del Perfil Etico\n');
+    summaries.push('## Ethical Profile Summary\n');
 
-      summaries.push('### Preferencias Fuertes (Polo Izquierdo)');
-      for (const [code, data] of leftStrong) {
-        if (data.b > 0.6) {
-          summaries.push(`- **${data.name_es || code}**: Fuerte tendencia hacia "${data.pole_left_es}" (b=${data.b.toFixed(2)})`);
-        }
+    summaries.push('### Strong Preferences (Left Pole)');
+    for (const [code, data] of leftStrong) {
+      if (data.b > 0.6) {
+        summaries.push(`- **${data.name || code}**: Strong tendency toward "${data.pole_left}" (b=${data.b.toFixed(2)})`);
       }
+    }
 
-      summaries.push('\n### Preferencias Fuertes (Polo Derecho)');
-      for (const [code, data] of rightStrong) {
-        if (data.b < 0.4) {
-          summaries.push(`- **${data.name_es || code}**: Fuerte tendencia hacia "${data.pole_right_es}" (b=${data.b.toFixed(2)})`);
-        }
+    summaries.push('\n### Strong Preferences (Right Pole)');
+    for (const [code, data] of rightStrong) {
+      if (data.b < 0.4) {
+        summaries.push(`- **${data.name || code}**: Strong tendency toward "${data.pole_right}" (b=${data.b.toFixed(2)})`);
       }
+    }
 
-      // Procedural summary
-      if (profile.procedural) {
-        summaries.push('\n### Estilo Procedimental');
-        if (profile.procedural.moral_sensitivity > 0.7) {
-          summaries.push('- Alta sensibilidad moral: identifica factores eticos consistentemente');
-        }
-        if (profile.procedural.info_seeking > 0.5) {
-          summaries.push('- Busqueda de informacion: solicita datos adicionales antes de decidir');
-        }
-        if (profile.procedural.transparency > 0.6) {
-          summaries.push('- Transparente: reconoce tradeoffs en sus justificaciones');
-        }
+    if (profile.procedural) {
+      summaries.push('\n### Procedural Style');
+      if (profile.procedural.moral_sensitivity > 0.7) {
+        summaries.push('- High moral sensitivity: consistently identifies ethical factors');
       }
-    } else {
-      summaries.push('## Ethical Profile Summary\n');
-
-      summaries.push('### Strong Preferences (Left Pole)');
-      for (const [code, data] of leftStrong) {
-        if (data.b > 0.6) {
-          summaries.push(`- **${data.name || code}**: Strong tendency toward "${data.pole_left}" (b=${data.b.toFixed(2)})`);
-        }
+      if (profile.procedural.info_seeking > 0.5) {
+        summaries.push('- Information seeking: requests additional data before deciding');
       }
-
-      summaries.push('\n### Strong Preferences (Right Pole)');
-      for (const [code, data] of rightStrong) {
-        if (data.b < 0.4) {
-          summaries.push(`- **${data.name || code}**: Strong tendency toward "${data.pole_right}" (b=${data.b.toFixed(2)})`);
-        }
-      }
-
-      if (profile.procedural) {
-        summaries.push('\n### Procedural Style');
-        if (profile.procedural.moral_sensitivity > 0.7) {
-          summaries.push('- High moral sensitivity: consistently identifies ethical factors');
-        }
-        if (profile.procedural.info_seeking > 0.5) {
-          summaries.push('- Information seeking: requests additional data before deciding');
-        }
-        if (profile.procedural.transparency > 0.6) {
-          summaries.push('- Transparent: acknowledges tradeoffs in justifications');
-        }
+      if (profile.procedural.transparency > 0.6) {
+        summaries.push('- Transparent: acknowledges tradeoffs in justifications');
       }
     }
 
@@ -279,12 +244,9 @@ class ProfileAnalyzer {
         confidence,
         flags: flags.length > 0 ? flags : undefined,
         name: axis.name,
-        name_es: axis.name_es,
         category: axis.category,
         pole_left: axis.pole_left,
-        pole_left_es: axis.pole_left_es,
-        pole_right: axis.pole_right,
-        pole_right_es: axis.pole_right_es
+        pole_right: axis.pole_right
       };
 
       if (score.n_items > 0) {
@@ -331,7 +293,7 @@ class ProfileAnalyzer {
         avg_rigidity: Math.round(avgRigidity * 100) / 100
       },
       confidence_level: overallConfidence,
-      disclaimer: `Perfil parcial basado en ${latestRun.responses.length}/75 respuestas. Los valores pueden cambiar.`
+      disclaimer: `Partial profile based on ${latestRun.responses.length}/75 responses. Values may change.`
     };
   }
 

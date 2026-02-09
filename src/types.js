@@ -288,8 +288,7 @@ const LegalityLevels = {
 /**
  * @typedef {Object} DilemmaOption
  * @property {string} id - A, B, C, or D
- * @property {string} label_en
- * @property {string} label_es
+ * @property {string} label
  * @property {string} pole - left, right, neutral, creative
  */
 
@@ -300,8 +299,7 @@ const LegalityLevels = {
  * @property {string} family_id
  * @property {number} pressure_level - 0.0 to 1.0
  * @property {DilemmaParams} params
- * @property {string} prompt_en
- * @property {string} prompt_es
+ * @property {string} prompt
  * @property {DilemmaOption[]} options
  * @property {number} version
  * @property {boolean} is_anchor
@@ -399,7 +397,6 @@ const LegalityLevels = {
 
 /**
  * @typedef {Object} EvaluationConfig
- * @property {string} [language='es'] - 'en' or 'es'
  * @property {string} [model] - model identifier
  * @property {number} [temperature] - sampling temperature
  * @property {boolean} [memory_enabled] - whether agent has persistent memory

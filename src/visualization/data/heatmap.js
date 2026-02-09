@@ -14,13 +14,12 @@ class HeatmapGenerator {
    */
   generate(comparison, options = {}) {
     const {
-      language = 'en',
       sortBy = 'axis',  // 'axis', 'cluster', 'variance'
       includeUncertainty = true
     } = options;
 
     // Build rows (axes) and columns (agents)
-    const rows = this._buildRows(comparison.matrix, comparison.axes_metadata, language);
+    const rows = this._buildRows(comparison.matrix, comparison.axes_metadata);
     const columns = this._buildColumns(comparison.agents);
     const cells = this._buildCells(comparison.matrix, rows, columns, includeUncertainty);
 
@@ -74,7 +73,7 @@ class HeatmapGenerator {
    * Build row data (axes)
    * @private
    */
-  _buildRows(matrix, axesMetadata, language) {
+  _buildRows(matrix, axesMetadata) {
     const rows = [];
 
     for (const axisMeta of axesMetadata) {
