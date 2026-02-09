@@ -1,6 +1,6 @@
-# @godson/mse
+# @godson-ai/mse
 
-> Core engine for the Moral Spectrometry Engine - Adaptive psychometric system for mapping AI agent ethical profiles
+> Core engine for the Moral Spectrometry Engine - Adaptive psychometric system for mapping AI agent ethical profiles by Godson.ai (https://www.godson.ai/)
 
 ## Installation
 
@@ -57,7 +57,7 @@ console.log('Ethical Profile:', profile);
 
 ## Features
 
-- **Adaptive Testing** - IRT-inspired item selection maximizes information per dilemma
+- **Adaptive Testing** - Fisher Information-based adaptive item selection maximizes information per dilemma
 - **15 Moral Tension Axes** - From rights-vs-consequences to privacy-vs-security
 - **Logistic Threshold Estimation** - Estimates exact tipping points with uncertainty
 - **225+ Parametric Dilemmas** - Calibrated across 5 pressure levels with 8 parameters
@@ -142,15 +142,16 @@ const mse = new MSEEngine(db, {
 
 ## Mathematical Model
 
-The MSE uses a 2-Parameter Logistic (2PL) model from Item Response Theory:
+The MSE uses a Regularized Logistic Threshold Model (RLTM) — a penalized logistic regression that uses the sigmoid centering parameterization from IRT's 2-Parameter Logistic model:
 
 ```
-P(permit | θ, a, b) = 1 / (1 + exp(-a × (θ - b)))
+P(permit | x, a, b) = 1 / (1 + exp(-a * (x - b)))
 ```
 
 Where:
-- **b** = threshold (0.0–1.0): where P = 0.5 (the "tipping point")
-- **a** = discrimination (0.5–10.0): slope steepness (rigidity)
+- **x** = pressure level (observable, designed, 0.0-1.0)
+- **b** = agent threshold (0.0-1.0): pressure where P = 0.5 (the "tipping point")
+- **a** = rigidity (0.5-10.0): slope steepness (shared per axis)
 - **SE(b)** = standard error: estimation uncertainty
 
 ## License

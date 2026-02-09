@@ -1,15 +1,29 @@
 /**
- * Axis Scorer
+ * Axis Scorer — Regularized Logistic Threshold Model (RLTM)
  *
- * Calculates threshold (b) and rigidity (a) parameters for each axis
- * using a logistic regression model.
+ * Estimates threshold (b) and rigidity (a) parameters for each moral axis
+ * using a penalized logistic regression with the centering parameterization
+ * P = σ(a(x - b)) from IRT's 2-Parameter Logistic model.
  *
- * Model: p(permit_right_pole | x) ≈ σ(a(x - b))
+ * Model: P(permit | x) = σ(a(x - b))
  * where:
  *   - σ = sigmoid function
- *   - x = pressure level of the item (0-1)
- *   - b = threshold (what we want to estimate)
- *   - a = rigidity (slope of the transition)
+ *   - x = pressure level of the item (observable, designed, 0-1)
+ *   - b = agent threshold — pressure where P = 0.5 (estimated)
+ *   - a = agent rigidity — slope of the transition (estimated, shared per axis)
+ *
+ * Structural differences from standard 2PL IRT:
+ *   - Continuous y ∈ [0.02, 0.98] from permissibility/100, not binary
+ *   - x is observable pressure (not latent trait θ)
+ *   - a is agent-level (shared per axis), not item-level
+ *   - Dual adaptive ridge regularization on both a and b
+ *   - Gradient descent with decaying LR (not MLE via EM/Newton)
+ *   - SE scaled by √(residual MSE) for continuous-response misfit
+ *
+ * Statistical family: penalized logistic regression (GLM),
+ * not a latent variable measurement model.
+ *
+ * See: mse-open-source/docs/SCORING_MODEL.md for full mathematical derivation
  */
 
 const { QualityFlags } = require('../types');
