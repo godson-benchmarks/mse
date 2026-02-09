@@ -378,7 +378,7 @@ class AxisScorer {
    * @param {Object[]} allResponses - All responses from the evaluation
    * @returns {Object} Procedural scores
    */
-  calculateProceduralScores(allResponses) {
+  calculateProceduralScores(allResponses, axisScores = null, consistencyScores = null) {
     if (!allResponses || allResponses.length === 0) {
       return {
         moral_sensitivity: null,
@@ -394,7 +394,7 @@ class AxisScorer {
 
     // Use ProceduralAnalyzer for comprehensive analysis
     const analyzer = new ProceduralAnalyzer();
-    const fullAnalysis = analyzer.analyze(allResponses);
+    const fullAnalysis = analyzer.analyze(allResponses, { axisScores, consistencyScores });
 
     return {
       moral_sensitivity: fullAnalysis.moral_sensitivity?.score ?? null,
@@ -443,7 +443,7 @@ class AxisScorer {
     if (responses.length < 3) return null;
 
     // For each axis, check if confidence correlates with distance from threshold
-    // This is a simplified version - full implementation would need axis scores
+    // Uses actual axis threshold (b) values when passed via calculateProceduralScores()
 
     // Check if permissibility near 50 correlates with lower confidence
     let wellCalibrated = 0;

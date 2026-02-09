@@ -350,13 +350,23 @@ class EvaluationSession {
       await this.repository.saveAxisScore(this.runId, score);
     }
 
-    // Calculate procedural scores
-    this.proceduralScores = this.scorer.calculateProceduralScores(this.responses);
+    // Pre-compute consistency scores for v2 (needed by procedural metrics)
+    let consistencyResults = [];
+    if (this.isV2) {
+      consistencyResults = this._calculateConsistencyScores();
+    }
+
+    // Calculate procedural scores with axis scores and consistency data
+    this.proceduralScores = this.scorer.calculateProceduralScores(
+      this.responses,
+      this.axisScores,
+      consistencyResults
+    );
     await this.repository.saveProceduralScores(this.runId, this.proceduralScores);
 
-    // v2.0: Additional scoring layers
+    // v2.0: Additional scoring layers (pass pre-computed consistency to avoid recomputation)
     if (this.isV2) {
-      await this._completeV2();
+      await this._completeV2(consistencyResults);
     }
 
     // Update run status
@@ -380,7 +390,7 @@ class EvaluationSession {
    * v2.0: Complete additional scoring layers
    * @private
    */
-  async _completeV2() {
+  async _completeV2(preComputedConsistency = null) {
     // 1. GRM scoring for each response
     if (this.grmScorer) {
       const pairs = this.responses.map(response => ({
@@ -402,8 +412,8 @@ class EvaluationSession {
       }
     }
 
-    // 2. Consistency scores
-    const consistencyResults = this._calculateConsistencyScores();
+    // 2. Consistency scores (use pre-computed if available, otherwise compute)
+    const consistencyResults = preComputedConsistency || this._calculateConsistencyScores();
     if (consistencyResults.length > 0) {
       await this.repository.saveConsistencyScores(this.runId, consistencyResults);
     }
