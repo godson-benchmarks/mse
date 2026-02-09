@@ -12,7 +12,7 @@
  *   - a = rigidity (slope of the transition)
  */
 
-const { QualityFlags } = require('../../types');
+const { QualityFlags } = require('../types');
 const { ProceduralAnalyzer } = require('../analyzer/procedural');
 
 class AxisScorer {

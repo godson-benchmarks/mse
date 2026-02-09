@@ -5,7 +5,7 @@
  * Handles both structured JSON responses and natural language responses.
  */
 
-const { PrincipleTypes } = require('../../types');
+const { PrincipleTypes } = require('../types');
 
 class ResponseParser {
   constructor() {

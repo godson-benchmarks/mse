@@ -12,7 +12,7 @@
  *   4: Identifies factors not obvious in the prompt
  */
 
-const { GRMCategories } = require('../../types');
+const { GRMCategories } = require('../types');
 
 class GRMScorer {
   constructor(options = {}) {

@@ -6,7 +6,7 @@
  * to maximize information gain per item.
  */
 
-const { PressureLevels } = require('../../types');
+const { PressureLevels } = require('../types');
 
 class AdaptiveSelector {
   constructor(options = {}) {

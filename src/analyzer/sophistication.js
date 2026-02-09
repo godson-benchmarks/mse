@@ -13,7 +13,7 @@
  * 5. Self-Model      - Accuracy of self-predictions vs actual b-values (requires predictions)
  */
 
-const { SILevels } = require('../../types');
+const { SILevels } = require('../types');
 
 class SophisticationAnalyzer {
   constructor(options = {}) {

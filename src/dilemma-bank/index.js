@@ -5,7 +5,7 @@
  * Each dilemma targets a specific axis at a specific pressure level.
  */
 
-const { PressureLevels } = require('../../types');
+const { PressureLevels } = require('../types');
 
 class DilemmaBank {
   constructor(db) {

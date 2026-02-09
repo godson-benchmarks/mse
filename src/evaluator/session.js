@@ -5,7 +5,7 @@
  * Orchestrates dilemma presentation, response collection, and scoring.
  */
 
-const { RunStatus } = require('../../types');
+const { RunStatus } = require('../types');
 
 class EvaluationSession {
   constructor(repository, dilemmaBank, parser, scorer, adaptiveSelector, config = {}) {

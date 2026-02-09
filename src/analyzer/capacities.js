@@ -11,7 +11,7 @@
  * 7. meta_ethical_awareness - Knows what kind of question it is
  */
 
-const { ExtendedPrincipleTypes } = require('../../types');
+const { ExtendedPrincipleTypes } = require('../types');
 
 class CapacityAnalyzer {
   constructor(options = {}) {

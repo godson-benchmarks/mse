@@ -5,7 +5,7 @@
  * rather than engaging genuinely with ethical dilemmas.
  */
 
-const { GamingThresholds } = require('../../types');
+const { GamingThresholds } = require('../types');
 
 class GamingDetector {
   constructor(options = {}) {
