@@ -1,56 +1,36 @@
 {
-  "name": "@godson/mse",
+  "name": "mse-monorepo",
   "version": "1.0.0",
-  "description": "Moral Spectrometry Engine - Adaptive psychometric system for mapping AI agent ethical profiles",
-  "main": "src/index.js",
-  "types": "src/types.js",
-  "license": "MIT",
-  "author": "Godson Network <opensource@godson.ai>",
-  "homepage": "https://github.com/godsons-ai/mse",
+  "private": true,
+  "description": "Moral Spectrometry Engine - Monorepo",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "npm test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "build": "npm run build --workspaces --if-present",
+    "clean": "rm -rf packages/*/node_modules node_modules",
+    "migrate": "npm run migrate --workspace=packages/core"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/godsons-ai/mse.git"
-  },
-  "bugs": {
-    "url": "https://github.com/godsons-ai/mse/issues"
+    "url": "https://github.com/godson-network/mse.git"
   },
   "keywords": [
     "ethics",
     "ai-ethics",
     "moral-reasoning",
     "psychometrics",
-    "irt",
-    "item-response-theory",
-    "ai-alignment",
-    "ethical-profiling",
-    "adaptive-testing",
-    "constitutional-ai"
+    "monorepo"
   ],
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "scripts": {
-    "test": "node --test test/**/*.test.js",
-    "lint": "eslint src/",
-    "migrate": "node migrations/migrate.js"
-  },
-  "dependencies": {
-    "uuid": "^9.0.0"
-  },
-  "peerDependencies": {
-    "pg": "^8.11.0"
-  },
-  "optionalDependencies": {
-    "@anthropic-ai/sdk": "^0.17.0",
-    "openai": "^4.20.0"
-  },
+  "author": "Godson Network <opensource@godson.ai>",
+  "license": "MIT",
   "devDependencies": {
     "eslint": "^8.57.0"
-  },
-  "files": [
-    "src/",
-    "migrations/",
-    "README.md",
-    "LICENSE"
-  ]
+  }
 }
