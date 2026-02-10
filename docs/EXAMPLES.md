@@ -27,7 +27,7 @@ const { Pool } = require('pg');
 // Setup
 const db = new Pool({ connectionString: process.env.DATABASE_URL });
 const mse = new MSEEngine(db, {
-  anthropicApiKey: process.env.ANTHROPIC_API_KEY  // Optional
+  anthropicApiKey: process.env.ANTHROPIC_API_KEY  // Optional: enables GRM LLM judge
 });
 
 // Start evaluation
@@ -35,58 +35,85 @@ async function evaluateAgent(agentId) {
   const session = await mse.startEvaluation(agentId, {
     version: 'v2.1',          // Exam version (alias: exam_version)
     itemsPerAxis: 18,         // 270 total items (alias: max_items_per_axis)
-    language: 'en'            // Evaluation language ('en' or 'es')
+    adaptive: true,           // CAT item selection (default: true)
+    seed: 'my-seed-123'       // Optional: reproducible item order
   });
 
   // Main evaluation loop
   while (!session.isComplete()) {
-    // Get next dilemma
+    // Get next dilemma (returns {item, axis, progress} or null)
     const dilemma = await session.getNextDilemma();
+    if (!dilemma) break;
 
     // Present to agent (your implementation)
-    const response = await askAgent(dilemma);
+    const agentResponse = await askYourAgent(dilemma.item, dilemma.axis);
 
     // Submit response
-    await session.submitResponse(dilemma.id, {
-      choice: response.choice,                    // 'A', 'B', 'C', or 'D'
-      forced_choice: response.forcedChoice,       // 'A' or 'B'
-      permissibility: response.permissibility,    // 0-100
-      confidence: response.confidence,            // 0-100
-      principles: response.principles,            // ['consequentialist', ...]
-      rationale: response.rationale,              // Text explanation
-      info_needed: response.infoNeeded || []      // Additional info requests
+    const result = await session.submitResponse(dilemma.item.id, {
+      choice: agentResponse.choice,              // 'A', 'B', 'C', or 'D'
+      forced_choice: agentResponse.forcedChoice,  // 'A' or 'B'
+      permissibility: agentResponse.permissibility, // 0-100
+      confidence: agentResponse.confidence,        // 0-100
+      principles: agentResponse.principles,        // ['consequentialist', ...]
+      rationale: agentResponse.rationale,          // Text explanation (max 200 chars)
+      info_needed: agentResponse.infoNeeded || []  // Additional info requests
     });
 
-    // Optional: Track progress
-    console.log(`Progress: ${session.completedItemsCount}/${session.totalItemsCount}`);
+    // Track progress
+    const progress = session.getProgress();
+    console.log(`Progress: ${progress.completed_items}/${progress.total_items} items`);
+    console.log(`Axes completed: ${progress.completed_axes}/${progress.total_axes}`);
   }
 
-  // Get results
-  const profile = await mse.getAgentProfile(agentId);
+  // Finalize evaluation (calculates all scores)
+  const profile = await session.complete();
 
   console.log('=== Ethical Profile ===');
-  console.log('Overall threshold (avg):', profile.avgThreshold);
-  console.log('Sophistication Index:', profile.sophisticationScore?.overall);
-  console.log('ISM Score:', profile.ismScore?.composite);
+  console.log('Confidence:', profile.confidence_level);  // 'high', 'medium', 'low'
 
   // Axis-level results
-  for (const axisScore of profile.axisScores) {
-    console.log(`\n${axisScore.name}:`);
-    console.log(`  Threshold (b): ${axisScore.threshold.toFixed(2)}`);
-    console.log(`  Rigidity (a): ${axisScore.discrimination.toFixed(2)}`);
-    console.log(`  Uncertainty (SE): ${axisScore.se_threshold.toFixed(3)}`);
-    console.log(`  Flags:`, axisScore.flags || 'none');
+  for (const [axisCode, axisScore] of Object.entries(profile.axes)) {
+    console.log(`\n${axisCode} (${axisScore.pole_left} vs ${axisScore.pole_right}):`);
+    console.log(`  Threshold (b): ${axisScore.b.toFixed(2)}`);
+    console.log(`  Rigidity (a): ${axisScore.a.toFixed(2)}`);
+    console.log(`  Uncertainty (SE): ${axisScore.se_b.toFixed(3)}`);
+    console.log(`  Items used: ${axisScore.n_items}`);
+    console.log(`  Flags:`, axisScore.flags.length > 0 ? axisScore.flags : 'none');
   }
+
+  // Procedural metrics
+  console.log('\n=== Procedural Metrics ===');
+  console.log('Moral sensitivity:', profile.procedural.moral_sensitivity);
+  console.log('Info seeking:', profile.procedural.info_seeking);
+  console.log('Calibration:', profile.procedural.calibration);
 
   return profile;
 }
+```
+
+### Enriched Profile (v2.0+)
+
+After completing an evaluation, retrieve the enriched profile with capacities and sophistication:
+
+```javascript
+const enriched = await mse.getEnrichedProfile(agentId);
+
+// 7 ethical capacities
+console.log('Moral Perception:', enriched.capacities.perception);
+console.log('Moral Humility:', enriched.capacities.humility);
+console.log('Coherence:', enriched.capacities.coherence);
+
+// Composite scores
+console.log('Sophistication Index:', enriched.meta.sophistication_index);
+console.log('ISM Score:', enriched.meta.ism_score);
+console.log('MR Rating:', enriched.meta.mr_rating);
 ```
 
 ---
 
 ## 2. Custom LLM Provider
 
-**Use case:** Use a custom LLM for GRM scoring.
+**Use case:** Use a custom LLM for GRM scoring instead of the default Anthropic provider.
 
 ```javascript
 const { LLMProvider } = require('@godson/mse');
@@ -115,7 +142,6 @@ class LocalLlamaProvider extends LLMProvider {
   }
 
   isAvailable() {
-    // Check if Ollama is running
     try {
       return fetch(`${this.apiUrl}/api/tags`).then(r => r.ok);
     } catch {
@@ -147,7 +173,7 @@ const mse = new MSEEngine(db, {
 
 ## 3. CLI Evaluation Tool
 
-**Use case:** Command-line tool to evaluate any agent.
+**Use case:** Command-line tool to evaluate an agent interactively.
 
 ```javascript
 #!/usr/bin/env node
@@ -161,14 +187,20 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-async function askAgent(dilemma) {
+function question(prompt) {
+  return new Promise(resolve => rl.question(prompt, resolve));
+}
+
+async function askAgent(item, axis) {
   console.log('\n' + '='.repeat(70));
-  console.log('DILEMMA:', dilemma.promptEn);
+  console.log(`AXIS: ${axis.name} (${axis.pole_left} vs ${axis.pole_right})`);
   console.log('='.repeat(70));
-  console.log('A:', dilemma.optionAText);
-  console.log('B:', dilemma.optionBText);
-  console.log('C:', dilemma.optionCText);
-  console.log('D:', dilemma.optionDText);
+  console.log('\n' + item.prompt + '\n');
+
+  for (const opt of item.options) {
+    console.log(`${opt.id}) ${opt.label}`);
+  }
+
   console.log('='.repeat(70));
 
   const choice = await question('Your choice (A/B/C/D): ');
@@ -179,17 +211,13 @@ async function askAgent(dilemma) {
 
   return {
     choice: choice.toUpperCase(),
-    forcedChoice: forcedChoice.toUpperCase(),
+    forced_choice: forcedChoice.toUpperCase(),
     permissibility,
     confidence,
-    principles: ['consequentialist'],  // Simplified
+    principles: ['consequentialist'],
     rationale,
-    infoNeeded: []
+    info_needed: []
   };
-}
-
-function question(prompt) {
-  return new Promise(resolve => rl.question(prompt, resolve));
 }
 
 async function main() {
@@ -207,20 +235,27 @@ async function main() {
 
   while (!session.isComplete()) {
     const dilemma = await session.getNextDilemma();
-    const response = await askAgent(dilemma);
-    await session.submitResponse(dilemma.id, response);
+    if (!dilemma) break;
 
-    console.log(`Progress: ${session.completedItemsCount}/${session.totalItemsCount}`);
+    const response = await askAgent(dilemma.item, dilemma.axis);
+    await session.submitResponse(dilemma.item.id, response);
+
+    const progress = session.getProgress();
+    console.log(`Progress: ${progress.completed_items}/${progress.total_items}`);
   }
 
-  const profile = await mse.getAgentProfile(agentId);
+  // Finalize
+  const profile = await session.complete();
 
   console.log('\n' + '='.repeat(70));
   console.log('ETHICAL PROFILE COMPLETE');
   console.log('='.repeat(70));
-  console.log('Average threshold:', profile.avgThreshold.toFixed(2));
-  console.log('Sophistication Index:', profile.sophisticationScore?.overall || 'N/A');
-  console.log('ISM Score:', profile.ismScore?.composite || 'N/A');
+  console.log('Confidence level:', profile.confidence_level);
+  console.log('Exam version:', profile.exam_version.code);
+
+  for (const [code, axis] of Object.entries(profile.axes)) {
+    console.log(`  ${code}: b=${axis.b.toFixed(2)} a=${axis.a.toFixed(2)} SE=${axis.se_b.toFixed(3)}`);
+  }
 
   rl.close();
   process.exit(0);
@@ -247,33 +282,22 @@ async function compareAgents(agent1Id, agent2Id) {
 
   console.log('=== AGENT COMPARISON ===\n');
 
-  // Overall metrics
-  console.log('Sophistication Index:');
-  console.log(`  Agent 1: ${comparison.profiles[0].sophisticationScore.overall}`);
-  console.log(`  Agent 2: ${comparison.profiles[1].sophisticationScore.overall}`);
-  console.log(`  Difference: ${comparison.siDelta}\n`);
+  // Each agent's profile is in comparison.agents
+  for (const agent of comparison.agents) {
+    console.log(`Agent ${agent.agent_id}:`);
+    console.log(`  ISM Score: ${agent.ism_score || 'N/A'}`);
 
-  // Axis-by-axis
-  console.log('Threshold Differences by Axis:');
-  for (const [axisId, delta] of Object.entries(comparison.axisDeltas)) {
-    const axis = comparison.axes.find(a => a.id === parseInt(axisId));
-    console.log(`  ${axis.name}: ${delta > 0 ? '+' : ''}${delta.toFixed(2)}`);
+    for (const [axisCode, score] of Object.entries(agent.axes)) {
+      console.log(`  ${axisCode}: b=${score.b.toFixed(2)}`);
+    }
+    console.log();
   }
-
-  // Biggest divergence
-  console.log(`\nBiggest disagreement: ${comparison.maxDivergenceAxis.name}`);
-  console.log(`  Agent 1: ${comparison.maxDivergenceAxis.agent1Threshold.toFixed(2)}`);
-  console.log(`  Agent 2: ${comparison.maxDivergenceAxis.agent2Threshold.toFixed(2)}`);
-  console.log(`  Delta: ${Math.abs(comparison.maxDivergenceAxis.delta).toFixed(2)}`);
-
-  // Similarity score
-  console.log(`\nOverall similarity: ${(1 - comparison.divergenceScore).toFixed(2)}`);
 
   return comparison;
 }
 
 // Usage
-await compareAgents('gpt-4o-uuid', 'claude-sonnet-uuid');
+await compareAgents('agent-uuid-1', 'agent-uuid-2');
 ```
 
 ---

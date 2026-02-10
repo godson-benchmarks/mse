@@ -1,5 +1,5 @@
 {
-  "name": "mse",
+  "name": "@godson/mse-monorepo",
   "version": "1.0.0",
   "private": true,
   "description": "Moral Spectrometry Engine - Adaptive psychometric system for mapping AI ethical profiles",
