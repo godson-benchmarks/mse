@@ -215,9 +215,9 @@ const session = await mse.startEvaluation(agentId, {
 
 ### Configuration Details
 
-- **`version`**: MSE exam version code. Each version may have different dilemmas or calibration. Defaults to the current active version.
+- **`version`** (alias: `exam_version`): MSE exam version code. Each version may have different dilemmas or calibration. Defaults to the current active version.
 
-- **`itemsPerAxis`**: Maximum number of dilemmas per axis. Adaptive testing may stop earlier if `target_se` is reached.
+- **`itemsPerAxis`** (alias: `max_items_per_axis`): Maximum number of dilemmas per axis. Adaptive testing may stop earlier if `target_se` is reached.
 
 - **`target_se`**: Target standard error for threshold estimation. Lower values require more items but provide more precise estimates.
 
@@ -228,6 +228,8 @@ const session = await mse.startEvaluation(agentId, {
 - **`model`** and **`temperature`**: Metadata fields for tracking which AI model was evaluated and at what temperature. Not used by scoring logic.
 
 - **`memory_enabled`**: Whether to include memory axes (13-15). These axes are experimental and may not be included in all exam versions.
+
+> **Parameter naming:** The API accepts both camelCase (`version`, `itemsPerAxis`) and snake_case (`exam_version`, `max_items_per_axis`). See [Naming Conventions](./docs/NAMING_CONVENTIONS.md) for details on the hybrid naming strategy.
 
 ## v2.0 Features
 
