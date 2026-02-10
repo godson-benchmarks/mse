@@ -25,7 +25,7 @@ class LLMProvider {
    * @returns {Promise<string>} The LLM's text response
    * @throws {Error} If the LLM call fails
    */
-  async call(prompt, options = {}) {
+  async call(prompt, _options = {}) {
     throw new Error('LLMProvider.call() must be implemented');
   }
 

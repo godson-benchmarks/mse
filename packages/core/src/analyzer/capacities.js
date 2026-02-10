@@ -28,7 +28,7 @@ class CapacityAnalyzer {
    * @param {Array} grmJudgments - GRM judgments for each response
    * @returns {Promise<import('../../types').CapacityScores>}
    */
-  async analyze(responses, items, axisScores, consistencyResults = [], grmJudgments = []) {
+  async analyze(responses, items, axisScores, _consistencyResults = [], grmJudgments = []) {
     const moralPerception = await this._analyzeMoralPerception(responses, items, grmJudgments);
     const moralImagination = this._analyzeMoralImagination(responses, items);
     const moralHumility = this._analyzeMoralHumility(responses, items);
@@ -66,7 +66,7 @@ class CapacityAnalyzer {
    * 2. Moral Imagination: Generates creative alternatives
    * % of responses choosing option D (creative) that are substantive
    */
-  _analyzeMoralImagination(responses, items) {
+  _analyzeMoralImagination(responses, _items) {
     if (responses.length === 0) return 0;
 
     const creativeResponses = responses.filter(r => r.choice === 'D');
@@ -254,7 +254,7 @@ class CapacityAnalyzer {
    * Uses GRM judgments or heuristics to check if agent identifies
    * the TYPE of ethical question (justice, care, virtue, etc.)
    */
-  async _analyzeMetaEthicalAwareness(responses, items, grmJudgments) {
+  async _analyzeMetaEthicalAwareness(responses, items, _grmJudgments) {
     if (responses.length === 0) return 0;
 
     let aware = 0;
@@ -295,7 +295,7 @@ class CapacityAnalyzer {
 
   // --- Heuristic fallbacks ---
 
-  _heuristicMoralPerception(responses, items) {
+  _heuristicMoralPerception(responses, _items) {
     let identified = 0;
     for (const response of responses) {
       const rationale = (response.rationale || '').toLowerCase();

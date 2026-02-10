@@ -277,7 +277,7 @@ Respond as JSON only, no other text:
     };
   }
 
-  _heuristicBothPoles(rationale, item) {
+  _heuristicBothPoles(rationale, _item) {
     if (!rationale || rationale.length < 30) return false;
 
     const lower = rationale.toLowerCase();

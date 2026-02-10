@@ -102,7 +102,7 @@ class ProceduralAnalyzer {
    * v2.0: Enhance procedural metrics using GRM judgment data
    * @private
    */
-  _enhanceWithGRM(analysis, responses) {
+  _enhanceWithGRM(analysis, _responses) {
     const judgments = this.grmJudgments;
     if (!judgments || judgments.length === 0) return;
 

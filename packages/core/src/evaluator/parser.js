@@ -34,7 +34,7 @@ class ResponseParser {
    * Parse a structured JSON response
    * @private
    */
-  _parseStructured(response, item) {
+  _parseStructured(response, _item) {
     const errors = [];
     const warnings = [];
 
@@ -271,7 +271,7 @@ class ResponseParser {
    * Validate info_needed array
    * @private
    */
-  _validateInfoNeeded(infoNeeded, warnings) {
+  _validateInfoNeeded(infoNeeded, _warnings) {
     if (!infoNeeded || !Array.isArray(infoNeeded)) {
       return [];
     }
@@ -449,7 +449,6 @@ class ResponseParser {
    * @private
    */
   _detectInfoNeededFromText(text) {
-    const lower = text.toLowerCase();
     const infoNeeded = [];
 
     // Pattern matching for information requests

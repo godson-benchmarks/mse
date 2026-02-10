@@ -28,7 +28,7 @@ class HeuristicProvider extends LLMProvider {
    * @param {Object} options
    * @returns {Promise<string>}
    */
-  async call(prompt, options = {}) {
+  async call(prompt, _options = {}) {
     // Parse prompt to extract response data
     const responseData = this._parsePromptForResponse(prompt);
 

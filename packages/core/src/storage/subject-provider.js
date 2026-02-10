@@ -14,7 +14,7 @@ class SubjectProvider {
    * @param {string} id - Subject unique identifier
    * @returns {Promise<Subject|null>}
    */
-  async getSubject(id) {
+  async getSubject(_id) {
     throw new Error('SubjectProvider.getSubject() must be implemented');
   }
 
@@ -23,7 +23,7 @@ class SubjectProvider {
    * @param {string} name - Subject name (unique identifier)
    * @returns {Promise<Subject|null>}
    */
-  async getSubjectByName(name) {
+  async getSubjectByName(_name) {
     throw new Error('SubjectProvider.getSubjectByName() must be implemented');
   }
 
@@ -36,7 +36,7 @@ class SubjectProvider {
    * @param {string} options.order - Sort direction ('asc' or 'desc')
    * @returns {Promise<Array<Subject>>}
    */
-  async listSubjects(options = {}) {
+  async listSubjects(_options = {}) {
     throw new Error('SubjectProvider.listSubjects() must be implemented');
   }
 
@@ -45,7 +45,7 @@ class SubjectProvider {
    * @param {Array<string>} ids - Array of subject IDs
    * @returns {Promise<Array<Subject>>}
    */
-  async getSubjectsByIds(ids) {
+  async getSubjectsByIds(_ids) {
     throw new Error('SubjectProvider.getSubjectsByIds() must be implemented');
   }
 }

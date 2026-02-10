@@ -12,8 +12,6 @@
  *   4: Identifies factors not obvious in the prompt
  */
 
-const { GRMCategories } = require('../types');
-
 class GRMScorer {
   constructor(options = {}) {
     this.llmJudge = options.llmJudge || null;
@@ -156,7 +154,7 @@ class GRMScorer {
     return tensionIndicators.some(w => rationale.includes(w));
   }
 
-  _principlesMatchChoice(response, item) {
+  _principlesMatchChoice(response, _item) {
     if (!response.principles || response.principles.length === 0) return false;
 
     // At least one principle should be present
@@ -193,7 +191,7 @@ class GRMScorer {
     return meaningful.length > 0;
   }
 
-  _identifiesComplexity(response, item) {
+  _identifiesComplexity(response, _item) {
     const rationale = response.rationale || '';
     if (rationale.length < 80) return false;
 

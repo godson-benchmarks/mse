@@ -12,7 +12,7 @@ class ProfileAnalyzer {
    * @param {Object} options
    * @returns {Promise<Object|null>}
    */
-  async getCurrentProfile(repository, agentId, options = {}) {
+  async getCurrentProfile(repository, agentId, _options = {}) {
     // Get latest snapshot
     const snapshot = await repository.getLatestSnapshot(agentId);
     if (!snapshot) return null;

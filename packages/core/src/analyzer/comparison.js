@@ -364,7 +364,7 @@ class ComparisonAnalyzer {
     }
 
     lines.push('\n## Similarities');
-    for (const [key, sim] of Object.entries(comparison.similarities)) {
+    for (const [, sim] of Object.entries(comparison.similarities)) {
       lines.push(`- ${sim.agent1} vs ${sim.agent2}: ${(sim.similarity * 100).toFixed(0)}% similar`);
     }
 

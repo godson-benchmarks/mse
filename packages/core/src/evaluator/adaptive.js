@@ -150,7 +150,7 @@ class AdaptiveSelector {
 
     // Find groups that have been started but not completed
     for (const group of groups) {
-      const progress = this.consistencyProgress[group.id] || [];
+      // this.consistencyProgress[group.id] tracks presented items per group
       const groupItemIds = group.items.map(i => i.item_id);
 
       // Check if any item from this group has been presented
@@ -374,7 +374,7 @@ class AdaptiveSelector {
    * Explores regions with less coverage
    * @private
    */
-  _selectExploratoryItem(items, previousResponses, estimatedB) {
+  _selectExploratoryItem(items, previousResponses, _estimatedB) {
     // Get pressure levels already tested
     const testedPressures = previousResponses.map(r => r.pressure_level);
 

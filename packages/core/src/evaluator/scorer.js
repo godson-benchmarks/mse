@@ -144,7 +144,6 @@ class AxisScorer {
 
     // Simple SE estimate based on response variance and sample size
     const variances = responses.map(r => {
-      const distance = Math.abs(r.pressure_level - estimatedB);
       const expectedP = this._sigmoid(this.defaultA * (r.pressure_level - estimatedB));
       const observed = r.permissibility / 100;
       return Math.pow(observed - expectedP, 2);
