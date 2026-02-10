@@ -13,14 +13,14 @@
  * const { AnthropicProvider, OpenAIProvider, HeuristicProvider } = require('./llm-providers');
  *
  * // Use Anthropic
- * const provider = new AnthropicProvider({ apiKey: 'sk-...' });
+ * const provider = new AnthropicProvider({ apiKey: process.env.ANTHROPIC_API_KEY });
  *
  * // Use OpenAI
- * const provider = new OpenAIProvider({ apiKey: 'sk-...', model: 'gpt-4o-mini' });
+ * const provider = new OpenAIProvider({ apiKey: process.env.OPENAI_API_KEY, model: 'gpt-4o-mini' });
  *
  * // Use xAI (OpenAI-compatible)
  * const provider = new OpenAIProvider({
- *   apiKey: 'xai-...',
+ *   apiKey: process.env.XAI_API_KEY,
  *   baseUrl: 'https://api.x.ai/v1',
  *   model: 'grok-beta'
  * });

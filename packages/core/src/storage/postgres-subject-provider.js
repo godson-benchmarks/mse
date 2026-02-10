@@ -7,6 +7,10 @@
 
 const SubjectProvider = require('./subject-provider');
 
+// Strict pattern for SQL identifiers — prevents SQL injection via column/table names.
+// Allows only letters, digits, and underscores (standard PostgreSQL unquoted identifiers).
+const SAFE_IDENTIFIER = /^[a-zA-Z_][a-zA-Z0-9_]{0,62}$/;
+
 class PostgresSubjectProvider extends SubjectProvider {
   /**
    * @param {Object} db - PostgreSQL pool or client
@@ -21,12 +25,20 @@ class PostgresSubjectProvider extends SubjectProvider {
   constructor(db, options = {}) {
     super();
     this.db = db;
-    this.tableName = options.tableName || 'agents';
-    this.idColumn = options.idColumn || 'id';
-    this.nameColumn = options.nameColumn || 'name';
-    this.displayNameColumn = options.displayNameColumn || 'display_name';
-    this.descriptionColumn = options.descriptionColumn || 'description';
-    this.createdAtColumn = options.createdAtColumn || 'created_at';
+
+    const validateIdentifier = (name, value) => {
+      if (!SAFE_IDENTIFIER.test(value)) {
+        throw new Error(`Invalid SQL identifier for ${name}: "${value}". Only letters, digits, and underscores are allowed.`);
+      }
+      return value;
+    };
+
+    this.tableName = validateIdentifier('tableName', options.tableName || 'agents');
+    this.idColumn = validateIdentifier('idColumn', options.idColumn || 'id');
+    this.nameColumn = validateIdentifier('nameColumn', options.nameColumn || 'name');
+    this.displayNameColumn = validateIdentifier('displayNameColumn', options.displayNameColumn || 'display_name');
+    this.descriptionColumn = validateIdentifier('descriptionColumn', options.descriptionColumn || 'description');
+    this.createdAtColumn = validateIdentifier('createdAtColumn', options.createdAtColumn || 'created_at');
   }
 
   /**

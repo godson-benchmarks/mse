@@ -91,12 +91,12 @@ const { LLMJudge, AnthropicProvider, OpenAIProvider } = require('@godson/mse');
 
 // Anthropic Claude (default)
 const llmJudge = new LLMJudge({
-  provider: new AnthropicProvider({ apiKey: 'sk-...' })
+  provider: new AnthropicProvider({ apiKey: process.env.ANTHROPIC_API_KEY })
 });
 
 // OpenAI GPT
 const llmJudge = new LLMJudge({
-  provider: new OpenAIProvider({ apiKey: 'sk-...' })
+  provider: new OpenAIProvider({ apiKey: process.env.OPENAI_API_KEY })
 });
 
 // Custom provider

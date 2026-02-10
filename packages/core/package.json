@@ -41,10 +41,7 @@
   "peerDependencies": {
     "pg": "^8.11.0"
   },
-  "optionalDependencies": {
-    "@anthropic-ai/sdk": "^0.17.0",
-    "openai": "^4.20.0"
-  },
+  "optionalDependencies": {},
   "devDependencies": {
     "eslint": "^8.57.0"
   },
