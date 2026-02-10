@@ -18,7 +18,6 @@ const { ProfileAnalyzer } = require('./analyzer/profile');
 const { ProceduralAnalyzer } = require('./analyzer/procedural');
 const { ComparisonAnalyzer } = require('./analyzer/comparison');
 const { MSERepository } = require('./storage/repository'); // Deprecated, use PostgresAdapter
-const MSEStorageAdapter = require('./storage/MSEStorageAdapter');
 const PostgresAdapter = require('./storage/PostgresAdapter');
 const SubjectProvider = require('./storage/subject-provider');
 const PostgresSubjectProvider = require('./storage/postgres-subject-provider');
@@ -308,8 +307,6 @@ module.exports = {
   ProceduralAnalyzer,
   ComparisonAnalyzer,
   MSERepository, // Deprecated, use PostgresAdapter
-  // Storage adapters
-  MSEStorageAdapter,
   PostgresAdapter,
   SubjectProvider,
   PostgresSubjectProvider,

@@ -26,11 +26,9 @@ Include:
 
 ## Scope
 
-This policy covers the following repositories:
+This policy covers the MSE repository:
 
-- [@godson/mse](https://github.com/godsons-ai/mse) — Core engine
-- [@godson/mse-dilemmas](https://github.com/godsons-ai/mse-dilemmas) — Dilemma bank
-- [@godson/mse-react](https://github.com/godsons-ai/mse-react) — React components
+- [@godson/mse](https://github.com/godsons-ai/mse) — Core engine and dilemma bank
 
 ## Supported Versions
 

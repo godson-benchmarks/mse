@@ -16,7 +16,7 @@ This directory contains the consolidated MSE database schema and seed data.
 ### Seed Data
 
 - **seed/001_axes.sql** — 15 moral tension axes with metadata
-- **seed/002_dilemmas.sql** — 225+ parametric dilemmas (from @godson/mse-dilemmas)
+- **seed/002_dilemmas.sql** — 225+ parametric dilemmas (bilingual EN/ES)
 - **seed/003_consistency_groups.sql** — Gaming detection consistency groups
 - **seed/004_exam_versions.sql** — Exam version definitions (v0.1b, v2.1)
 

@@ -1,22 +1,20 @@
 /**
  * MSE - PostgreSQL Storage Adapter
  *
- * PostgreSQL implementation of MSEStorageAdapter.
- * Handles all database operations for the Moral Spectrometry Engine.
+ * PostgreSQL storage implementation for the Moral Spectrometry Engine.
+ * Handles all database operations (63 methods).
  *
- * Phase 0.3 Complete: All agent JOINs use SubjectProvider for decoupling.
- * Phase 0.4 Complete: Extracted from MSERepository, now implements adapter pattern.
+ * All agent JOINs use SubjectProvider for decoupling.
  */
 
-const MSEStorageAdapter = require('./MSEStorageAdapter');
-
-class PostgresAdapter extends MSEStorageAdapter {
+class PostgresAdapter {
   /**
    * @param {Object} db - PostgreSQL database pool/client
    * @param {SubjectProvider} subjectProvider - Optional provider for subject/agent data
    */
   constructor(db, subjectProvider = null) {
-    super(db, subjectProvider);
+    this.db = db;
+    this.subjectProvider = subjectProvider;
   }
 
   // ==========================================

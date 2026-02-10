@@ -608,7 +608,7 @@ psql -U postgres mse_db < mse_backup_20260208.sql
 ---
 
 **Questions?**
-- 💬 [GitHub Discussions](https://github.com/godsonai/mse/discussions)
+- 💬 [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
 - 📧 opensource@godson.ai
 
 ---

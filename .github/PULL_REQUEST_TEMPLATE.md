@@ -12,14 +12,6 @@ Brief description of the changes.
 - [ ] Test improvement
 - [ ] Other
 
-## Package(s) Affected
-
-- [ ] `@godson/mse` (core)
-- [ ] `@godson/mse-dilemmas`
-- [ ] `@godson/mse-react`
-- [ ] Documentation (`docs/`)
-- [ ] Examples (`examples/`)
-
 ## Changes Made
 
 -

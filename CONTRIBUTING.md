@@ -24,7 +24,7 @@ Thank you for your interest in contributing to the Moral Spectrometry Engine!
 - New dilemma proposals (see [Dilemma Authoring Guide](./docs/DILEMMA_AUTHORING_GUIDE.md))
 - Translations of dilemmas to additional languages
 - LLM provider implementations
-- Visualization components for `@godson/mse-react`
+- Visualization tools and components
 - Test coverage improvements
 - Documentation enhancements
 

@@ -44,11 +44,7 @@ More items → lower standard error → higher confidence.
 
 ### Can MSE work with databases other than PostgreSQL?
 
-**Yes!** MSE uses the **Storage Adapter pattern**:
-- `PostgresAdapter` (included)
-- Implement `MSEStorageAdapter` for MongoDB, SQLite, DynamoDB, etc.
-
-See [custom-storage-adapter example](examples/custom-storage-adapter/).
+**Currently PostgreSQL only.** MSE ships with `PostgresAdapter` (63 methods). Community-contributed adapters for other databases (SQLite, MongoDB, etc.) are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Can MSE work with LLMs other than Claude?
 
@@ -259,7 +255,7 @@ if (drift.significantChange) {
 4. Start MSE engine
 5. Optionally set up LLM Judge (or use heuristic fallback)
 
-See [examples/standalone-server/](examples/standalone-server/) for minimal setup.
+See [EXAMPLES.md](docs/EXAMPLES.md) for setup guidance.
 
 ### Do I need an Anthropic API key?
 
@@ -284,8 +280,8 @@ See [examples/standalone-server/](examples/standalone-server/) for minimal setup
 ### Is MSE free to use?
 
 **Yes!**
-- **Code** (packages/core, packages/react): MIT License
-- **Content** (packages/dilemmas): CC-BY-SA 4.0
+- **Code**: MIT License
+- **Dilemma content**: CC-BY-SA 4.0
 
 ### Can I use MSE commercially?
 
@@ -311,7 +307,7 @@ Dilemmas from Godson Network (https://godson.ai)
   title  = {Moral Spectrometry Engine},
   author = {Godson Network},
   year   = {2026},
-  url    = {https://github.com/godsonai/mse}
+  url    = {https://github.com/godsons-ai/mse}
 }
 ```
 
@@ -321,16 +317,16 @@ Dilemmas from Godson Network (https://godson.ai)
 
 ### How can I contribute?
 
-- 🐛 **Report bugs:** [Issue tracker](https://github.com/godsonai/mse/issues)
-- 📝 **Propose dilemmas:** [New dilemma template](https://github.com/godsonai/mse/issues/new?template=new_dilemma.md)
+- 🐛 **Report bugs:** [Issue tracker](https://github.com/godsons-ai/mse/issues)
+- 📝 **Propose dilemmas:** [New dilemma template](https://github.com/godsons-ai/mse/issues/new?template=new_dilemma.md)
 - 💻 **Code contributions:** See [CONTRIBUTING.md](CONTRIBUTING.md)
-- 💬 **Discussions:** [GitHub Discussions](https://github.com/godsonai/mse/discussions)
+- 💬 **Discussions:** [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
 
 ### Where do I ask questions?
 
-- **Technical questions:** [GitHub Discussions Q&A](https://github.com/godsonai/mse/discussions/categories/q-a)
-- **Research questions:** [GitHub Discussions Research](https://github.com/godsonai/mse/discussions/categories/research)
-- **Bugs:** [Issue tracker](https://github.com/godsonai/mse/issues)
+- **Technical questions:** [GitHub Discussions Q&A](https://github.com/godsons-ai/mse/discussions/categories/q-a)
+- **Research questions:** [GitHub Discussions Research](https://github.com/godsons-ai/mse/discussions/categories/research)
+- **Bugs:** [Issue tracker](https://github.com/godsons-ai/mse/issues)
 
 ### How do I stay updated?
 
@@ -342,9 +338,9 @@ Dilemmas from Godson Network (https://godson.ai)
 
 ## Still have questions?
 
-- 💬 [GitHub Discussions](https://github.com/godsonai/mse/discussions)
+- 💬 [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
 - 📧 opensource@godson.ai
-- 📚 [Full Documentation](https://github.com/godsonai/mse/tree/main/docs)
+- 📚 [Full Documentation](https://github.com/godsons-ai/mse/tree/main/docs)
 
 ---
 

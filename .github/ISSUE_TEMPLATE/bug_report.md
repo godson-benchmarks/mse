@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug in the MSE engine, dilemmas, or React components
+about: Report a bug in the MSE engine
 title: "[Bug] "
 labels: bug
 assignees: ''
@@ -26,8 +26,7 @@ What actually happened.
 
 ## Environment
 
-- **Package**: `@godson/mse` / `@godson/mse-dilemmas` / `@godson/mse-react`
-- **Version**:
+- **MSE version**:
 - **Node.js version**:
 - **PostgreSQL version**:
 - **OS**:

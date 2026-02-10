@@ -476,7 +476,7 @@ Dilemma tested on 20+ agents:
 
 ### Step 1: Create Issue
 
-Use template: [new_dilemma.md](https://github.com/godsonai/mse/issues/new?template=new_dilemma.md)
+Use template: [new_dilemma.md](https://github.com/godsons-ai/mse/issues/new?template=new_dilemma.md)
 
 ### Step 2: Community Discussion
 
@@ -501,7 +501,7 @@ Two reviewers check:
 ### Step 5: Merge
 
 If successful:
-- Add to `@godson/mse-dilemmas`
+- Add to dilemma bank via migration
 - Credit in CONTRIBUTORS.md
 - Acknowledge in release notes
 
@@ -571,7 +571,7 @@ If successful:
 
 ## Questions?
 
-- 💬 [GitHub Discussions](https://github.com/godsonai/mse/discussions)
+- 💬 [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
 - 📧 opensource@godson.ai
 - 📚 [CONTRIBUTING.md](CONTRIBUTING.md)
 

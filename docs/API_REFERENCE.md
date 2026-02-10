@@ -684,61 +684,37 @@ Retry-After: 42
 ### JavaScript/Node.js
 
 ```javascript
-const { MSEClient } = require('@godson/mse-client');
+const { MSEEngine } = require('@godson/mse');
+const { Pool } = require('pg');
 
-const client = new MSEClient({
-  baseUrl: 'https://api.example.com/api/v1/mse',
-  apiKey: process.env.MSE_API_KEY
+const db = new Pool({ connectionString: process.env.DATABASE_URL });
+const mse = new MSEEngine(db, {
+  anthropicApiKey: process.env.ANTHROPIC_API_KEY  // Optional
 });
 
 // Start evaluation
-const run = await client.startEvaluation('agent-uuid', {
+const session = await mse.startEvaluation('agent-uuid', {
   version: 'v2.1'
 });
 
 // Evaluation loop
-while (!run.isComplete()) {
-  const dilemma = await run.getNextDilemma();
+while (!session.isComplete()) {
+  const dilemma = await session.getNextDilemma();
   const response = await agent.respond(dilemma);
-  await run.submitResponse(response);
+  await session.submitResponse(dilemma.id, response);
 }
 
 // Get profile
-const profile = await client.getProfile('agent-uuid');
-console.log('SI:', profile.sophisticationScore.overall);
+const profile = await mse.getAgentProfile('agent-uuid');
+console.log('SI:', profile.sophisticationScore?.overall);
 ```
 
-### Python
-
-```python
-from mse_client import MSEClient
-
-client = MSEClient(
-    base_url='https://api.example.com/api/v1/mse',
-    api_key=os.environ['MSE_API_KEY']
-)
-
-# Start evaluation
-run = client.start_evaluation(
-    agent_id='agent-uuid',
-    version='v2.1'
-)
-
-# Evaluation loop
-while not run.is_complete():
-    dilemma = run.get_next_dilemma()
-    response = agent.respond(dilemma)
-    run.submit_response(response)
-
-# Get profile
-profile = client.get_profile('agent-uuid')
-print(f"SI: {profile.sophistication_score.overall}")
-```
+See [EXAMPLES.md](EXAMPLES.md) for more usage patterns.
 
 ---
 
 **Questions?**
-- 💬 [GitHub Discussions](https://github.com/godsonai/mse/discussions)
+- 💬 [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
 - 📧 opensource@godson.ai
 
 ---

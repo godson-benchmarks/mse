@@ -35,11 +35,11 @@ Given that MSE deals with ethical reasoning, we expect contributors to model the
 
 ### Quick Links
 
-- 🐛 [Report a bug](https://github.com/godsonai/mse/issues/new?template=bug_report.md)
-- ✨ [Request a feature](https://github.com/godsonai/mse/issues/new?template=feature_request.md)
-- 📝 [Propose a new dilemma](https://github.com/godsonai/mse/issues/new?template=new_dilemma.md)
-- 🔬 [Discuss research questions](https://github.com/godsonai/mse/discussions)
-- 💬 [Ask questions](https://github.com/godsonai/mse/discussions/categories/q-a)
+- 🐛 [Report a bug](https://github.com/godsons-ai/mse/issues/new?template=bug_report.md)
+- ✨ [Request a feature](https://github.com/godsons-ai/mse/issues/new?template=feature_request.md)
+- 📝 [Propose a new dilemma](https://github.com/godsons-ai/mse/issues/new?template=new_dilemma.md)
+- 🔬 [Discuss research questions](https://github.com/godsons-ai/mse/discussions)
+- 💬 [Ask questions](https://github.com/godsons-ai/mse/discussions/categories/q-a)
 
 ---
 
@@ -100,7 +100,7 @@ Screenshots, logs, etc.
 
 ### Dilemma Proposal Template
 
-Use the [new_dilemma.md](https://github.com/godsonai/mse/issues/new?template=new_dilemma.md) issue template:
+Use the [new_dilemma.md](https://github.com/godsons-ai/mse/issues/new?template=new_dilemma.md) issue template:
 
 ```markdown
 **Axis:** (e.g., Rights vs Consequences)
@@ -143,7 +143,7 @@ Base, framing, pressure, consistency_trap, particularist, dirty_hands, or tragic
 3. **Philosophical validation** (does it genuinely test the axis?)
 4. **Pressure calibration** (does expected permit rate match level?)
 5. **Bilingual translation** (English + Spanish, community can contribute other languages)
-6. **Merge to dilemmas package**
+6. **Merge to core package**
 
 ---
 
@@ -152,7 +152,7 @@ Base, framing, pressure, consistency_trap, particularist, dirty_hands, or tragic
 ### Setup
 
 ```bash
-git clone https://github.com/godsonai/mse.git
+git clone https://github.com/godsons-ai/mse.git
 cd mse
 npm install
 ```
@@ -214,27 +214,9 @@ var AxisScorer = function(options) {  // use class, not function
 };
 ```
 
-### TypeScript (React Package)
-
-- **Strict mode:** Enabled
-- **Type everything:** No `any` types
-- **Props:** Use interfaces, not types
-
-```typescript
-// Example: Good
-interface EthicalProfileCardProps {
-  profile: MSEAgentProfile;
-  showProcedural?: boolean;
-}
-
-export function EthicalProfileCard({ profile, showProcedural = false }: EthicalProfileCardProps) {
-  // ... implementation
-}
-```
-
 ### General Principles
 
-- **Adapter pattern:** All database operations go through `MSEStorageAdapter`
+- **Adapter pattern:** All database operations go through `PostgresAdapter`
 - **Provider pattern:** LLM operations go through `LLMProvider`
 - **Pure functions:** Prefer pure functions over stateful classes
 - **No magic numbers:** Use named constants
@@ -329,9 +311,9 @@ What's still uncertain?
 
 ## Getting Help
 
-- 💬 **[GitHub Discussions](https://github.com/godsonai/mse/discussions)** for questions
+- 💬 **[GitHub Discussions](https://github.com/godsons-ai/mse/discussions)** for questions
 - 📧 **opensource@godson.ai** for sensitive issues
-- 📚 **[Documentation](https://github.com/godsonai/mse/tree/main/docs)** for technical details
+- 📚 **[Documentation](https://github.com/godsons-ai/mse/tree/main/docs)** for technical details
 
 ---
 

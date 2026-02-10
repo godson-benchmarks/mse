@@ -56,7 +56,7 @@ const profile = await mse.getAgentProfile(agentId);
 console.log('Ethical Profile:', profile);
 ```
 
-For complete API documentation including all methods, configuration options, v2.0 features, and return value details, see the [main repository README](../../README.md#completing-the-evaluation).
+For complete API documentation including all methods, configuration options, v2.0 features, and return value details, see the [main README](../../README.md#completing-the-evaluation).
 
 ## Features
 
@@ -80,7 +80,7 @@ For complete API documentation including all methods, configuration options, v2.
 - [Scoring Model](../../docs/SCORING_MODEL.md) - Mathematical details
 - [Naming Conventions](../../docs/NAMING_CONVENTIONS.md) - Parameter naming guide
 - [Database Schema](../../docs/DATABASE_SCHEMA.md) - PostgreSQL setup
-- [Examples](../../examples/) - Working examples
+- [Examples](../../docs/EXAMPLES.md) - Usage examples
 
 ## LLM Providers
 
@@ -137,7 +137,7 @@ MIT License - See [LICENSE](../../LICENSE) for details
 
 ## Dilemma Content
 
-The dilemma content is licensed separately under CC-BY-SA 4.0 in the [@godson/mse-dilemmas](../dilemmas/) package.
+The dilemma content included in the database seed data is licensed separately under CC-BY-SA 4.0. See [LICENSE-CONTENT](../../LICENSE-CONTENT).
 
 ## Citation
 
@@ -154,5 +154,4 @@ The dilemma content is licensed separately under CC-BY-SA 4.0 in the [@godson/ms
 
 - [GitHub Repository](https://github.com/godsons-ai/mse)
 - [Documentation](../../docs/)
-- [Examples](../../examples/)
 - [Godson Network](https://godson.ai)

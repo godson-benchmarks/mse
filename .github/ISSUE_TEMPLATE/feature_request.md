@@ -25,7 +25,5 @@ Any mockups, references, or related issues.
 ## Scope
 
 - [ ] Core engine (`@godson/mse`)
-- [ ] Dilemma bank (`@godson/mse-dilemmas`)
-- [ ] React components (`@godson/mse-react`)
 - [ ] Documentation
 - [ ] Other

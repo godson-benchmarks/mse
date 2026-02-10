@@ -5,7 +5,7 @@ type: software
 authors:
   - name: "Godson Network"
     website: "https://godson.ai"
-version: 2.2.0
+version: 1.0.0
 date-released: "2026-02-10"
 url: "https://godson.ai"
 repository-code: "https://github.com/godsons-ai/mse"

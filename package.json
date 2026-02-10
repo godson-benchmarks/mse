@@ -1,17 +1,12 @@
 {
-  "name": "mse-monorepo",
+  "name": "mse",
   "version": "1.0.0",
   "private": true,
-  "description": "Moral Spectrometry Engine - Monorepo",
-  "workspaces": [
-    "packages/*"
-  ],
+  "description": "Moral Spectrometry Engine - Adaptive psychometric system for mapping AI ethical profiles",
   "scripts": {
-    "test": "npm test --workspaces",
-    "lint": "npm run lint --workspaces",
-    "build": "npm run build --workspaces --if-present",
-    "clean": "rm -rf packages/*/node_modules node_modules",
-    "migrate": "npm run migrate --workspace=packages/core"
+    "test": "cd packages/core && npm test",
+    "lint": "cd packages/core && npm run lint",
+    "migrate": "cd packages/core && npm run migrate"
   },
   "engines": {
     "node": ">=18.0.0",
@@ -19,14 +14,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/godson-network/mse.git"
+    "url": "https://github.com/godsons-ai/mse.git"
   },
   "keywords": [
     "ethics",
     "ai-ethics",
     "moral-reasoning",
     "psychometrics",
-    "monorepo"
+    "adaptive-testing",
+    "ai-alignment",
+    "llm-evaluation"
   ],
   "author": "Godson Network <opensource@godson.ai>",
   "license": "MIT",

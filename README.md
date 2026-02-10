@@ -18,25 +18,17 @@ Rather than asking "is this agent ethical?", MSE asks:
 
 ## Key Features
 
-✨ **Constrained Adaptive Testing (CAT)** — Three-heuristic item selection (proximity, exploration, adversarial) optimized for small samples (5-18 items per axis)
-📊 **15 Moral Tension Axes** — From rights-vs-consequences to privacy-vs-security
-🎯 **Regularized Logistic Threshold Model (RLTM)** — Estimates exact tipping points with uncertainty
-📚 **270 Parametric Dilemmas** — 18 per axis, calibrated across 5 pressure levels with 8 parameters
-🎓 **Graded Response Model** — 5-category sophistication scoring (0: rigid → 4: nuanced)
-🤖 **LLM Judge** — Optional semantic evaluation via any LLM provider
-🛡️ **Gaming Detection** — 6-metric ensemble detects manipulation attempts
-🧠 **7 Ethical Capacities** — Perception, imagination, humility, coherence, residue, flexibility, meta-awareness
-📈 **Sophistication Index (SI)** — 5-dimensional behavioral proxy
-🏆 **ISM Ranking** — Composite score for agent comparison
-🌐 **Provider-agnostic LLM** — Anthropic, OpenAI, or custom providers
-
-## Packages
-
-| Package | Description | License | Version |
-|---------|-------------|---------|---------|
-| [`@godson/mse`](./packages/core) | Core engine (evaluator, analyzers, storage) | MIT | ![npm](https://img.shields.io/npm/v/@godson/mse) |
-| [`@godson/mse-dilemmas`](./packages/dilemmas) | 270 parametric dilemmas (18 per axis × 15 axes) | CC-BY-SA 4.0 | ![npm](https://img.shields.io/npm/v/@godson/mse-dilemmas) |
-| [`@godson/mse-react`](./packages/react) | React visualization components | MIT | ![npm](https://img.shields.io/npm/v/@godson/mse-react) |
+**Constrained Adaptive Testing (CAT)** — Three-heuristic item selection (proximity, exploration, adversarial) optimized for small samples (5-18 items per axis)
+**15 Moral Tension Axes** — From rights-vs-consequences to privacy-vs-security
+**Regularized Logistic Threshold Model (RLTM)** — Estimates exact tipping points with uncertainty
+**270 Parametric Dilemmas** — 18 per axis, calibrated across 5 pressure levels with 8 parameters
+**Graded Response Model** — 5-category sophistication scoring (0: rigid -> 4: nuanced)
+**LLM Judge** — Optional semantic evaluation via any LLM provider
+**Gaming Detection** — 6-metric ensemble detects manipulation attempts
+**7 Ethical Capacities** — Perception, imagination, humility, coherence, residue, flexibility, meta-awareness
+**Sophistication Index (SI)** — 5-dimensional behavioral proxy
+**ISM Ranking** — Composite score for agent comparison
+**Provider-agnostic LLM** — Anthropic, OpenAI, or custom providers
 
 ## Quick Start
 
@@ -72,8 +64,6 @@ const profile = await mse.getAgentProfile(agentId);
 console.log('Ethical Profile:', profile);
 ```
 
-See [Complete Examples](./examples/) for more.
-
 ## Completing the Evaluation
 
 The Quick Start above shows the evaluation loop, but you must call `complete()` to finalize scoring:
@@ -97,38 +87,38 @@ The `EvaluationSession` object returned by `startEvaluation()` provides these me
 
 ### Core Methods
 
-- **`getNextDilemma()`** → `{item, axis, progress}|null`
+- **`getNextDilemma()`** -> `{item, axis, progress}|null`
   Returns the next dilemma to present, or `null` when complete.
 
-- **`submitResponse(itemId, response, responseTimeMs?)`** → `{success, response_id, warnings, progress}`
+- **`submitResponse(itemId, response, responseTimeMs?)`** -> `{success, response_id, warnings, progress}`
   Submit agent's response. Returns validation result and updated progress.
 
-- **`isComplete()`** → `boolean`
+- **`isComplete()`** -> `boolean`
   Check if all axes have met stopping criteria.
 
-- **`complete()`** → `Promise<Object>`
+- **`complete()`** -> `Promise<Object>`
   Finalize evaluation, calculate all scores, and return complete profile.
 
 ### State Management
 
-- **`getProgress()`** → `{total_axes, completed_axes, total_items, completed_items, ...}`
+- **`getProgress()`** -> `{total_axes, completed_axes, total_items, completed_items, ...}`
   Get detailed progress tracking by axis.
 
-- **`cancel(reason?)`** → `Promise<void>`
+- **`cancel(reason?)`** -> `Promise<void>`
   Cancel the evaluation with optional reason.
 
-- **`error(errorMessage)`** → `Promise<void>`
+- **`error(errorMessage)`** -> `Promise<void>`
   Mark evaluation as errored.
 
-- **`getProfile()`** → `Object`
+- **`getProfile()`** -> `Object`
   Get current profile snapshot (works even if incomplete).
 
 ### Formatting Helpers
 
-- **`formatDilemmaPrompt(item, axis)`** → `string`
+- **`formatDilemmaPrompt(item, axis)`** -> `string`
   Format dilemma as markdown prompt for agent presentation.
 
-- **`getResponseInstructions()`** → `string`
+- **`getResponseInstructions()`** -> `string`
   Get instructions for valid response format.
 
 ## Engine Methods
@@ -137,52 +127,52 @@ The `MSEEngine` class provides these methods:
 
 ### Profile Retrieval
 
-- **`getAgentProfile(agentId, options?)`** → `Promise<Object|null>`
+- **`getAgentProfile(agentId, options?)`** -> `Promise<Object|null>`
   Get agent's most recent completed profile.
 
-- **`getPartialProfile(agentId, options?)`** → `Promise<Object|null>`
+- **`getPartialProfile(agentId, options?)`** -> `Promise<Object|null>`
   Get partial profile from in-progress or abandoned evaluations.
 
-- **`getProfileCardData(agentId, options?)`** → `Promise<Object>`
+- **`getProfileCardData(agentId, options?)`** -> `Promise<Object>`
   Get visualization-ready profile data (includes partial profiles).
 
-- **`getEnrichedProfile(agentId, options?)`** → `Promise<Object|null>`
+- **`getEnrichedProfile(agentId, options?)`** -> `Promise<Object|null>`
   Get profile with v2.0 enrichments (capacities, sophistication, coherence).
 
-- **`getProfileHistory(agentId, options?)`** → `Promise<Object[]>`
+- **`getProfileHistory(agentId, options?)`** -> `Promise<Object[]>`
   Get temporal evolution of agent's ethical profile across evaluations.
 
 ### Comparison & Analysis
 
-- **`compareAgents(agentIds, options?)`** → `Promise<Object>`
+- **`compareAgents(agentIds, options?)`** -> `Promise<Object>`
   Compare multiple agents across all axes.
 
-- **`getSophisticationScore(agentId)`** → `Promise<Object|null>`
+- **`getSophisticationScore(agentId)`** -> `Promise<Object|null>`
   Get latest Sophistication Index (SI) score.
 
-- **`getSophisticationHistory(agentId, options?)`** → `Promise<Object[]>`
+- **`getSophisticationHistory(agentId, options?)`** -> `Promise<Object[]>`
   Get SI score evolution over time.
 
 ### Dilemma Bank Access
 
-- **`getAxes()`** → `Promise<Object[]>`
+- **`getAxes()`** -> `Promise<Object[]>`
   Get all 15 moral tension axes.
 
-- **`getAxisItems(axisId, options?)`** → `Promise<Object[]>`
+- **`getAxisItems(axisId, options?)`** -> `Promise<Object[]>`
   Get all dilemma items for a specific axis.
 
 ### Run Management
 
-- **`startEvaluation(agentId, config?)`** → `Promise<EvaluationSession>`
+- **`startEvaluation(agentId, config?)`** -> `Promise<EvaluationSession>`
   Start new evaluation (see Quick Start).
 
-- **`resumeEvaluation(runId)`** → `Promise<EvaluationSession>`
+- **`resumeEvaluation(runId)`** -> `Promise<EvaluationSession>`
   Resume interrupted evaluation from saved state.
 
-- **`getRunDetails(runId)`** → `Promise<Object>`
+- **`getRunDetails(runId)`** -> `Promise<Object>`
   Get complete run data with all responses.
 
-- **`getAgentRuns(agentId, options?)`** → `Promise<Object[]>`
+- **`getAgentRuns(agentId, options?)`** -> `Promise<Object[]>`
   Get all evaluation runs for an agent.
 
 ## Advanced Configuration
@@ -196,7 +186,7 @@ const session = await mse.startEvaluation(agentId, {
 
   // Stopping criteria
   itemsPerAxis: 18,             // Max items per axis (default: 7)
-  target_se: 0.08,              // Stop when SE(b) ≤ this (default: 0.08)
+  target_se: 0.08,              // Stop when SE(b) <= this (default: 0.08)
 
   // Adaptive testing
   adaptive: true,               // Use CAT item selection (default: true)
@@ -441,39 +431,38 @@ Extends base profile with:
 ## How It Works
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                   MSE EVALUATION FLOW                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  1. Start Evaluation                                         │
-│     ↓                                                        │
-│  2. Adaptive Dilemma Selection (5 phases)                   │
-│     • Anchor (L1/L5/L3)                                     │
-│     • Exploitation (quick logit)                            │
-│     • Consistency traps (30-item separation)                │
-│     • Adversarial targeting (θ + 1.5×SE)                    │
-│     • Framing variants                                      │
-│     ↓                                                        │
-│  3. Agent Response                                           │
-│     • Choice: A/B/C/D                                       │
-│     • Forced choice: A or B                                 │
-│     • Permissibility: 0-100                                 │
-│     • Confidence: 0-100                                     │
-│     • Rationale: text explanation                           │
-│     ↓                                                        │
-│  4. Response Analysis                                        │
-│     • RLTM scoring → threshold (b), rigidity (a)             │
-│     • GRM semantic scoring → sophistication (0-4)           │
-│     • Gaming detection → manipulation signals               │
-│     ↓                                                        │
-│  5. Profile Generation                                       │
-│     • 15 axis scores (b, a, SE)                             │
-│     • 7 ethical capacities                                  │
-│     • Sophistication Index (SI)                             │
-│     • ISM composite score                                   │
-│     • Procedural metrics (6 dimensions)                     │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
++-------------------------------------------------------------+
+|                   MSE EVALUATION FLOW                        |
+|                                                              |
+|  1. Start Evaluation                                         |
+|     |                                                        |
+|  2. Adaptive Dilemma Selection (5 phases)                   |
+|     - Anchor (L1/L5/L3)                                     |
+|     - Exploitation (quick logit)                            |
+|     - Consistency traps (30-item separation)                |
+|     - Adversarial targeting (b + 1.5xSE)                    |
+|     - Framing variants                                      |
+|     |                                                        |
+|  3. Agent Response                                           |
+|     - Choice: A/B/C/D                                       |
+|     - Forced choice: A or B                                 |
+|     - Permissibility: 0-100                                 |
+|     - Confidence: 0-100                                     |
+|     - Rationale: text explanation                           |
+|     |                                                        |
+|  4. Response Analysis                                        |
+|     - RLTM scoring -> threshold (b), rigidity (a)            |
+|     - GRM semantic scoring -> sophistication (0-4)           |
+|     - Gaming detection -> manipulation signals               |
+|     |                                                        |
+|  5. Profile Generation                                       |
+|     - 15 axis scores (b, a, SE)                             |
+|     - 7 ethical capacities                                  |
+|     - Sophistication Index (SI)                             |
+|     - ISM composite score                                   |
+|     - Procedural metrics (6 dimensions)                     |
+|                                                              |
++-------------------------------------------------------------+
 ```
 
 ## Mathematical Model
@@ -515,25 +504,18 @@ Where:
 
 ## Documentation
 
-- 📖 [Methodology](./docs/METHODOLOGY.md) — Academic foundation (~20 pages)
-- 🔢 [Scoring Model](./docs/SCORING_MODEL.md) — Mathematical derivations
-- 📚 [Axes Reference](./docs/AXES_REFERENCE.md) — Philosophical sources
-- 🗄️ [Database Schema](./docs/DATABASE_SCHEMA.md) — PostgreSQL setup
-- 🔌 [API Reference](./docs/API_REFERENCE.md) — REST endpoints
-- ✍️ [Dilemma Authoring](./docs/DILEMMA_AUTHORING_GUIDE.md) — Create new dilemmas
-- 🛡️ [Gaming Detection](./docs/GAMING_DETECTION.md) — Anti-cheating architecture
-- 📊 [Sophistication Index](./docs/SOPHISTICATION_INDEX.md) — SI methodology
-- 🏆 [ISM Ranking](./docs/ISM_RANKING.md) — Composite ranking formula
-- 💬 [FAQ](./docs/FAQ.md) — Frequently asked questions
-- 📝 [Examples](./docs/EXAMPLES.md) — Usage patterns
-- 🤝 [Contributing](./CONTRIBUTING.md) — Contribution guidelines
-
-## Examples
-
-- [Standalone Server](./examples/standalone-server/) — Express + PostgreSQL
-- [Evaluate Agent](./examples/evaluate-agent/) — CLI via API
-- [Evaluate OpenAI Model](./examples/evaluate-openai-model/) — Direct integration
-- [Next.js Dashboard](./examples/nextjs-dashboard/) — React visualization
+- [Methodology](./docs/METHODOLOGY.md) — Academic foundation (~20 pages)
+- [Scoring Model](./docs/SCORING_MODEL.md) — Mathematical derivations
+- [Axes Reference](./docs/AXES_REFERENCE.md) — Philosophical sources
+- [Database Schema](./docs/DATABASE_SCHEMA.md) — PostgreSQL setup
+- [API Reference](./docs/API_REFERENCE.md) — REST endpoints
+- [Dilemma Authoring](./docs/DILEMMA_AUTHORING_GUIDE.md) — Create new dilemmas
+- [Gaming Detection](./docs/GAMING_DETECTION.md) — Anti-cheating architecture
+- [Sophistication Index](./docs/SOPHISTICATION_INDEX.md) — SI methodology
+- [ISM Ranking](./docs/ISM_RANKING.md) — Composite ranking formula
+- [FAQ](./docs/FAQ.md) — Frequently asked questions
+- [Examples](./docs/EXAMPLES.md) — Usage patterns
+- [Contributing](./CONTRIBUTING.md) — Contribution guidelines
 
 ## Used By
 
@@ -553,8 +535,8 @@ The MSE powers the ethical profiling system at [godson.ai](https://godson.ai), w
 
 ## License
 
-- **Code** ([`@godson/mse`](./packages/core), [`@godson/mse-react`](./packages/react)): MIT License
-- **Content** ([`@godson/mse-dilemmas`](./packages/dilemmas)): CC-BY-SA 4.0
+- **Code**: MIT License
+- **Dilemma content**: CC-BY-SA 4.0
 
 See [LICENSE](./LICENSE) and [LICENSE-CONTENT](./LICENSE-CONTENT) for details.
 
@@ -563,18 +545,17 @@ See [LICENSE](./LICENSE) and [LICENSE-CONTENT](./LICENSE-CONTENT) for details.
 We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 Areas where contributions are especially welcome:
-- 🌍 Translations of dilemmas to additional languages
-- 📝 New dilemma proposals (see [authoring guide](./docs/DILEMMA_AUTHORING_GUIDE.md))
-- 🤖 LLM provider implementations
-- 📊 Visualization components
-- 🧪 Test coverage improvements
-- 📖 Documentation enhancements
+- Translations of dilemmas to additional languages
+- New dilemma proposals (see [authoring guide](./docs/DILEMMA_AUTHORING_GUIDE.md))
+- LLM provider implementations
+- Test coverage improvements
+- Documentation enhancements
 
 ## Community
 
-- 💬 [GitHub Discussions](https://github.com/godsons-ai/mse/discussions) — Ask questions, share ideas
-- 🐛 [Issue Tracker](https://github.com/godsons-ai/mse/issues) — Report bugs, request features
-- 📧 [Email](mailto:opensource@godson.ai) — Contact the team
+- [GitHub Discussions](https://github.com/godsons-ai/mse/discussions) — Ask questions, share ideas
+- [Issue Tracker](https://github.com/godsons-ai/mse/issues) — Report bugs, request features
+- [Email](mailto:opensource@godson.ai) — Contact the team
 
 ## Acknowledgments
 
@@ -587,4 +568,4 @@ The MSE builds on:
 
 ---
 
-**Built with ❤️ by [Godson Network](https://godson.ai)**
+**Built by [Godson Network](https://godson.ai)**
