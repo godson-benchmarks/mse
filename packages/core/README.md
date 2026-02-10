@@ -26,8 +26,9 @@ const mse = new MSEEngine(db, {
 
 // Start evaluation
 const session = await mse.startEvaluation(agentId, {
-  version: 'v2.1',
-  itemsPerAxis: 18  // 270 total items
+  version: 'v2.1',          // Also accepts: exam_version
+  itemsPerAxis: 18,         // Also accepts: max_items_per_axis (270 total)
+  language: 'en'            // Optional: 'en' or 'es'
 });
 
 // Evaluation loop
@@ -59,17 +60,16 @@ For complete API documentation including all methods, configuration options, v2.
 
 ## Features
 
-- **Adaptive Testing** - Fisher Information-based adaptive item selection maximizes information per dilemma
+- **Constrained Adaptive Testing (CAT)** - Three-heuristic item selection (proximity, exploration, adversarial) optimized for small samples
 - **15 Moral Tension Axes** - From rights-vs-consequences to privacy-vs-security
 - **Logistic Threshold Estimation** - Estimates exact tipping points with uncertainty
-- **225+ Parametric Dilemmas** - Calibrated across 5 pressure levels with 8 parameters
+- **270 Parametric Dilemmas** - 18 per axis, calibrated across 5 pressure levels with 8 parameters
 - **Graded Response Model** - 5-category sophistication scoring (0: rigid → 4: nuanced)
 - **LLM Judge** - Optional semantic evaluation via any LLM provider
 - **Gaming Detection** - 6-metric ensemble detects manipulation attempts
 - **7 Ethical Capacities** - Perception, imagination, humility, coherence, residue, flexibility, meta-awareness
 - **Sophistication Index (SI)** - 5-dimensional behavioral proxy
 - **ISM Ranking** - Composite score for agent comparison
-- **Storage Adapter Pattern** - Database-agnostic design (PostgreSQL, SQLite, etc.)
 - **Provider-agnostic LLM** - Anthropic, OpenAI, or custom providers
 
 ## Documentation
@@ -77,35 +77,10 @@ For complete API documentation including all methods, configuration options, v2.
 - [Complete Documentation](../../docs/README.md)
 - [Methodology](../../docs/METHODOLOGY.md) - Academic foundation
 - [API Reference](../../docs/API_REFERENCE.md) - All endpoints
+- [Scoring Model](../../docs/SCORING_MODEL.md) - Mathematical details
+- [Naming Conventions](../../docs/NAMING_CONVENTIONS.md) - Parameter naming guide
 - [Database Schema](../../docs/DATABASE_SCHEMA.md) - PostgreSQL setup
 - [Examples](../../examples/) - Working examples
-
-## Storage Adapters
-
-The MSE uses a storage adapter pattern for database operations. The default PostgreSQL adapter is included:
-
-```javascript
-const { PostgresAdapter } = require('@godson/mse');
-
-const adapter = new PostgresAdapter(db, subjectProvider);
-const mse = new MSEEngine(db, { storageAdapter: adapter });
-```
-
-### Custom Adapters
-
-Create your own adapter by extending `MSEStorageAdapter`:
-
-```javascript
-const { MSEStorageAdapter } = require('@godson/mse');
-
-class SQLiteAdapter extends MSEStorageAdapter {
-  async getAxes() { /* ... */ }
-  async createRun(data) { /* ... */ }
-  // Implement ~40 required methods
-}
-```
-
-See [Custom Storage Adapter Example](../../examples/custom-storage-adapter/) for a complete SQLite implementation.
 
 ## LLM Providers
 
@@ -171,13 +146,13 @@ The dilemma content is licensed separately under CC-BY-SA 4.0 in the [@godson/ms
   title  = {Moral Spectrometry Engine},
   author = {Godson Network},
   year   = {2026},
-  url    = {https://github.com/godson-network/mse}
+  url    = {https://github.com/godsons-ai/mse}
 }
 ```
 
 ## Links
 
-- [GitHub Repository](https://github.com/godson-network/mse)
+- [GitHub Repository](https://github.com/godsons-ai/mse)
 - [Documentation](../../docs/)
 - [Examples](../../examples/)
 - [Godson Network](https://godson.ai)
