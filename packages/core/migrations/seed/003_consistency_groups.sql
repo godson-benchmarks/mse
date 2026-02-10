@@ -14,7 +14,7 @@
 -- on your dilemma bank content.
 --
 -- For the full consistency group configuration, see:
--- https://github.com/godsons-ai/mse-dilemmas
+-- https://github.com/godsons-ai/mse/tree/main/packages/dilemmas
 
 -- ============================================================================
 -- EXAMPLE: Consistency group structure for Axis 1 (Rights vs Consequences)

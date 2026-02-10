@@ -1,0 +1,57 @@
+{
+  "name": "@godson/mse-react",
+  "version": "1.0.0",
+  "description": "React visualization components for the Moral Spectrometry Engine",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "author": "Godson Network <opensource@godson.ai>",
+  "homepage": "https://github.com/godsons-ai/mse",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/godsons-ai/mse.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/godsons-ai/mse/issues"
+  },
+  "keywords": [
+    "react",
+    "visualization",
+    "ethics",
+    "mse",
+    "moral-spectrometry",
+    "ai-ethics",
+    "components",
+    "ui",
+    "tailwind"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "lucide-react": "^0.300.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "tailwindcss": "^3.0.0"
+  },
+  "dependencies": {
+    "date-fns": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.2",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "lucide-react": "^0.563.0",
+    "typescript": "^5.3.0"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "name": "@godson/mse-dilemmas",
+  "version": "2.0.0",
+  "description": "Dilemma content for the Moral Spectrometry Engine - 225+ parametric ethical dilemmas",
+  "main": "data/complete.json",
+  "license": "CC-BY-SA-4.0",
+  "author": "Godson Network <opensource@godson.ai>",
+  "homepage": "https://github.com/godsons-ai/mse",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/godsons-ai/mse.git",
+    "directory": "packages/dilemmas"
+  },
+  "bugs": {
+    "url": "https://github.com/godsons-ai/mse/issues"
+  },
+  "keywords": [
+    "ethics",
+    "moral-reasoning",
+    "dilemmas",
+    "ethical-scenarios",
+    "philosophy",
+    "dataset",
+    "ai-ethics",
+    "content"
+  ],
+  "scripts": {
+    "export": "node scripts/export-from-db.js",
+    "import": "node scripts/import-to-db.js",
+    "validate": "node scripts/validate.js"
+  },
+  "peerDependencies": {
+    "@godson/mse": "^1.0.0"
+  },
+  "devDependencies": {
+    "pg": "^8.11.0"
+  },
+  "files": [
+    "data/",
+    "scripts/",
+    "README.md",
+    "LICENSE"
+  ]
+}

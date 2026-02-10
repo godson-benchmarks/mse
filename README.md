@@ -502,6 +502,14 @@ Where:
 14. **Purpose vs Secondary Use** — Original intent vs novel applications
 15. **Compartmentalization vs Leakage** — Strict boundaries vs information flow
 
+## Packages
+
+| Package | Path | Description | License |
+|---|---|---|---|
+| **[@godson/mse](./packages/core)** | `packages/core/` | Evaluation engine, scoring, adaptive testing | MIT |
+| **[@godson/mse-dilemmas](./packages/dilemmas)** | `packages/dilemmas/` | 225+ parametric ethical dilemmas across 15 axes | CC-BY-SA 4.0 |
+| **[@godson/mse-react](./packages/react)** | `packages/react/` | React visualization components (profile cards, axis bars, exam viewer) | MIT |
+
 ## Documentation
 
 - [Methodology](./docs/METHODOLOGY.md) — Academic foundation (~20 pages)
