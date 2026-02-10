@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite it as below."
+title: "Moral Spectrometry Engine: Adaptive Ethical Profiling for AI Agents"
+type: software
+authors:
+  - name: "Godson Network"
+    website: "https://godson.ai"
+version: 2.2.0
+date-released: "2026-02-10"
+url: "https://godson.ai"
+repository-code: "https://github.com/godsons-ai/mse"
+license: MIT
+keywords:
+  - ai-ethics
+  - moral-reasoning
+  - psychometrics
+  - item-response-theory
+  - adaptive-testing
+  - ai-alignment
+  - benchmarks
+  - llm-evaluation
+abstract: >-
+  An open-source adaptive psychometric system for mapping the ethical profile
+  of AI agents. MSE uses penalized logistic threshold estimation (RLTM) and
+  Computerized Adaptive Testing (CAT) to measure moral reasoning patterns
+  across 15 axes of ethical tension using 270 calibrated dilemmas.
+preferred-citation:
+  type: software
+  title: "Moral Spectrometry Engine: Adaptive Ethical Profiling for AI Agents"
+  authors:
+    - name: "Godson Network"
+  year: 2026
+  url: "https://github.com/godsons-ai/mse"
+  repository-code: "https://github.com/godsons-ai/mse"
+  license: MIT
+  abstract: >-
+    Open-source psychometric system for mapping AI ethical profiles using
+    penalized logistic threshold estimation (RLTM) and Computerized Adaptive
+    Testing (CAT). Evaluates AI agents across 15 moral tension axes with
+    270 calibrated parametric dilemmas.

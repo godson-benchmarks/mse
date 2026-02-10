@@ -6,14 +6,14 @@
   "types": "src/index.ts",
   "license": "MIT",
   "author": "Godson Network <opensource@godson.ai>",
-  "homepage": "https://github.com/godson-network/mse",
+  "homepage": "https://github.com/godsons-ai/mse",
   "repository": {
     "type": "git",
-    "url": "https://github.com/godson-network/mse.git",
+    "url": "https://github.com/godsons-ai/mse.git",
     "directory": "packages/react"
   },
   "bugs": {
-    "url": "https://github.com/godson-network/mse/issues"
+    "url": "https://github.com/godsons-ai/mse/issues"
   },
   "keywords": [
     "react",
