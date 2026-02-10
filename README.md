@@ -56,53 +56,24 @@ console.log('Ethical Profile:', profile);
 
 ## Features
 
-- **Adaptive Testing** - Fisher Information-based adaptive item selection maximizes information per dilemma
+- **Constrained Adaptive Testing** - Three-heuristic item selection (proximity, exploration, adversarial) optimized for small samples (5-18 items per axis)
 - **15 Moral Tension Axes** - From rights-vs-consequences to privacy-vs-security
 - **Logistic Threshold Estimation** - Estimates exact tipping points with uncertainty
-- **225+ Parametric Dilemmas** - Calibrated across 5 pressure levels with 8 parameters
-- **Graded Response Model** - 5-category sophistication scoring (0: rigid → 4: nuanced)
+- **270 Parametric Dilemmas** - 18 per axis, calibrated across 5 pressure levels with 8 parameters
+- **Graded Response Model** - 5-category sophistication scoring (0: rigid to 4: nuanced)
 - **LLM Judge** - Optional semantic evaluation via any LLM provider
 - **Gaming Detection** - 6-metric ensemble detects manipulation attempts
 - **7 Ethical Capacities** - Perception, imagination, humility, coherence, residue, flexibility, meta-awareness
 - **Sophistication Index (SI)** - 5-dimensional behavioral proxy
 - **ISM Ranking** - Composite score for agent comparison
-- **Storage Adapter Pattern** - Database-agnostic design (PostgreSQL, SQLite, etc.)
 - **Provider-agnostic LLM** - Anthropic, OpenAI, or custom providers
 
 ## Documentation
 
-- [Complete Documentation](../../docs/README.md)
-- [Methodology](../../docs/METHODOLOGY.md) - Academic foundation
-- [API Reference](../../docs/API_REFERENCE.md) - All endpoints
-- [Database Schema](../../docs/DATABASE_SCHEMA.md) - PostgreSQL setup
-- [Examples](../../examples/) - Working examples
-
-## Storage Adapters
-
-The MSE uses a storage adapter pattern for database operations. The default PostgreSQL adapter is included:
-
-```javascript
-const { PostgresAdapter } = require('@godson/mse');
-
-const adapter = new PostgresAdapter(db, subjectProvider);
-const mse = new MSEEngine(db, { storageAdapter: adapter });
-```
-
-### Custom Adapters
-
-Create your own adapter by extending `MSEStorageAdapter`:
-
-```javascript
-const { MSEStorageAdapter } = require('@godson/mse');
-
-class SQLiteAdapter extends MSEStorageAdapter {
-  async getAxes() { /* ... */ }
-  async createRun(data) { /* ... */ }
-  // Implement ~40 required methods
-}
-```
-
-See [Custom Storage Adapter Example](../../examples/custom-storage-adapter/) for a complete SQLite implementation.
+- [Methodology](https://github.com/godsons-ai/mse/blob/main/docs/METHODOLOGY.md) - Academic foundation
+- [API Reference](https://github.com/godsons-ai/mse/blob/main/docs/API_REFERENCE.md) - All endpoints
+- [Scoring Model](https://github.com/godsons-ai/mse/blob/main/docs/SCORING_MODEL.md) - Mathematical details
+- [Naming Conventions](https://github.com/godsons-ai/mse/blob/main/docs/NAMING_CONVENTIONS.md) - Parameter naming guide
 
 ## LLM Providers
 
@@ -141,7 +112,7 @@ const mse = new MSEEngine(db, {
 
 ## Mathematical Model
 
-The MSE uses a Regularized Logistic Threshold Model (RLTM) — a penalized logistic regression that uses the sigmoid centering parameterization from IRT's 2-Parameter Logistic model:
+The MSE uses a Regularized Logistic Threshold Model (RLTM) -- a penalized logistic regression that uses the sigmoid centering parameterization from IRT's 2-Parameter Logistic model:
 
 ```
 P(permit | x, a, b) = 1 / (1 + exp(-a * (x - b)))
@@ -155,11 +126,11 @@ Where:
 
 ## License
 
-MIT License - See [LICENSE](../../LICENSE) for details
+MIT License - See [LICENSE](./LICENSE) for details
 
 ## Dilemma Content
 
-The dilemma content is licensed separately under CC-BY-SA 4.0 in the [@godson/mse-dilemmas](../dilemmas/) package.
+The dilemma content is licensed separately under CC-BY-SA 4.0 in the [@godson/mse-dilemmas](https://github.com/godsons-ai/mse-dilemmas) package.
 
 ## Citation
 
@@ -168,13 +139,13 @@ The dilemma content is licensed separately under CC-BY-SA 4.0 in the [@godson/ms
   title  = {Moral Spectrometry Engine},
   author = {Godson Network},
   year   = {2026},
-  url    = {https://github.com/godson-network/mse}
+  url    = {https://github.com/godsons-ai/mse}
 }
 ```
 
 ## Links
 
-- [GitHub Repository](https://github.com/godson-network/mse)
-- [Documentation](../../docs/)
-- [Examples](../../examples/)
-- [Godson Network](https://godson.ai)
+- [GitHub Repository](https://github.com/godsons-ai/mse)
+- [Dilemma Bank](https://github.com/godsons-ai/mse-dilemmas)
+- [React Components](https://github.com/godsons-ai/mse-react)
+- [Godson Network](https://www.godson.ai)
