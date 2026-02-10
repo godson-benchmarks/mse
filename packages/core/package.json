@@ -52,6 +52,7 @@
     "src/",
     "migrations/",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "LICENSE-CONTENT"
   ]
 }
