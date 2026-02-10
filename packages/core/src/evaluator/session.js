@@ -15,16 +15,34 @@ class EvaluationSession {
     this.scorer = scorer;
     this.adaptive = adaptiveSelector;
 
-    // Configuration — accepts both camelCase (public API) and snake_case (internal)
+    // Configuration — Multi-layer naming strategy:
+    // - API accepts camelCase (JavaScript convention) OR snake_case (Python/DB convention)
+    // - Internal storage uses snake_case (PostgreSQL convention)
+    // - Frontend types use camelCase (TypeScript convention)
+    //
+    // For backward compatibility, we accept both and normalize to snake_case internally.
+    // See: NAMING_CONVENTIONS.md in project docs
+
     this.config = {
       model: config.model || null,
       temperature: config.temperature || null,
       memory_enabled: config.memory_enabled || false,
+
+      // Items per axis: Accept camelCase (API) or snake_case (internal)
       max_items_per_axis: config.max_items_per_axis || config.itemsPerAxis || 7,
+
+      // Exam version code: Accept 'version' (public docs) or 'exam_version' (internal)
+      exam_version: config.exam_version || config.version || null,  // e.g., 'v2.1'
+
+      // Exam version ID (internal only, resolved from code)
+      exam_version_id: config.exam_version_id || null,
+
+      // Language: Defaults to English per MSE language rule
+      language: config.language || 'en',
+
+      // Other config
       target_se: config.target_se || 0.08,
       adaptive: config.adaptive !== false,  // Default true
-      exam_version: config.exam_version || config.version || null,  // Version code (e.g., 'v0.1b')
-      exam_version_id: config.exam_version_id || null,  // Version ID
       ...config
     };
 
@@ -56,6 +74,9 @@ class EvaluationSession {
     this.consistencyGroups = {};  // {axisId: [groups]}
     this.grmJudgments = [];      // GRM judgments per response
     this.isV2 = false;           // Set true if version is v2.0+
+
+    // Scoring method tracking (Phase 2: transparency)
+    this.grmStats = { llm_scored: 0, heuristic_scored: 0, llm_errors: 0 };
   }
 
   /**
@@ -250,8 +271,14 @@ class EvaluationSession {
    */
   isComplete() {
     if (this.status !== RunStatus.IN_PROGRESS) return true;
-    if (this.axes.length === 0) return false;
-    return this.currentAxisIndex >= this.axes.length;
+
+    for (const axis of this.axes) {
+      const axisResponses = this.axisResponses[axis.id] || [];
+      if (!this.adaptive.shouldStopAxis(axisResponses, this.scorer)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -406,6 +433,7 @@ class EvaluationSession {
 
   /**
    * v2.0: Complete additional scoring layers
+   * @param {Array|null} [preComputedConsistency=null] - Pre-computed consistency results to avoid recomputation
    * @private
    */
   async _completeV2(preComputedConsistency = null) {
@@ -417,6 +445,15 @@ class EvaluationSession {
       }));
 
       this.grmJudgments = await this.grmScorer.scoreBatch(pairs);
+
+      // Track scoring method statistics
+      for (const j of this.grmJudgments) {
+        if (j.scoring_method === 'llm_judge') {
+          this.grmStats.llm_scored++;
+        } else {
+          this.grmStats.heuristic_scored++;
+        }
+      }
 
       // Save GRM category on each response
       for (let i = 0; i < this.responses.length; i++) {
@@ -674,6 +711,25 @@ class EvaluationSession {
     if (avgSE > 0.15) confidenceLevel = 'low';
     else if (avgSE > 0.1) confidenceLevel = 'medium';
 
+    // Determine overall GRM scoring method
+    const totalGrm = this.grmStats.llm_scored + this.grmStats.heuristic_scored;
+    let grmMethod = 'none';
+    if (totalGrm > 0) {
+      if (this.grmStats.heuristic_scored === 0) grmMethod = 'llm_judge';
+      else if (this.grmStats.llm_scored === 0) grmMethod = 'heuristic_fallback';
+      else grmMethod = 'mixed';
+    }
+
+    // Build procedural methods summary
+    const proceduralMethods = {};
+    if (procedural) {
+      for (const [key, value] of Object.entries(procedural)) {
+        if (value && value.methodology) {
+          proceduralMethods[key] = value.methodology.type;
+        }
+      }
+    }
+
     const profile = {
       agent_id: this.agentId,
       run_id: this.runId,
@@ -689,6 +745,12 @@ class EvaluationSession {
       confidence_level: confidenceLevel,
       config: {
         adaptive: this.config.adaptive
+      },
+      scoring_metadata: {
+        grm_method: grmMethod,
+        grm_stats: totalGrm > 0 ? { ...this.grmStats } : null,
+        procedural_methods: proceduralMethods,
+        version_note: 'Heuristic metrics are unvalidated proxies based on keyword matching. Statistical metrics (consistency, principle_diversity) are mathematically grounded. See VALIDATION.md for details.'
       }
     };
 

@@ -3,6 +3,8 @@
  *
  * Manages the parametric bank of ethical dilemmas for the MSE system.
  * Each dilemma targets a specific axis at a specific pressure level.
+ *
+ * All content is stored in English (single canonical language).
  */
 
 const { PressureLevels } = require('../types');

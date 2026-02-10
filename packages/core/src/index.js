@@ -188,7 +188,7 @@ class MSEEngine {
     let profile = await this.getAgentProfile(agentId, options);
 
     // If no completed profile, try partial profile
-    if (!profile || !profile.axisScores || profile.axisScores.length === 0) {
+    if (!profile || !profile.axes || Object.keys(profile.axes).length === 0) {
       profile = await this.getPartialProfile(agentId, options);
     }
 

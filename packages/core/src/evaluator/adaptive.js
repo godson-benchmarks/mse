@@ -1,9 +1,20 @@
 /**
  * Adaptive Item Selector
  *
- * Implements adaptive testing for efficient threshold estimation.
- * Selects items with pressure levels near the estimated threshold
- * to maximize information gain per item.
+ * Implements constrained adaptive testing for robust threshold estimation.
+ * Uses three complementary selection strategies:
+ *
+ * 1. Exploitation (80%): Items near estimated threshold (minimize distance)
+ * 2. Exploration (20%): Items in under-sampled pressure regions (coverage)
+ * 3. Adversarial (v2.0): Items at threshold + 1.5*SE (gaming detection)
+ *
+ * This approach balances statistical optimality with robustness to:
+ * - Model misspecification (non-logistic response patterns)
+ * - Gaming behavior (strategic responding)
+ * - Small sample sizes (5-18 items per axis)
+ *
+ * Fisher Information is used for SE calculation, not item selection.
+ * See: van der Linden (2005), Kingsbury & Zara (1989) for theoretical foundation.
  */
 
 const { PressureLevels } = require('../types');
@@ -443,12 +454,21 @@ class AdaptiveSelector {
   }
 
   /**
-   * Calculate expected information gain for an item
-   * Based on Fisher information
-   * @param {Object} item
-   * @param {number} estimatedB
-   * @param {number} estimatedA
-   * @returns {number}
+   * Calculate expected information gain for an item based on Fisher Information.
+   *
+   * NOTE: This method is currently NOT used for item selection.
+   * MSE uses constrained adaptive testing (proximity + exploration + adversarial)
+   * instead of pure Fisher Information maximization for better robustness.
+   *
+   * This function is preserved for:
+   * - Research and experimental alternative selection strategies
+   * - Diagnostic purposes (comparing Fisher-optimal vs actual selection)
+   * - Future versions that may use hybrid approaches
+   *
+   * @param {Object} item - Item with pressure_level property
+   * @param {number} estimatedB - Estimated threshold
+   * @param {number} estimatedA - Estimated rigidity (default 5)
+   * @returns {number} Fisher Information I(θ) = a² · p(1-p)
    */
   calculateInformationGain(item, estimatedB, estimatedA = 5) {
     const x = item.pressure_level;

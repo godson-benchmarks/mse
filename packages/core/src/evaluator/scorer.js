@@ -157,18 +157,20 @@ class AxisScorer {
   }
 
   /**
-   * Fit logistic model using BCE gradient + Adaptive Ridge regularization
+   * Fit RLTM via BCE gradient descent + dual adaptive ridge regularization
    *
-   * Uses Binary Cross-Entropy gradient (no p(1-p) dampening) instead of MSE
-   * to avoid vanishing gradients when predictions are near 0 or 1.
+   * Uses Binary Cross-Entropy gradient applied to continuous targets
+   * y ∈ [0.02, 0.98] (not binary). The BCE form ∂L/∂b = -a(p-y)
+   * avoids the p(1-p) dampening of MSE-loss gradients, maintaining
+   * gradient signal even when predictions are near 0 or 1.
    *
-   * Adaptive Ridge: weak (λ=0.3) when data variance is low (unanimous
-   * responses), allowing b to reach true extremes; strong (λ=1.5) when
-   * data has high variance, preventing overfitting to noise.
+   * Dual adaptive ridge:
+   *   - λ_a = 0.5 fixed, pulling a toward a₀ = 5.0
+   *   - λ_b = variance-adaptive: 0.3 when Var(y) < 0.05 (unanimous,
+   *     allow extreme b), 1.5 when Var(y) >= 0.05 (noisy, prevent overfitting)
    *
-   * BCE gradient: ∂L/∂b = -a(y-p), ∂L/∂a = (y-p)(x-b)
-   * Unlike MSE which multiplies by p(1-p), BCE maintains gradient signal
-   * even at extreme predictions.
+   * Convergence: parameter change < 0.0001 for both a and b
+   * Learning rate: 0.05 / (1 + iter * 0.05) — decaying schedule
    * @private
    */
   _fitLogisticModel(dataPoints) {
@@ -376,6 +378,8 @@ class AxisScorer {
    * Calculate procedural metrics from responses
    * Uses ProceduralAnalyzer for full analysis including principle_diversity and reasoning_depth
    * @param {Object[]} allResponses - All responses from the evaluation
+   * @param {Object|null} [axisScores=null] - RLTM axis scores keyed by axis_id, each with {b, a, se_b}
+   * @param {Array|null} [consistencyScores=null] - Pre-computed consistency trap results from v2+
    * @returns {Object} Procedural scores
    */
   calculateProceduralScores(allResponses, axisScores = null, consistencyScores = null) {
