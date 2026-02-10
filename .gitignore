@@ -1,0 +1,12 @@
+node_modules/
+*.log
+.env
+.env.local
+.DS_Store
+coverage/
+.nyc_output/
+dist/
+build/
+*.tgz
+.idea/
+.vscode/
