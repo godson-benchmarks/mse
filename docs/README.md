@@ -5,8 +5,9 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40godson%2Fmse.svg)](https://www.npmjs.com/package/@godson/mse)
+[![CI Status](https://github.com/godsons-ai/mse/workflows/CI/badge.svg)](https://github.com/godsons-ai/mse/actions)
 
-**Live at [godson.ai](https://godson.ai/mse)**
+**🌐 Live at [godson.ai](https://godson.ai/mse)**
 
 ---
 
@@ -27,27 +28,37 @@ Think of it as **psychometric profiling for AI ethics** — the same rigor used 
 ## Key Features
 
 ### Core Evaluation
-- **Adaptive testing** — Constrained adaptive testing (exploitation + exploration + adversarial) balances precision with robustness
-- **15 moral tension axes** — From *rights vs consequences* to *privacy vs security*
-- **Logistic threshold estimation** — Estimates exact tipping points with uncertainty (SE)
-- **270 parametric dilemmas** — 18 per axis, calibrated across 5 pressure levels with 8 contextual parameters
+- ✅ **Adaptive testing** — Constrained adaptive testing (exploitation + exploration + adversarial) balances precision with robustness
+- ✅ **15 moral tension axes** — From *rights vs consequences* to *privacy vs security*
+- ✅ **Logistic threshold estimation** — Estimates exact tipping points with uncertainty (SE)
+- ✅ **270 parametric dilemmas** — 18 per axis, calibrated across 5 pressure levels with 8 contextual parameters
 
 ### Advanced Analysis
-- **Graded Response Model (GRM)** — 5-category sophistication scoring (0: rigid refusal -> 4: non-obvious insight)
-- **LLM Judge** — Optional semantic evaluation via any LLM provider (Claude, GPT, etc.) or heuristic fallback
-- **Gaming detection** — 6-metric ensemble detects manipulation attempts
-- **7 ethical capacities** — Moral perception, imagination, humility, coherence, residue recognition, flexibility, meta-awareness
+- 🧠 **Graded Response Model (GRM)** — 5-category sophistication scoring (0: rigid refusal → 4: non-obvious insight)
+- 🤖 **LLM Judge** — Optional semantic evaluation via any LLM provider (Claude, GPT, etc.) or heuristic fallback
+- 🛡️ **Gaming detection** — 6-metric ensemble detects manipulation attempts
+- 🎯 **7 ethical capacities** — Moral perception, imagination, humility, coherence, residue recognition, flexibility, meta-awareness
 
 ### Metrics & Ranking
-- **Sophistication Index (SI)** — 5-dimensional behavioral proxy (integration, metacognition, stability, adaptability, self-model accuracy)
-- **ISM ranking** — Composite score: 35% profile richness + 45% procedural quality + 20% measurement precision
-- **MR rating system** — Elo-like dynamic rating with decaying K-factor
-- **Controversy analysis** — Identifies dilemmas with high agent disagreement
+- 📊 **Sophistication Index (SI)** — 5-dimensional behavioral proxy (integration, metacognition, stability, adaptability, self-model accuracy)
+- 🏆 **ISM ranking** — Composite score: 35% profile richness + 45% procedural quality + 20% measurement precision
+- ⚖️ **MR rating system** — Elo-like dynamic rating with decaying K-factor
+- 🔥 **Controversy analysis** — Identifies dilemmas with high agent disagreement
 
 ### Technical
-- **Exam versioning** — Multiple coexisting versions with comparability tracking
-- **Longitudinal tracking** — Evolution of ethical profiles over time
-- **LLM provider abstraction** — Works with Claude, GPT, xAI, Groq, or rule-based fallback
+- 🔄 **Exam versioning** — Multiple coexisting versions with comparability tracking
+- 📈 **Longitudinal tracking** — Evolution of ethical profiles over time
+- 🔌 **LLM provider abstraction** — Works with Claude, GPT, xAI, Groq, or rule-based fallback
+
+---
+
+## Packages
+
+| Package | Description | License |
+|---------|-------------|---------|
+| **[@godson/mse](packages/core)** | Core engine (evaluator, analyzers, storage) | MIT |
+| **[@godson/mse-dilemmas](packages/dilemmas)** | 270 parametric dilemmas (18 per axis × 15 axes) | CC-BY-SA 4.0 |
+| **[@godson/mse-react](packages/react)** | React visualization components | MIT |
 
 ---
 
@@ -56,7 +67,7 @@ Think of it as **psychometric profiling for AI ethics** — the same rigor used 
 ### Installation
 
 ```bash
-npm install @godson/mse pg
+npm install @godson/mse @godson/mse-dilemmas
 ```
 
 ### Basic Evaluation
@@ -107,47 +118,78 @@ console.log('Sophistication Index:', profile.sophisticationScore?.overall);
 console.log('ISM Rank:', profile.ismScore?.composite);
 ```
 
+### Using React Components
+
+```jsx
+import { EthicalProfileCard, MiniRadar } from '@godson/mse-react';
+
+function AgentProfile({ profile }) {
+  return (
+    <div>
+      <EthicalProfileCard
+        profile={profile}
+        showProcedural={true}
+        showCapacities={true}
+      />
+      <MiniRadar
+        axisScores={profile.axisScores}
+        size={72}
+      />
+    </div>
+  );
+}
+```
+
 ---
 
 ## How It Works
 
 ```
-+----------------------------------------------------------+
-|  Agent enters evaluation                                  |
-|     |                                                     |
-|     v                                                     |
-|  Adaptive Item Selection (RLTM + CAT)                    |
-|  - Anchor items (L1, L5, L3) establish baseline          |
-|  - Exploitation phase targets b +/- 1.5 SE               |
-|  - Consistency traps (30-item separation)                |
-|  - Adversarial targeting near threshold                  |
-|  - Framing variants test robustness                      |
-|     |                                                     |
-|     v                                                     |
-|  Agent Response                                           |
-|  - Choice (A/B/C/D)                                      |
-|  - Permissibility (0-100)                                |
-|  - Confidence (0-100)                                    |
-|  - Principles (deontological, consequentialist, etc.)    |
-|  - Rationale (text)                                      |
-|  - Info needed (optional)                                |
-|     |                                                     |
-|     v                                                     |
-|  Scoring & Analysis                                       |
-|  - RLTM: P(permit | x, a, b)                            |
-|  - Graded Response Model (0-4 via LLM Judge)             |
-|  - Gaming detection (6 signals)                          |
-|  - Procedural metrics (6 dimensions)                     |
-|     |                                                     |
-|     v                                                     |
-|  Ethical Profile Generated                                |
-|  - 15 axis scores (b, a, SE)                             |
-|  - 7 ethical capacities                                  |
-|  - Sophistication Index (SI)                             |
-|  - ISM composite rank                                    |
-|  - MR rating                                             |
-|  - Gaming flags                                          |
-+----------------------------------------------------------+
+┌─────────────────┐
+│  Agent enters   │
+│   evaluation    │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  Adaptive Item Selection (RLTM + CAT)                   │
+│  • Anchor items (L1, L5, L3) establish baseline         │
+│  • Exploitation phase targets θ ± 1.5 SE                │
+│  • Consistency traps (30-item separation)               │
+│  • Adversarial targeting near threshold                 │
+│  • Framing variants test robustness                     │
+└────────┬────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  Agent Response                                          │
+│  • Choice (A/B/C/D)                                      │
+│  • Permissibility (0-100)                                │
+│  • Confidence (0-100)                                    │
+│  • Principles (deontological, consequentialist, etc.)    │
+│  • Rationale (text)                                      │
+│  • Info needed (optional)                                │
+└────────┬────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  Scoring & Analysis                                      │
+│  • RLTM: P(permit | x, a, b)                            │
+│  • Graded Response Model (0-4 via LLM Judge)             │
+│  • Gaming detection (6 signals)                          │
+│  • Procedural metrics (6 dimensions)                     │
+└────────┬────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  Ethical Profile Generated                               │
+│  • 15 axis scores (b, a, SE)                             │
+│  • 7 ethical capacities                                  │
+│  • Sophistication Index (SI)                             │
+│  • ISM composite rank                                    │
+│  • MR rating                                             │
+│  • Gaming flags                                          │
+└─────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -220,6 +262,18 @@ See **[AXES_REFERENCE.md](docs/AXES_REFERENCE.md)** for philosophical foundation
 
 ---
 
+## Examples
+
+See **[examples/](examples/)** directory:
+
+- **[standalone-server/](examples/standalone-server/)** — Minimal Express server with MSE + PostgreSQL
+- **[evaluate-agent/](examples/evaluate-agent/)** — CLI tool to evaluate an agent via REST API
+- **[evaluate-openai-model/](examples/evaluate-openai-model/)** — Evaluate GPT models directly
+- **[custom-storage-adapter/](examples/custom-storage-adapter/)** — SQLite adapter example
+- **[nextjs-dashboard/](examples/nextjs-dashboard/)** — Next.js app with @godson/mse-react components
+
+---
+
 ## Used By
 
 <div align="center">
@@ -257,8 +311,8 @@ Godson Network, "Moral Spectrometry Engine: Adaptive Ethical Profiling for AI Ag
 
 ## License
 
-- **Code**: [MIT License](LICENSE)
-- **Dilemma content**: [CC-BY-SA 4.0](LICENSE-CONTENT)
+- **Code** (`packages/core`, `packages/react`): [MIT License](LICENSE)
+- **Content** (`packages/dilemmas`): [CC-BY-SA 4.0](LICENSE-CONTENT)
 
 **Attribution required for dilemma content:**
 Godson Network (https://godson.ai)
@@ -280,28 +334,30 @@ We welcome contributions! See **[CONTRIBUTING.md](CONTRIBUTING.md)** for:
 
 ## Community
 
-- [GitHub Discussions](https://github.com/godsons-ai/mse/discussions) — Questions, ideas, research
-- [Issue Tracker](https://github.com/godsons-ai/mse/issues) — Bug reports, feature requests
-- **Email:** opensource@godson.ai
+- 💬 **[GitHub Discussions](https://github.com/godsons-ai/mse/discussions)** — Questions, ideas, research
+- 🐛 **[Issue Tracker](https://github.com/godsons-ai/mse/issues)** — Bug reports, feature requests
+- 📧 **Email:** opensource@godson.ai
 
 ---
 
 ## Roadmap
 
 ### v1.1 — Community Polish
-- Accept community-contributed dilemmas
-- Improve documentation based on feedback
-- Translate dilemmas to more languages (FR, DE, ZH, JA)
+- ✅ Accept community-contributed dilemmas
+- ✅ Improve documentation based on feedback
+- ✅ SQLite adapter
+- ✅ Translate dilemmas to more languages (FR, DE, ZH, JA)
 
 ### v1.2 — Tooling
-- CLI tool: `npx @godson/mse evaluate --model gpt-4o`
-- Export to standard formats (CSV, JSON-LD, Parquet)
+- 🔄 CLI tool: `npx @godson/mse evaluate --model gpt-4o`
+- 🔄 Export to standard formats (CSV, JSON-LD, Parquet)
+- 🔄 Storybook for `@godson/mse-react`
 
 ### v2.0 — Research Features
-- Custom axes API
-- Plugin system for analyzers
-- Pairwise comparisons (Glicko-2)
-- Human evaluation support
+- 🔄 Custom axes API
+- 🔄 Plugin system for analyzers
+- 🔄 Pairwise comparisons (Glicko-2)
+- 🔄 Human evaluation support
 
 ---
 
@@ -318,6 +374,6 @@ Special thanks to the AI safety research community for inspiring rigorous approa
 ---
 
 <div align="center">
-  <strong>Built by <a href="https://godson.ai">Godson Network</a></strong><br>
+  <strong>Built with ❤️ by <a href="https://godson.ai">Godson Network</a></strong><br>
   <em>Teaching AI agents to be good</em>
 </div>

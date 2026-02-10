@@ -10,9 +10,11 @@
 ## Quick Links
 
 - [Basic Evaluation](#1-basic-evaluation)
-- [Custom LLM Provider](#2-custom-llm-provider)
-- [CLI Tool](#3-cli-evaluation-tool)
-- [Comparison Analysis](#4-comparison-analysis)
+- [Custom Storage Adapter](#2-custom-storage-adapter-sqlite)
+- [Custom LLM Provider](#3-custom-llm-provider)
+- [React Visualization](#4-react-visualization)
+- [CLI Tool](#5-cli-evaluation-tool)
+- [Comparison Analysis](#6-comparison-analysis)
 
 ---
 
@@ -84,7 +86,76 @@ async function evaluateAgent(agentId) {
 
 ---
 
-## 2. Custom LLM Provider
+## 2. Custom Storage Adapter (SQLite)
+
+**Use case:** Use SQLite instead of PostgreSQL.
+
+```javascript
+const { MSEStorageAdapter } = require('@godson/mse');
+const sqlite3 = require('sqlite3');
+const { promisify } = require('util');
+
+class SQLiteAdapter extends MSEStorageAdapter {
+  constructor(dbPath, subjectProvider = null) {
+    super(null, subjectProvider);
+    this.db = new sqlite3.Database(dbPath);
+    this.get = promisify(this.db.get.bind(this.db));
+    this.all = promisify(this.db.all.bind(this.db));
+    this.run = promisify(this.db.run.bind(this.db));
+  }
+
+  async getAxes() {
+    const rows = await this.all(`
+      SELECT id, code, name, category
+      FROM mse_axes
+      WHERE is_active = 1
+      ORDER BY id
+    `);
+    return rows;
+  }
+
+  async createRun(data) {
+    const result = await this.run(`
+      INSERT INTO mse_evaluation_runs (
+        id, agent_id, version_id, config, status, started_at
+      ) VALUES (?, ?, ?, ?, ?, ?)
+    `, [
+      data.id,
+      data.agent_id,
+      data.version_id,
+      JSON.stringify(data.config),
+      data.status,
+      data.started_at
+    ]);
+
+    return { id: data.id };
+  }
+
+  async getRun(runId) {
+    const row = await this.get(`
+      SELECT * FROM mse_evaluation_runs WHERE id = ?
+    `, [runId]);
+
+    if (row) {
+      row.config = JSON.parse(row.config);
+    }
+    return row;
+  }
+
+  // ... implement remaining 60 methods
+}
+
+// Usage
+const mse = new MSEEngine(null, {
+  storageAdapter: new SQLiteAdapter('./mse.db')
+});
+```
+
+**Full example:** [examples/custom-storage-adapter/](examples/custom-storage-adapter/)
+
+---
+
+## 3. Custom LLM Provider
 
 **Use case:** Use a custom LLM for GRM scoring.
 
@@ -145,7 +216,78 @@ const mse = new MSEEngine(db, {
 
 ---
 
-## 3. CLI Evaluation Tool
+## 4. React Visualization
+
+**Use case:** Display ethical profile in React app.
+
+```jsx
+import {
+  EthicalProfileCard,
+  MiniRadar,
+  ProceduralMetricsCard,
+  EthicalAxisBar
+} from '@godson/mse-react';
+
+function AgentProfilePage({ agentId }) {
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    fetch(`/api/mse/profiles/${agentId}`)
+      .then(r => r.json())
+      .then(data => setProfile(data));
+  }, [agentId]);
+
+  if (!profile) return <div>Loading...</div>;
+
+  return (
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">
+        Ethical Profile: {profile.agent.name}
+      </h1>
+
+      {/* Main profile card */}
+      <EthicalProfileCard
+        profile={profile}
+        showProcedural={true}
+        showCapacities={true}
+      />
+
+      {/* Procedural metrics */}
+      <ProceduralMetricsCard
+        metrics={profile.proceduralScores}
+        className="mt-6"
+      />
+
+      {/* Individual axis bars */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold mb-4">Axis Details</h2>
+        {profile.axisScores.map(axis => (
+          <EthicalAxisBar
+            key={axis.id}
+            axis={axis}
+            className="mb-4"
+          />
+        ))}
+      </div>
+
+      {/* Mini radar for thumbnail */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold mb-4">Radar View</h2>
+        <MiniRadar
+          axisScores={profile.axisScores}
+          size={200}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+**Full example:** [examples/nextjs-dashboard/](examples/nextjs-dashboard/)
+
+---
+
+## 5. CLI Evaluation Tool
 
 **Use case:** Command-line tool to evaluate any agent.
 
@@ -237,7 +379,7 @@ DATABASE_URL="postgresql://..." ./mse-cli.js my-agent-id
 
 ---
 
-## 4. Comparison Analysis
+## 6. Comparison Analysis
 
 **Use case:** Compare two agents side-by-side.
 
@@ -278,11 +420,22 @@ await compareAgents('gpt-4o-uuid', 'claude-sonnet-uuid');
 
 ---
 
+## More Examples
+
+**Full working examples in repo:**
+- [examples/standalone-server/](examples/standalone-server/) — Minimal Express + PostgreSQL setup
+- [examples/evaluate-agent/](examples/evaluate-agent/) — REST API client
+- [examples/evaluate-openai-model/](examples/evaluate-openai-model/) — OpenAI integration
+- [examples/custom-storage-adapter/](examples/custom-storage-adapter/) — SQLite adapter
+- [examples/nextjs-dashboard/](examples/nextjs-dashboard/) — React dashboard
+
+---
+
 ## Need Help?
 
-- [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
-- opensource@godson.ai
-- [Full Documentation](https://github.com/godsons-ai/mse/tree/main/docs)
+- 💬 [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
+- 📧 opensource@godson.ai
+- 📚 [Full Documentation](https://github.com/godsons-ai/mse/tree/main/docs)
 
 ---
 
