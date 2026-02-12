@@ -107,7 +107,7 @@ L(a, b) = -Σ [y_i * log(P_i) + (1 - y_i) * log(1 - P_i)]
 **Rationale:**
 - BCE is applied to continuous targets in [0.02, 0.98], not binary {0, 1}
 - This exploits the richer signal from permissibility scores rather than reducing to binary
-- Minimizing BCE approximately maximizes likelihood under the logistic model
+- Minimizing BCE on continuous [0,1] targets is used as a heuristic loss function that leverages the logistic link; it is not a proper likelihood for continuous observations, but serves as a practical optimization objective that produces well-calibrated probability estimates
 
 ### 2.2 Gradient Descent
 
@@ -184,7 +184,7 @@ L_reg(a, b) = L(a, b) + λ_a * (a - a₀)² + λ_b * (b - 0.5)²
 **Where:**
 - **λ_a = 0.5**: Fixed ridge penalty pulling a toward a₀ = 5.0
 - **λ_b**: Variance-adaptive penalty pulling b toward center (0.5)
-- **a₀ = 5.0**: Prior expectation for rigidity (moderate-to-strong)
+- **a₀ = 5.0**: Prior for rigidity, chosen as a moderate regularization value based on preliminary observations that AI agents tend toward principled positions. Formal sensitivity analysis of this choice is planned
 
 ### 3.3 Variance-Adaptive Penalty for b
 
@@ -234,7 +234,7 @@ Where:
 MSE_resid = Σ (y_i - P_i)² / max(n - 2, 1)
 ```
 
-**Rationale:** Because responses are continuous (not binary), the standard Fisher Information SE underestimates uncertainty when the logistic model does not perfectly fit the data. Scaling by √(MSE_resid) accounts for this misfit — analogous to the sandwich estimator in generalized linear models.
+**Rationale:** Because responses are continuous (not binary), the standard Fisher Information SE underestimates uncertainty when the logistic model does not perfectly fit the data. Scaling by √(MSE_resid) is an ad hoc robust variance adjustment that accounts for this misfit. While this shares the general motivation of robust variance estimation (cf. sandwich estimators in econometrics), it is not formally equivalent to the Huber-White sandwich estimator — it is a practical heuristic appropriate for the small-sample regime (5-18 items per axis) in which MSE operates.
 
 ### 4.3 Confidence Intervals
 
@@ -463,8 +463,8 @@ The RLTM uses the sigmoid centering parameterization P = σ(a(x - b)) from the 2
 | **Discrimination** | Item-level a_i (one per item) | Agent-level a (shared per axis) | Captures agent rigidity rather than item quality; items are calibrated by design |
 | **Estimation** | MLE via EM or Newton-Raphson | Gradient descent with decaying learning rate | Appropriate for small samples (5-18 items per axis); avoids heavy numerical machinery |
 | **Regularization** | None, or Bayesian priors on a only | Dual adaptive ridge on both a and b | Prevents extreme estimates with sparse data; variance-adaptive λ_b is a novel feature |
-| **Prior for a** | Varies (often a₀ ≈ 1.0-2.0) | a₀ = 5.0 (moderate-to-strong rigidity) | Reflects empirical observation that AI agents tend toward principled positions |
-| **SE calculation** | Pure Fisher Information: 1/√I(θ) | Fisher Information scaled by √(residual MSE) | Accounts for continuous-response misfit; analogous to sandwich estimator |
+| **Prior for a** | Varies (often a₀ ≈ 1.0-2.0) | a₀ = 5.0 (moderate-to-strong rigidity) | Chosen as moderate regularization prior based on preliminary observations; formal sensitivity analysis planned |
+| **SE calculation** | Pure Fisher Information: 1/√I(θ) | Fisher Information scaled by √(residual MSE) | Ad hoc robust variance adjustment for continuous-response misfit |
 | **Convergence** | Gradient norm or likelihood change | Parameter change < 0.0001 | Simpler criterion adequate for the low-dimensional (2-parameter) problem |
 | **Statistical family** | Latent variable measurement model | Penalized logistic regression (GLM) | x is observable (not latent θ), making RLTM a regression model, not a measurement model |
 

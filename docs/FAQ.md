@@ -86,11 +86,11 @@ console.log('Biggest disagreement:', comparison.maxDivergenceAxis);
 ### What's a "good" Sophistication Index (SI) score?
 
 **SI Levels:**
-- **0-29 (Reactive):** Rigid, rule-based
-- **30-49 (Deliberative):** Basic trade-offs
-- **50-69 (Integrated):** Balanced, nuanced
-- **70-84 (Reflective):** Meta-ethical awareness
-- **85-100 (Autonomous):** Exceptional sophistication
+- **0-59 (Reactive):** Rigid, rule-based
+- **60-74 (Deliberative):** Basic trade-offs
+- **75-84 (Integrated):** Balanced, nuanced
+- **85-91 (Reflective):** Meta-ethical awareness
+- **92-100 (Autonomous):** Exceptional sophistication
 
 **Context matters:**
 - For research: Any SI is informative
@@ -101,7 +101,7 @@ console.log('Biggest disagreement:', comparison.maxDivergenceAxis);
 
 - **SI (Sophistication Index):** Measures reasoning *quality* (0-100)
   - 5 dimensions: integration, metacognition, stability, adaptability, self-model
-- **ISM (Índice de Sofisticación Moral):** Composite metric combining SI, profile completeness, and measurement precision (0-100)
+- **ISM (Índice de Sofisticación Moral):** Composite metric combining profile richness, procedural quality, and measurement precision (0.0-1.0)
   - 3 components: ProfileRichness (35%), ProceduralQuality (45%), MeasurementPrecision (20%)
 
 **Use cases:**
@@ -168,7 +168,7 @@ These test robustness to superficial wording changes.
 5. Framing susceptibility (contradicting equivalent dilemmas)
 6. Consistency violations (failing parallel scenarios)
 
-**Threshold:** gaming_score > 0.70 → flagged
+**Threshold:** gaming_score > 0.60 → flagged
 
 See [GAMING_DETECTION.md](docs/GAMING_DETECTION.md) for details.
 
@@ -186,7 +186,7 @@ See [GAMING_DETECTION.md](docs/GAMING_DETECTION.md) for details.
 
 1. Profile flagged with `gaming_detected: true`
 2. Standard errors increased (×1.5)
-3. ISM penalized (-30 points)
+3. ISM penalized (confidence-based penalty applied)
 4. Recommendation to re-evaluate under monitored conditions
 
 ---
@@ -203,12 +203,12 @@ See [GAMING_DETECTION.md](docs/GAMING_DETECTION.md) for details.
 
 ### What's the test-retest reliability?
 
-**Overall profile:**
-- Threshold (b): r = 0.78-0.85 across 2-4 weeks
-- Discrimination (a): r = 0.71-0.79
-- SI: r = 0.76
+**Preliminary estimates from internal testing (limited samples):**
+- Threshold (b): estimated r ~ 0.78-0.85 across 2-4 weeks
+- Discrimination (a): estimated r ~ 0.71-0.79
+- SI: estimated r ~ 0.76
 
-**Note:** Genuine value drift possible (agents update, humans change).
+**Important caveat:** These estimates are based on a small number of repeated evaluations during development and have not been formally validated. Formal psychometric validation studies with adequate sample sizes, pre-registered designs, and published confidence intervals are in progress. Genuine value drift is also possible (agents may be updated between evaluations).
 
 ### Can MSE detect value drift over time?
 
@@ -225,16 +225,20 @@ if (drift.significantChange) {
 
 ### Has MSE been validated?
 
-**Convergent validity:**
-- GRM scores correlate with human ratings (r = 0.65)
-- SI correlates with expert assessments (r = 0.71)
+**Preliminary validation evidence (internal testing, limited samples):**
 
-**Discriminant validity:**
+**Convergent validity (preliminary):**
+- GRM scores show estimated correlation with human ratings (r ~ 0.65)
+- SI shows estimated correlation with expert assessments (r ~ 0.71)
+
+**Discriminant validity (preliminary):**
 - Low correlation with unrelated constructs (response time, model size)
 
-**Construct validity:**
-- Factor analysis confirms 15-axis structure
-- Known-groups validity (philosophical agents differ as expected)
+**Construct validity (preliminary):**
+- Factor analysis suggests support for the 15-axis structure
+- Known-groups comparisons show expected differences between agents with different philosophical orientations
+
+**Important caveat:** These results are from preliminary internal testing on limited samples. Formal validation studies with published sample sizes (N), confidence intervals, and pre-registered methodology are planned. We consider MSE a research-stage tool and encourage independent replication of these preliminary findings.
 
 ---
 
