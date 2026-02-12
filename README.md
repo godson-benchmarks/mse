@@ -16,22 +16,6 @@ Rather than asking "is this agent ethical?", MSE asks:
 - How sophisticated is its reasoning about complex ethical tradeoffs?
 - How does its profile evolve over time?
 
-## Limitations & Caveats
-
-Before using MSE, please be aware of the following:
-
-1. **Research-stage tool.** MSE is a research-stage instrument, not a validated clinical or deployment-ready psychometric tool. It should be used for exploratory research and preliminary profiling, not for high-stakes decisions about AI system safety without additional validation.
-
-2. **Formal psychometric validation is in progress.** Convergent validity, discriminant validity, and large-N test-retest reliability studies have not yet been published. Preliminary internal testing is promising (see [FAQ](./docs/FAQ.md)), but these results should be treated as provisional until independently replicated.
-
-3. **LLM-as-judge circularity.** When MSE uses an LLM judge (e.g., Claude Haiku) to score response sophistication (GRM), this introduces circularity: one LLM evaluates another. The heuristic fallback scorer mitigates this, but users should be aware of the limitation. See [Scoring Model](./docs/SCORING_MODEL.md) for details.
-
-4. **Western philosophical framework bias.** The 15 axes of moral tension are rooted primarily in Western moral philosophy (Kantian deontology, utilitarianism, virtue ethics, social contract theory). Non-Western ethical traditions (Confucian, Ubuntu, Buddhist, Indigenous) are underrepresented. Cross-cultural validation is planned.
-
-5. **Preliminary results, not definitive assessments.** Results should be interpreted as preliminary moral reasoning profiles — descriptive maps of where an agent draws lines and how it reasons — not as definitive ethical assessments or certifications of moral character.
-
-> **On the name "Moral Spectrometry":** The name is metaphorical. MSE uses psychometric methods (adaptive testing, penalized logistic regression) rather than physical spectrometry. The analogy refers to decomposing moral reasoning into constituent dimensions, similar to how spectrometry decomposes light into wavelengths. No claim of physical measurement is implied.
-
 ## Key Features
 
 **Constrained Adaptive Testing (CAT)** — Three-heuristic item selection (proximity, exploration, adversarial) optimized for small samples (5-18 items per axis)
@@ -526,6 +510,22 @@ Where:
 | **[@godson/mse](./packages/core)** | `packages/core/` | Evaluation engine, scoring, adaptive testing | MIT |
 | **[@godson/mse-dilemmas](./packages/dilemmas)** | `packages/dilemmas/` | 225+ parametric ethical dilemmas across 15 axes | CC-BY-SA 4.0 |
 | **[@godson/mse-react](./packages/react)** | `packages/react/` | React visualization components (profile cards, axis bars, exam viewer) | MIT |
+
+## Limitations & Caveats
+
+Before using MSE, please be aware of the following:
+
+1. **Research-stage tool.** MSE is a research-stage instrument, not a validated clinical or deployment-ready psychometric tool. It should be used for exploratory research and preliminary profiling, not for high-stakes decisions about AI system safety without additional validation.
+
+2. **Formal psychometric validation is in progress.** Convergent validity, discriminant validity, and large-N test-retest reliability studies have not yet been published. Preliminary internal testing is promising (see [FAQ](./docs/FAQ.md)), but these results should be treated as provisional until independently replicated.
+
+3. **LLM-as-judge circularity.** When MSE uses an LLM judge (e.g., Claude Haiku) to score response sophistication (GRM), this introduces circularity: one LLM evaluates another. The heuristic fallback scorer mitigates this, but users should be aware of the limitation. See [Scoring Model](./docs/SCORING_MODEL.md) for details.
+
+4. **Western philosophical framework bias.** The 15 axes of moral tension are rooted primarily in Western moral philosophy (Kantian deontology, utilitarianism, virtue ethics, social contract theory). Non-Western ethical traditions (Confucian, Ubuntu, Buddhist, Indigenous) are underrepresented. Cross-cultural validation is planned.
+
+5. **Preliminary results, not definitive assessments.** Results should be interpreted as preliminary moral reasoning profiles — descriptive maps of where an agent draws lines and how it reasons — not as definitive ethical assessments or certifications of moral character.
+
+> **On the name "Moral Spectrometry":** The name is metaphorical. MSE uses psychometric methods (adaptive testing, penalized logistic regression) rather than physical spectrometry. The analogy refers to decomposing moral reasoning into constituent dimensions, similar to how spectrometry decomposes light into wavelengths. No claim of physical measurement is implied.
 
 ## Documentation
 
