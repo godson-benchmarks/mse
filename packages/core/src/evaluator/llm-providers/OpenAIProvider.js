@@ -82,7 +82,7 @@ class OpenAIProvider extends LLMProvider {
           try {
             const errorData = await response.json();
             errorMessage = errorData.error?.message || errorMessage;
-          } catch {}
+          } catch { /* ignore JSON parse failure, use status text */ }
 
           throw new Error(`OpenAI API error: ${errorMessage}`);
         }

@@ -194,7 +194,7 @@ npm install
 
 - **Style:** Vanilla ES6+, no frameworks
 - **Formatting:** Prettier (configured in `.prettierrc`)
-- **Linting:** ESLint (configured in `.eslintrc.json`)
+- **Linting:** ESLint 9+ (configured in `eslint.config.js`)
 
 ```javascript
 // Example: Good
