@@ -31,6 +31,7 @@ const LLMJudge = require('./evaluator/llm-judge');
 const CapacityAnalyzer = require('./analyzer/capacities');
 const CoherenceAnalyzer = require('./analyzer/coherence');
 const SophisticationAnalyzer = require('./analyzer/sophistication');
+const { ISMCalculator } = require('./analyzer/ism');
 
 // LLM Providers for LLMJudge
 const {
@@ -318,6 +319,7 @@ module.exports = {
   CapacityAnalyzer,
   CoherenceAnalyzer,
   SophisticationAnalyzer,
+  ISMCalculator,
   // LLM Providers
   LLMProvider,
   AnthropicProvider,

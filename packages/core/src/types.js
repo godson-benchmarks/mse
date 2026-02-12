@@ -157,11 +157,11 @@ const MetaEthicalTypes = {
  * @enum {string}
  */
 const SILevels = {
-  REACTIVE: 'reactive',           // 0-29
-  DELIBERATIVE: 'deliberative',   // 30-49
-  INTEGRATED: 'integrated',       // 50-69
-  REFLECTIVE: 'reflective',       // 70-84
-  AUTONOMOUS: 'autonomous'        // 85-100
+  REACTIVE: 'reactive',           // 0-59
+  DELIBERATIVE: 'deliberative',   // 60-74
+  INTEGRATED: 'integrated',       // 75-84
+  REFLECTIVE: 'reflective',       // 85-91
+  AUTONOMOUS: 'autonomous'        // 92-100
 };
 
 /**

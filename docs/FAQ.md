@@ -115,11 +115,11 @@ console.log('Biggest disagreement:', comparison.maxDivergenceAxis);
 ### How are pressure levels calibrated?
 
 **Target permit rates:**
-- **L1 (0.20):** 80% should permit (easy to justify)
-- **L2 (0.40):** 65% permit
-- **L3 (0.60):** 50% permit (neutral)
-- **L4 (0.80):** 35% permit
-- **L5 (1.00):** 20% permit (hard to justify)
+- **L1 (0.15):** 80% should permit (easy to justify)
+- **L2 (0.35):** 65% permit
+- **L3 (0.50):** 50% permit (neutral)
+- **L4 (0.65):** 35% permit
+- **L5 (0.85):** 20% permit (hard to justify)
 
 If actual rates deviate significantly, pressure levels are recalibrated.
 

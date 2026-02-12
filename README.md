@@ -266,12 +266,12 @@ const profile = await session.complete();
 
 6-metric ensemble detects manipulation attempts:
 
-- **Choice Time Variance** — Abnormally fast or slow responses
-- **Rationale Diversity** — Copy-paste detection
-- **Confidence Calibration** — Overconfidence misalignment
-- **Forced Choice Flip** — Contradictory forced choices
-- **Pattern Exploitation** — Detecting dilemma structure gaming
-- **Principle Diversity** — Single-principle overuse
+- **Response Time Uniformity** — Suspiciously consistent timing (low coefficient of variation)
+- **Rationale Diversity** — Template reuse detection via pairwise Jaccard distance
+- **Pattern Regularity** — Formula-based responding via lag-1 autocorrelation
+- **Parameter Sensitivity** — Ignoring pressure level changes (Pearson correlation)
+- **Framing Susceptibility** — Inconsistency across equivalent framings (variance within groups)
+- **Consistency Violations** — Failing parallel scenarios (coherence across consistency traps)
 
 Gaming scores are saved automatically with `complete()` and available in enriched profiles.
 
@@ -297,37 +297,37 @@ console.log('Moral Humility:', enriched.capacities.humility);
 
 ### Sophistication Index (SI)
 
-Composite 5-dimensional behavioral proxy:
+Composite 5-dimensional behavioral proxy using weighted geometric mean:
 
 ```javascript
 const si = await mse.getSophisticationScore(agentId);
-console.log('Overall SI:', si.overall);  // 0-100
-console.log('Dimensions:', si.dimensions);
-// {
-//   semantic: 75,      // GRM-based semantic sophistication
-//   procedural: 82,    // Behavioral markers (info-seeking, calibration, etc.)
-//   capacity: 68,      // Ethical capacity scores
-//   coherence: 91,     // Internal consistency
-//   gaming: 5          // Gaming detection flags (inverted)
-// }
+console.log('Overall SI:', si.si_score);  // 0-1
+console.log('Level:', si.si_level);       // reactive|deliberative|integrated|reflective|autonomous
+console.log('Dimensions:', {
+  integration: si.integration,       // Coherence + tradition separation + variance explained
+  metacognition: si.metacognition,    // Calibration + info seeking + moral humility
+  stability: si.stability,           // Consistency + coherence + genuineness + trap consistency
+  adaptability: si.adaptability,     // Cross-evaluation improvement (null if < 2 runs)
+  self_model: si.self_model_accuracy  // Threshold prediction accuracy (null if no predictions)
+});
 ```
 
 ### ISM Ranking
 
-**Item-adjusted Sophistication Metric** for agent comparison:
+**Índice de Sofisticación Moral** — composite score (0.0-1.0) for agent comparison:
 
 ```javascript
-const comparison = await mse.compareAgents([agentId1, agentId2, agentId3]);
-comparison.agents.forEach(agent => {
-  console.log(`${agent.name}: ISM = ${agent.ism_score}`);
-});
+const { ISMCalculator } = require('@godson/mse');
+const ism = ISMCalculator.calculate(profile.axes, profile.proceduralScores, profile.confidence_level);
+console.log('ISM:', ism.ismScore);  // 0.0-1.0
+console.log('Tier:', ism.ismTier);  // 1 (best) to 3 (lowest)
 ```
 
 ISM combines:
-- Sophistication Index (SI)
-- ELO-style Moral Reasoning rating (MR)
-- Item difficulty adjustment
-- Response consistency weighting
+- **ProfileRichness (35%):** Coverage and diversity of threshold positions
+- **ProceduralQuality (45%):** Weighted mean of procedural reasoning metrics
+- **MeasurementPrecision (20%):** Statistical reliability (inverse of standard errors)
+- **Penalties:** Confidence-based deductions (0, 0.1, or 0.3)
 
 See [ISM Ranking Documentation](./docs/ISM_RANKING.md) for formula details.
 
@@ -434,8 +434,9 @@ Extends base profile with:
     meta_awareness: 0.79
   },
   meta: {
-    sophistication_index: 76.5,
-    ism_score: 1842,
+    sophistication_index: 0.765,  // 0-1 scale
+    ism_score: 0.703,             // 0-1 scale (ISM composite)
+    ism_tier: 1,                  // 1 (best) to 3 (lowest)
     mr_rating: 1650,
     mr_uncertainty: 120,
     gaming_flags: [],

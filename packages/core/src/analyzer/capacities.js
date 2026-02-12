@@ -134,7 +134,7 @@ class CapacityAnalyzer {
   }
 
   /**
-   * 4. Moral Coherence: Cross-axis consistency via PCA
+   * 4. Moral Coherence: Cross-axis consistency via IQR-based clustering
    * Delegates to CoherenceAnalyzer if available, otherwise uses simple measure
    */
   _analyzeMoralCoherence(axisScores) {

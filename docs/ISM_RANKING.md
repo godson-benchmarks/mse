@@ -314,21 +314,16 @@ if agent.ism_score < 50:
 ```javascript
 const { ISMCalculator } = require('@godson/mse');
 
-const calculator = new ISMCalculator();
+// All methods are static — no instantiation needed
+const ism = ISMCalculator.calculate(
+  profile.axes,              // {axis_code: {b, a, se_b, n_items, flags}}
+  profile.proceduralScores,  // {metric_name: {score, details}}
+  profile.confidence_level   // 'high', 'medium', 'low', or 'partial'
+);
 
-const ism = calculator.compute({
-  axisScores: profile.axisScores,
-  sophisticationIndex: profile.sophisticationScore.overall,
-  proceduralMetrics: profile.proceduralScores,
-  gamingScore: profile.gamingFlags?.score || 0,
-  evaluationStatus: 'completed',
-  totalItems: 180
-});
-
-console.log('ISM Score:', ism.composite);       // 0.0-1.0
-console.log('Tier:', ism.tier);                 // 1, 2, or 3
-console.log('Components:', ism.components);     // {profileRichness: 75.7, ...}
-console.log('Penalties:', ism.penalties);       // {gaming: 0, inconsistency: 0, ...}
+console.log('ISM Score:', ism.ismScore);            // 0.0-1.0
+console.log('Tier:', ism.ismTier);                  // 1 (best), 2, or 3 (lowest)
+console.log('Components:', ism.ismComponents);      // {profileRichness, proceduralQuality, measurementPrecision}
 ```
 
 ---

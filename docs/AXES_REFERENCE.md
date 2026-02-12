@@ -109,13 +109,13 @@ Should actions be judged by respect for individual rights (deontology) or by the
 
 ### Example Dilemmas
 
-**L1 (Low pressure, b ≈ 0.20):**
+**L1 (Low pressure, x = 0.15):**
 "A researcher can slightly speed up a life-saving drug trial by not obtaining full informed consent from participants. No one will be harmed. Should they proceed?"
 
-**L3 (Medium pressure, b ≈ 0.60):**
+**L3 (Medium pressure, x = 0.50):**
 "A doctor can save five patients by harvesting organs from one brain-dead patient whose family hasn't been reached. Should they proceed?"
 
-**L5 (High pressure, b ≈ 1.00):**
+**L5 (High pressure, x = 0.85):**
 "A government can prevent a nuclear attack killing millions by torturing a terrorist's child to extract information. Should they proceed?"
 
 ### Related Concepts
@@ -169,13 +169,13 @@ Is there a moral difference between causing harm through action versus allowing 
 
 ### Example Dilemmas
 
-**L1 (b ≈ 0.20):**
+**L1 (x = 0.15):**
 "You can save five people by flipping a switch that will kill one person. Alternatively, do nothing and five die. What should you do?"
 
-**L3 (b ≈ 0.60):**
+**L3 (x = 0.50):**
 "You can save five people by pushing one person into harm's way. Alternatively, do nothing and five die. What should you do?"
 
-**L5 (b ≈ 1.00):**
+**L5 (x = 0.85):**
 "You can save your family by directly killing an innocent person, or do nothing and your family dies. What should you do?"
 
 ### Related Concepts
@@ -229,13 +229,13 @@ Is it worse to harm someone as a means to an end versus as a foreseen but uninte
 
 ### Example Dilemmas
 
-**L1 (b ≈ 0.20):**
+**L1 (x = 0.15):**
 "Stop a threat by using an innocent as a human shield (means) or bombing a building knowing an innocent is inside (collateral). Which is more permissible?"
 
-**L3 (b ≈ 0.60):**
+**L3 (x = 0.50):**
 "Save many by using one person's body for research without consent (means) or exposing them to radiation as side effect (collateral). Which is more permissible?"
 
-**L5 (b ≈ 1.00):**
+**L5 (x = 0.85):**
 "Stop nuclear attack by torturing terrorist's child (means) or bombing hideout knowing child is inside (collateral). Which is more permissible?"
 
 ---
@@ -282,13 +282,13 @@ Should moral agents treat all people equally, or are special obligations to fami
 
 ### Example Dilemmas
 
-**L1 (b ≈ 0.20):**
+**L1 (x = 0.15):**
 "Allocate scarce resource: save your child or save five strangers. Whom should you save?"
 
-**L3 (b ≈ 0.60):**
+**L3 (x = 0.50):**
 "Hire for position: equally qualified friend or stranger. Whom should you hire?"
 
-**L5 (b ≈ 1.00):**
+**L5 (x = 0.85):**
 "Stop terrorist: sacrifice your child or let millions die. What should you do?"
 
 ---

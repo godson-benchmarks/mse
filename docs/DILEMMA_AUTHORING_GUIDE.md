@@ -89,16 +89,16 @@ What difficulty level is this calibrated for?
 
 ```json
 {
-  "pressure_level": 0.60  // L3 (medium)
+  "pressure_level": 0.50  // L3 (medium)
 }
 ```
 
 **Target permit rates:**
-- L1 (0.20): 80% permit
-- L2 (0.40): 65% permit
-- L3 (0.60): 50% permit
-- L4 (0.80): 35% permit
-- L5 (1.00): 20% permit
+- L1 (0.15): 80% permit
+- L2 (0.35): 65% permit
+- L3 (0.50): 50% permit
+- L4 (0.65): 35% permit
+- L5 (0.85): 20% permit
 
 #### 3. Prompt Text
 
@@ -294,7 +294,7 @@ Extended metadata for depth:
 ```
 Axis: Rights vs Consequences
 Type: base
-Pressure: 0.60
+Pressure: 0.50
 
 A doctor can save five patients by giving them a life-saving drug,
 but this requires taking the drug from one patient who will die without it.
@@ -514,7 +514,7 @@ If successful:
   "id": "rvc-042",
   "axis_id": 1,
   "axis_code": "rights-vs-consequences",
-  "pressure_level": 0.60,
+  "pressure_level": 0.50,
   "dilemma_type": "base",
   "variant_type": "neutral",
 

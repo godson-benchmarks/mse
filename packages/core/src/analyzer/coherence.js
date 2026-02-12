@@ -1,10 +1,10 @@
 /**
  * MSE v2.0 - Coherence Analyzer
  *
- * Uses PCA-inspired analysis on b-values to determine:
- * - How internally consistent an agent's ethical positions are
- * - What dominant ethical orientation they follow
- * - How much variance is explained by a single framework
+ * Analyzes b-values across axes to determine:
+ * - How internally consistent an agent's ethical positions are (via IQR-based clustering)
+ * - What dominant ethical orientation they follow (via weighted tradition mapping)
+ * - How much variance is explained by a dominant grouping (via between-group variance ratio)
  */
 
 class CoherenceAnalyzer {
@@ -49,7 +49,7 @@ class CoherenceAnalyzer {
     // Extract b-values as vector
     const bValues = axisCodes.map(code => axisScores[code].b);
 
-    // 1. Compute coherence via PCA-like analysis
+    // 1. Compute coherence via IQR-based clustering analysis
     const coherenceScore = this._computeCoherence(bValues);
 
     // 2. Determine dominant orientation
@@ -68,9 +68,9 @@ class CoherenceAnalyzer {
   }
 
   /**
-   * Compute coherence score using eigenvalue analysis
-   * High coherence = positions form a consistent ethical framework
-   * Low coherence = positions seem random or ad-hoc
+   * Compute coherence score using IQR-based clustering
+   * High coherence = positions cluster tightly (consistent framework)
+   * Low coherence = positions spread widely (ad-hoc or mixed reasoning)
    */
   _computeCoherence(bValues) {
     if (bValues.length < 3) return 0.5;
@@ -177,8 +177,8 @@ class CoherenceAnalyzer {
   }
 
   /**
-   * Compute variance explained by the first principal component
-   * Uses power iteration for dominant eigenvalue
+   * Compute variance explained by the dominant grouping
+   * Uses between-group / total variance ratio (not PCA)
    */
   _computeVarianceExplained(bValues) {
     if (bValues.length < 3) return 0;

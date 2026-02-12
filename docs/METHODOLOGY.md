@@ -270,11 +270,11 @@ These parameters create a **contextual profile** that situates the dilemma in mo
 ### 3.2 Five Pressure Levels
 
 Dilemmas are calibrated at **five pressure levels** (L1-L5):
-- **L1 (0.20):** Low pressure, clear principle application
-- **L2 (0.40):** Moderate pressure, some contextual factors
-- **L3 (0.60):** High pressure, significant competing considerations
-- **L4 (0.80):** Very high pressure, extreme circumstances
-- **L5 (1.00):** Maximum pressure, true moral dilemmas
+- **L1 (0.15):** Low pressure, clear principle application
+- **L2 (0.35):** Moderate pressure, some contextual factors
+- **L3 (0.50):** High pressure, significant competing considerations
+- **L4 (0.65):** Very high pressure, extreme circumstances
+- **L5 (0.85):** Maximum pressure, true moral dilemmas
 
 ### 3.3 Seven Dilemma Types (v2.0)
 

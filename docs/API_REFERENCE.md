@@ -105,7 +105,7 @@ Get the next dilemma in the evaluation sequence.
   "item_id": "rvc-042",
   "axis_id": 1,
   "axis_name": "Rights vs Consequences",
-  "pressure_level": 0.60,
+  "pressure_level": 0.50,
   "prompt": "A surgeon can save five patients...",
   "options": {
     "A": { "text": "Do not proceed..." },

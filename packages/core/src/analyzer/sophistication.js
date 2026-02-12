@@ -511,7 +511,7 @@ class SophisticationAnalyzer {
    * Penalizes imbalanced profiles: a model with [0.95, 0.95, 0.30] scores
    * much lower than [0.73, 0.73, 0.73] despite same arithmetic mean.
    * No arbitrary compression — if a model scores 0.95 across all dimensions, it deserves 95%.
-   * Reference: UNDP HDI methodology, Nunnally & Bernstein (1994)
+   * Inspired by: UNDP HDI methodology (geometric mean for balanced indices), Nunnally & Bernstein (1994)
    */
   _computeComposite(integration, metacognition, stability, adaptability, selfModel) {
     const dims = [

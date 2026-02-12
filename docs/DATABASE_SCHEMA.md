@@ -366,7 +366,7 @@ CREATE INDEX idx_mse_capacity_run ON mse_capacity_scores(run_id);
 
 ### mse_coherence_scores
 
-Ethical orientation detection (PCA-inspired).
+Ethical orientation detection (IQR-based coherence and between-group variance analysis).
 
 ```sql
 CREATE TABLE mse_coherence_scores (
