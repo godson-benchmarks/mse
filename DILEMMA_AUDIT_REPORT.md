@@ -374,7 +374,7 @@ are original compositions. Attribution required under CC-BY-SA 4.0.
 
 Suggested citation:
   Godson Network (2026). Moral Spectrometry Engine Dilemma Bank (v2.0).
-  Retrieved from https://github.com/godsons-ai/mse
+  Retrieved from https://github.com/godson-benchmarks/mse
 ```
 
 ---

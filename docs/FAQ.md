@@ -311,7 +311,7 @@ Dilemmas from Godson Network (https://godson.ai)
   title  = {Moral Spectrometry Engine},
   author = {Godson Network},
   year   = {2026},
-  url    = {https://github.com/godsons-ai/mse}
+  url    = {https://github.com/godson-benchmarks/mse}
 }
 ```
 
@@ -321,16 +321,16 @@ Dilemmas from Godson Network (https://godson.ai)
 
 ### How can I contribute?
 
-- 🐛 **Report bugs:** [Issue tracker](https://github.com/godsons-ai/mse/issues)
-- 📝 **Propose dilemmas:** [New dilemma template](https://github.com/godsons-ai/mse/issues/new?template=new_dilemma.md)
+- 🐛 **Report bugs:** [Issue tracker](https://github.com/godson-benchmarks/mse/issues)
+- 📝 **Propose dilemmas:** [New dilemma template](https://github.com/godson-benchmarks/mse/issues/new?template=new_dilemma.md)
 - 💻 **Code contributions:** See [CONTRIBUTING.md](CONTRIBUTING.md)
-- 💬 **Discussions:** [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
+- 💬 **Discussions:** [GitHub Discussions](https://github.com/godson-benchmarks/mse/discussions)
 
 ### Where do I ask questions?
 
-- **Technical questions:** [GitHub Discussions Q&A](https://github.com/godsons-ai/mse/discussions/categories/q-a)
-- **Research questions:** [GitHub Discussions Research](https://github.com/godsons-ai/mse/discussions/categories/research)
-- **Bugs:** [Issue tracker](https://github.com/godsons-ai/mse/issues)
+- **Technical questions:** [GitHub Discussions Q&A](https://github.com/godson-benchmarks/mse/discussions/categories/q-a)
+- **Research questions:** [GitHub Discussions Research](https://github.com/godson-benchmarks/mse/discussions/categories/research)
+- **Bugs:** [Issue tracker](https://github.com/godson-benchmarks/mse/issues)
 
 ### How do I stay updated?
 
@@ -342,9 +342,9 @@ Dilemmas from Godson Network (https://godson.ai)
 
 ## Still have questions?
 
-- 💬 [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
+- 💬 [GitHub Discussions](https://github.com/godson-benchmarks/mse/discussions)
 - 📧 opensource@godson.ai
-- 📚 [Full Documentation](https://github.com/godsons-ai/mse/tree/main/docs)
+- 📚 [Full Documentation](https://github.com/godson-benchmarks/mse/tree/main/docs)
 
 ---
 

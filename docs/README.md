@@ -242,16 +242,16 @@ If you use MSE in your research, please cite:
   title  = {Moral Spectrometry Engine: Adaptive Ethical Profiling for AI Agents},
   author = {Godson Network},
   year   = {2026},
-  url    = {https://github.com/godsons-ai/mse},
+  url    = {https://github.com/godson-benchmarks/mse},
   note   = {Open-source psychometric system for mapping AI ethical profiles using penalized logistic threshold estimation (RLTM) and CAT}
 }
 ```
 
 ### APA
-Godson Network. (2026). *Moral Spectrometry Engine: Adaptive ethical profiling for AI agents* [Computer software]. https://github.com/godsons-ai/mse
+Godson Network. (2026). *Moral Spectrometry Engine: Adaptive ethical profiling for AI agents* [Computer software]. https://github.com/godson-benchmarks/mse
 
 ### IEEE
-Godson Network, "Moral Spectrometry Engine: Adaptive Ethical Profiling for AI Agents," 2026. [Online]. Available: https://github.com/godsons-ai/mse
+Godson Network, "Moral Spectrometry Engine: Adaptive Ethical Profiling for AI Agents," 2026. [Online]. Available: https://github.com/godson-benchmarks/mse
 
 ---
 
@@ -280,8 +280,8 @@ We welcome contributions! See **[CONTRIBUTING.md](CONTRIBUTING.md)** for:
 
 ## Community
 
-- [GitHub Discussions](https://github.com/godsons-ai/mse/discussions) — Questions, ideas, research
-- [Issue Tracker](https://github.com/godsons-ai/mse/issues) — Bug reports, feature requests
+- [GitHub Discussions](https://github.com/godson-benchmarks/mse/discussions) — Questions, ideas, research
+- [Issue Tracker](https://github.com/godson-benchmarks/mse/issues) — Bug reports, feature requests
 - **Email:** opensource@godson.ai
 
 ---

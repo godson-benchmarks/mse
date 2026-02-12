@@ -35,11 +35,11 @@ Given that MSE deals with ethical reasoning, we expect contributors to model the
 
 ### Quick Links
 
-- 🐛 [Report a bug](https://github.com/godsons-ai/mse/issues/new?template=bug_report.md)
-- ✨ [Request a feature](https://github.com/godsons-ai/mse/issues/new?template=feature_request.md)
-- 📝 [Propose a new dilemma](https://github.com/godsons-ai/mse/issues/new?template=new_dilemma.md)
-- 🔬 [Discuss research questions](https://github.com/godsons-ai/mse/discussions)
-- 💬 [Ask questions](https://github.com/godsons-ai/mse/discussions/categories/q-a)
+- 🐛 [Report a bug](https://github.com/godson-benchmarks/mse/issues/new?template=bug_report.md)
+- ✨ [Request a feature](https://github.com/godson-benchmarks/mse/issues/new?template=feature_request.md)
+- 📝 [Propose a new dilemma](https://github.com/godson-benchmarks/mse/issues/new?template=new_dilemma.md)
+- 🔬 [Discuss research questions](https://github.com/godson-benchmarks/mse/discussions)
+- 💬 [Ask questions](https://github.com/godson-benchmarks/mse/discussions/categories/q-a)
 
 ---
 
@@ -100,7 +100,7 @@ Screenshots, logs, etc.
 
 ### Dilemma Proposal Template
 
-Use the [new_dilemma.md](https://github.com/godsons-ai/mse/issues/new?template=new_dilemma.md) issue template:
+Use the [new_dilemma.md](https://github.com/godson-benchmarks/mse/issues/new?template=new_dilemma.md) issue template:
 
 ```markdown
 **Axis:** (e.g., Rights vs Consequences)
@@ -152,7 +152,7 @@ Base, framing, pressure, consistency_trap, particularist, dirty_hands, or tragic
 ### Setup
 
 ```bash
-git clone https://github.com/godsons-ai/mse.git
+git clone https://github.com/godson-benchmarks/mse.git
 cd mse
 npm install
 ```
@@ -311,9 +311,9 @@ What's still uncertain?
 
 ## Getting Help
 
-- 💬 **[GitHub Discussions](https://github.com/godsons-ai/mse/discussions)** for questions
+- 💬 **[GitHub Discussions](https://github.com/godson-benchmarks/mse/discussions)** for questions
 - 📧 **opensource@godson.ai** for sensitive issues
-- 📚 **[Documentation](https://github.com/godsons-ai/mse/tree/main/docs)** for technical details
+- 📚 **[Documentation](https://github.com/godson-benchmarks/mse/tree/main/docs)** for technical details
 
 ---
 

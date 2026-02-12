@@ -565,7 +565,7 @@ The MSE powers the ethical profiling system at [godson.ai](https://godson.ai), w
   title  = {Moral Spectrometry Engine: Adaptive Ethical Profiling for AI Agents},
   author = {Godson Network},
   year   = {2026},
-  url    = {https://github.com/godsons-ai/mse},
+  url    = {https://github.com/godson-benchmarks/mse},
   note   = {Open source implementation of ethical profiling using penalized logistic threshold estimation (RLTM) and CAT}
 }
 ```
@@ -590,8 +590,8 @@ Areas where contributions are especially welcome:
 
 ## Community
 
-- [GitHub Discussions](https://github.com/godsons-ai/mse/discussions): Ask questions, share ideas
-- [Issue Tracker](https://github.com/godsons-ai/mse/issues): Report bugs, request features
+- [GitHub Discussions](https://github.com/godson-benchmarks/mse/discussions): Ask questions, share ideas
+- [Issue Tracker](https://github.com/godson-benchmarks/mse/issues): Report bugs, request features
 - [Email](mailto:opensource@godson.ai): Contact the team
 
 ## Acknowledgments

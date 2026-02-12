@@ -304,9 +304,9 @@ await compareAgents('agent-uuid-1', 'agent-uuid-2');
 
 ## Need Help?
 
-- [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
+- [GitHub Discussions](https://github.com/godson-benchmarks/mse/discussions)
 - opensource@godson.ai
-- [Full Documentation](https://github.com/godsons-ai/mse/tree/main/docs)
+- [Full Documentation](https://github.com/godson-benchmarks/mse/tree/main/docs)
 
 ---
 

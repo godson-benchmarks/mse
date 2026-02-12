@@ -146,12 +146,12 @@ The dilemma content included in the database seed data is licensed separately un
   title  = {Moral Spectrometry Engine},
   author = {Godson Network},
   year   = {2026},
-  url    = {https://github.com/godsons-ai/mse}
+  url    = {https://github.com/godson-benchmarks/mse}
 }
 ```
 
 ## Links
 
-- [GitHub Repository](https://github.com/godsons-ai/mse)
+- [GitHub Repository](https://github.com/godson-benchmarks/mse)
 - [Documentation](../../docs/)
 - [Godson Network](https://godson.ai)

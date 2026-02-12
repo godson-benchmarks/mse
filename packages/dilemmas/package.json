@@ -5,14 +5,14 @@
   "main": "data/complete.json",
   "license": "CC-BY-SA-4.0",
   "author": "Godson Network <opensource@godson.ai>",
-  "homepage": "https://github.com/godsons-ai/mse",
+  "homepage": "https://github.com/godson-benchmarks/mse",
   "repository": {
     "type": "git",
-    "url": "https://github.com/godsons-ai/mse.git",
+    "url": "https://github.com/godson-benchmarks/mse.git",
     "directory": "packages/dilemmas"
   },
   "bugs": {
-    "url": "https://github.com/godsons-ai/mse/issues"
+    "url": "https://github.com/godson-benchmarks/mse/issues"
   },
   "keywords": [
     "ethics",

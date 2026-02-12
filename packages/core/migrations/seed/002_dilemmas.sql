@@ -2,7 +2,7 @@
 --
 -- This file contains example dilemmas to demonstrate the format.
 -- For a complete dilemma bank (270+ items covering all 15 axes),
--- see: https://github.com/godsons-ai/mse/tree/main/packages/dilemmas
+-- see: https://github.com/godson-benchmarks/mse/tree/main/packages/dilemmas
 --
 -- Dilemma Format:
 --   - Each dilemma targets one axis at a specific pressure_level (0.0 - 1.0)
@@ -79,5 +79,5 @@ ON CONFLICT DO NOTHING;
 -- SE(b) <= 0.08, use 18+ items per axis (270+ total).
 --
 -- The full dilemma bank is available at:
--- https://github.com/godsons-ai/mse/tree/main/packages/dilemmas
+-- https://github.com/godson-benchmarks/mse/tree/main/packages/dilemmas
 -- ============================================================================

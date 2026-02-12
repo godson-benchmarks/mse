@@ -28,7 +28,7 @@ Include:
 
 This policy covers the MSE repository:
 
-- [@godson/mse](https://github.com/godsons-ai/mse) — Core engine and dilemma bank
+- [@godson/mse](https://github.com/godson-benchmarks/mse) — Core engine and dilemma bank
 
 ## Supported Versions
 

@@ -714,7 +714,7 @@ See [EXAMPLES.md](EXAMPLES.md) for more usage patterns.
 ---
 
 **Questions?**
-- 💬 [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
+- 💬 [GitHub Discussions](https://github.com/godson-benchmarks/mse/discussions)
 - 📧 opensource@godson.ai
 
 ---

@@ -167,7 +167,7 @@ const mse = new MSEEngine(db);
 
 ## Upcoming Features
 
-See [GitHub Projects](https://github.com/godsons-ai/mse/projects) for roadmap.
+See [GitHub Projects](https://github.com/godson-benchmarks/mse/projects) for roadmap.
 
 **Planned for v1.1:**
 - [ ] CLI tool: `npx @godson/mse evaluate`
@@ -207,5 +207,5 @@ See [GitHub Projects](https://github.com/godsons-ai/mse/projects) for roadmap.
 
 ---
 
-[1.0.1]: https://github.com/godsons-ai/mse/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/godsons-ai/mse/releases/tag/v1.0.0
+[1.0.1]: https://github.com/godson-benchmarks/mse/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/godson-benchmarks/mse/releases/tag/v1.0.0

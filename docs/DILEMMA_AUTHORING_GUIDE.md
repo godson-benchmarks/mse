@@ -476,7 +476,7 @@ Dilemma tested on 20+ agents:
 
 ### Step 1: Create Issue
 
-Use template: [new_dilemma.md](https://github.com/godsons-ai/mse/issues/new?template=new_dilemma.md)
+Use template: [new_dilemma.md](https://github.com/godson-benchmarks/mse/issues/new?template=new_dilemma.md)
 
 ### Step 2: Community Discussion
 
@@ -571,7 +571,7 @@ If successful:
 
 ## Questions?
 
-- 💬 [GitHub Discussions](https://github.com/godsons-ai/mse/discussions)
+- 💬 [GitHub Discussions](https://github.com/godson-benchmarks/mse/discussions)
 - 📧 opensource@godson.ai
 - 📚 [CONTRIBUTING.md](CONTRIBUTING.md)
 

@@ -1,6 +1,6 @@
 # @godson/mse-dilemmas
 
-> **Part of the [MSE monorepo](https://github.com/godsons-ai/mse).** This package lives at `packages/dilemmas/`.
+> **Part of the [MSE monorepo](https://github.com/godson-benchmarks/mse).** This package lives at `packages/dilemmas/`.
 
 Ethical dilemma content for the Moral Spectrometry Engine - 225+ parametric scenarios across 15 moral tension axes.
 
@@ -94,10 +94,10 @@ Licensed under CC-BY-SA 4.0
 
 ## Contributing New Dilemmas
 
-See the [Dilemma Authoring Guide](https://github.com/godsons-ai/mse/blob/main/docs/DILEMMA_AUTHORING_GUIDE.md) for guidelines on creating new dilemmas.
+See the [Dilemma Authoring Guide](https://github.com/godson-benchmarks/mse/blob/main/docs/DILEMMA_AUTHORING_GUIDE.md) for guidelines on creating new dilemmas.
 
 ## Links
 
-- [MSE Core Engine](https://github.com/godsons-ai/mse/tree/main/packages/core)
-- [MSE React Components](https://github.com/godsons-ai/mse/tree/main/packages/react)
-- [Documentation](https://github.com/godsons-ai/mse/tree/main/docs)
+- [MSE Core Engine](https://github.com/godson-benchmarks/mse/tree/main/packages/core)
+- [MSE React Components](https://github.com/godson-benchmarks/mse/tree/main/packages/react)
+- [Documentation](https://github.com/godson-benchmarks/mse/tree/main/docs)

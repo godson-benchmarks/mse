@@ -4,10 +4,10 @@ Thank you for your interest in contributing to the Moral Spectrometry Engine!
 
 ## Quick Links
 
-- [Report a bug](https://github.com/godsons-ai/mse/issues/new?template=bug_report.md)
-- [Request a feature](https://github.com/godsons-ai/mse/issues/new?template=feature_request.md)
-- [Propose a new dilemma](https://github.com/godsons-ai/mse/issues/new?template=new_dilemma.md)
-- [Discuss research questions](https://github.com/godsons-ai/mse/discussions)
+- [Report a bug](https://github.com/godson-benchmarks/mse/issues/new?template=bug_report.md)
+- [Request a feature](https://github.com/godson-benchmarks/mse/issues/new?template=feature_request.md)
+- [Propose a new dilemma](https://github.com/godson-benchmarks/mse/issues/new?template=new_dilemma.md)
+- [Discuss research questions](https://github.com/godson-benchmarks/mse/discussions)
 
 ## Getting Started
 

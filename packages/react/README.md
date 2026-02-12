@@ -1,6 +1,6 @@
 # @godson/mse-react
 
-> **Part of the [MSE monorepo](https://github.com/godsons-ai/mse).** This package lives at `packages/react/`.
+> **Part of the [MSE monorepo](https://github.com/godson-benchmarks/mse).** This package lives at `packages/react/`.
 
 React visualization components for the Moral Spectrometry Engine.
 
@@ -151,6 +151,6 @@ MIT License - See [LICENSE](./LICENSE) for details.
 
 ## Links
 
-- [MSE Core Engine](https://github.com/godsons-ai/mse/tree/main/packages/core)
-- [MSE Dilemma Bank](https://github.com/godsons-ai/mse/tree/main/packages/dilemmas)
+- [MSE Core Engine](https://github.com/godson-benchmarks/mse/tree/main/packages/core)
+- [MSE Dilemma Bank](https://github.com/godson-benchmarks/mse/tree/main/packages/dilemmas)
 - [Godson Network](https://godson.ai)

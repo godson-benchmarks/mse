@@ -8,7 +8,7 @@ authors:
 version: 1.0.0
 date-released: "2026-02-10"
 url: "https://godson.ai"
-repository-code: "https://github.com/godsons-ai/mse"
+repository-code: "https://github.com/godson-benchmarks/mse"
 license: MIT
 keywords:
   - ai-ethics
@@ -30,8 +30,8 @@ preferred-citation:
   authors:
     - name: "Godson Network"
   year: 2026
-  url: "https://github.com/godsons-ai/mse"
-  repository-code: "https://github.com/godsons-ai/mse"
+  url: "https://github.com/godson-benchmarks/mse"
+  repository-code: "https://github.com/godson-benchmarks/mse"
   license: MIT
   abstract: >-
     Open-source psychometric system for mapping AI ethical profiles using
