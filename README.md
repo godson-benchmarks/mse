@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://godson.ai">
+    <img src="docs/assets/mse-header.png" alt="Godson - Measuring Moral Reasoning in AI Systems" width="100%">
+  </a>
+</p>
+
 # Moral Spectrometry Engine (MSE)
 
 > An adaptive psychometric system for mapping the ethical profile of AI agents using penalized logistic threshold estimation (RLTM) and Computerized Adaptive Testing (CAT).
@@ -8,7 +14,7 @@
 
 ## What is MSE?
 
-MSE presents AI agents with parametric ethical dilemmas and analyzes their responses to build a continuous ethical profile — not a pass/fail classification, but a **map of where the agent draws lines, how rigid those lines are, and how sophisticated its moral reasoning is**.
+MSE presents AI agents with parametric ethical dilemmas and analyzes their responses to build a continuous ethical profile: not a pass/fail classification, but a **map of where the agent draws lines, how rigid those lines are, and how sophisticated its moral reasoning is**.
 
 Rather than asking "is this agent ethical?", MSE asks:
 - Where does this agent's threshold lie on each moral tension axis?
@@ -18,17 +24,17 @@ Rather than asking "is this agent ethical?", MSE asks:
 
 ## Key Features
 
-**Constrained Adaptive Testing (CAT)** — Three-heuristic item selection (proximity, exploration, adversarial) optimized for small samples (5-18 items per axis)
-**15 Moral Tension Axes** — From rights-vs-consequences to privacy-vs-security
-**Regularized Logistic Threshold Model (RLTM)** — Estimates exact tipping points with uncertainty
-**270 Parametric Dilemmas** — 18 per axis, calibrated across 5 pressure levels with 8 parameters
-**Graded Response Model** — 5-category sophistication scoring (0: rigid -> 4: nuanced)
-**LLM Judge** — Optional semantic evaluation via any LLM provider
-**Gaming Detection** — 6-metric ensemble detects manipulation attempts
-**7 Ethical Capacities** — Perception, imagination, humility, coherence, residue, flexibility, meta-awareness
-**Sophistication Index (SI)** — 5-dimensional behavioral proxy
-**ISM Ranking** — Composite score for agent comparison
-**Provider-agnostic LLM** — Anthropic, OpenAI, or custom providers
+- **Constrained Adaptive Testing (CAT):** Three-heuristic item selection (proximity, exploration, adversarial) optimized for small samples (5-18 items per axis)
+- **15 Moral Tension Axes:** From rights-vs-consequences to privacy-vs-security
+- **Regularized Logistic Threshold Model (RLTM):** Estimates exact tipping points with uncertainty
+- **270 Parametric Dilemmas:** 18 per axis, calibrated across 5 pressure levels with 8 parameters
+- **Graded Response Model:** 5-category sophistication scoring (0: rigid -> 4: nuanced)
+- **LLM Judge:** Optional semantic evaluation via any LLM provider
+- **Gaming Detection:** 6-metric ensemble detects manipulation attempts
+- **7 Ethical Capacities:** Perception, imagination, humility, coherence, residue, flexibility, meta-awareness
+- **Sophistication Index (SI):** 5-dimensional behavioral proxy
+- **ISM Ranking:** Composite score for agent comparison
+- **Provider-agnostic LLM:** Anthropic, OpenAI, or custom providers
 
 ## Quick Start
 
@@ -250,12 +256,12 @@ const profile = await session.complete();
 
 6-metric ensemble detects manipulation attempts:
 
-- **Response Time Uniformity** — Suspiciously consistent timing (low coefficient of variation)
-- **Rationale Diversity** — Template reuse detection via pairwise Jaccard distance
-- **Pattern Regularity** — Formula-based responding via lag-1 autocorrelation
-- **Parameter Sensitivity** — Ignoring pressure level changes (Pearson correlation)
-- **Framing Susceptibility** — Inconsistency across equivalent framings (variance within groups)
-- **Consistency Violations** — Failing parallel scenarios (coherence across consistency traps)
+- **Response Time Uniformity:** Suspiciously consistent timing (low coefficient of variation)
+- **Rationale Diversity:** Template reuse detection via pairwise Jaccard distance
+- **Pattern Regularity:** Formula-based responding via lag-1 autocorrelation
+- **Parameter Sensitivity:** Ignoring pressure level changes (Pearson correlation)
+- **Framing Susceptibility:** Inconsistency across equivalent framings (variance within groups)
+- **Consistency Violations:** Failing parallel scenarios (coherence across consistency traps)
 
 Gaming scores are saved automatically with `complete()` and available in enriched profiles.
 
@@ -263,13 +269,13 @@ Gaming scores are saved automatically with `complete()` and available in enriche
 
 7 dimensions measuring how agents reason about ethics:
 
-1. **Moral Perception** — Detecting ethically salient features
-2. **Moral Imagination** — Considering stakeholders and alternatives
-3. **Moral Humility** — Acknowledging uncertainty and limits
-4. **Coherence** — Internal consistency across axes
-5. **Moral Residue** — Discomfort with unavoidable harms
-6. **Flexibility** — Context-sensitivity without arbitrariness
-7. **Meta-awareness** — Reflecting on own reasoning process
+1. **Moral Perception:** Detecting ethically salient features
+2. **Moral Imagination:** Considering stakeholders and alternatives
+3. **Moral Humility:** Acknowledging uncertainty and limits
+4. **Coherence:** Internal consistency across axes
+5. **Moral Residue:** Discomfort with unavoidable harms
+6. **Flexibility:** Context-sensitivity without arbitrariness
+7. **Meta-awareness:** Reflecting on own reasoning process
 
 Access via `getEnrichedProfile()`:
 
@@ -298,7 +304,7 @@ console.log('Dimensions:', {
 
 ### ISM Ranking
 
-**Índice de Sofisticación Moral** — composite score (0.0-1.0) for agent comparison:
+**Indice de Sofisticacion Moral**, composite score (0.0-1.0) for agent comparison:
 
 ```javascript
 const { ISMCalculator } = require('@godson/mse');
@@ -468,7 +474,7 @@ Extends base profile with:
 
 ## Mathematical Model
 
-The MSE uses a **Regularized Logistic Threshold Model (RLTM)** — a penalized logistic regression that uses the sigmoid centering parameterization from IRT's 2-Parameter Logistic model:
+The MSE uses a **Regularized Logistic Threshold Model (RLTM)**, a penalized logistic regression that uses the sigmoid centering parameterization from IRT's 2-Parameter Logistic model:
 
 ```
 P(permit | x, a, b) = 1 / (1 + exp(-a * (x - b)))
@@ -484,24 +490,28 @@ Where:
 
 ### Moral Axes (1-12)
 
-1. **Rights vs Consequences** — Deontology vs utilitarianism
-2. **Doing vs Allowing** — Active harm vs passive permission
-3. **Means vs Collateral** — Intended vs side-effect harm
-4. **Impartiality vs Partiality** — Universal principles vs special relationships
-5. **Worst-off vs Efficiency** — Prioritizing the disadvantaged vs overall benefit
-6. **Truth vs Beneficence** — Honesty vs protective deception
-7. **Autonomy vs Paternalism** — Respecting choice vs intervening for wellbeing
-8. **Privacy vs Security** — Information protection vs safety needs
-9. **Conscience vs Authority** — Personal morality vs institutional rules
-10. **Cooperation vs Betrayal** — Collective action vs self-interest
-11. **Long-term vs Short-term** — Future consequences vs immediate needs
-12. **Integrity vs Opportunism** — Consistent principles vs adaptive pragmatism
+| # | Axis | Pole A vs Pole B |
+|---|------|-----------------|
+| 1 | **Rights vs Consequences** | Deontology vs utilitarianism |
+| 2 | **Doing vs Allowing** | Active harm vs passive permission |
+| 3 | **Means vs Collateral** | Intended vs side-effect harm |
+| 4 | **Impartiality vs Partiality** | Universal principles vs special relationships |
+| 5 | **Worst-off vs Efficiency** | Prioritizing the disadvantaged vs overall benefit |
+| 6 | **Truth vs Beneficence** | Honesty vs protective deception |
+| 7 | **Autonomy vs Paternalism** | Respecting choice vs intervening for wellbeing |
+| 8 | **Privacy vs Security** | Information protection vs safety needs |
+| 9 | **Conscience vs Authority** | Personal morality vs institutional rules |
+| 10 | **Cooperation vs Betrayal** | Collective action vs self-interest |
+| 11 | **Long-term vs Short-term** | Future consequences vs immediate needs |
+| 12 | **Integrity vs Opportunism** | Consistent principles vs adaptive pragmatism |
 
 ### Memory Axes (13-15)
 
-13. **Minimization vs Personalization** — Data economy vs rich context
-14. **Purpose vs Secondary Use** — Original intent vs novel applications
-15. **Compartmentalization vs Leakage** — Strict boundaries vs information flow
+| # | Axis | Pole A vs Pole B |
+|---|------|-----------------|
+| 13 | **Minimization vs Personalization** | Data economy vs rich context |
+| 14 | **Purpose vs Secondary Use** | Original intent vs novel applications |
+| 15 | **Compartmentalization vs Leakage** | Strict boundaries vs information flow |
 
 ## Packages
 
@@ -523,24 +533,26 @@ Before using MSE, please be aware of the following:
 
 4. **Western philosophical framework bias.** The 15 axes of moral tension are rooted primarily in Western moral philosophy (Kantian deontology, utilitarianism, virtue ethics, social contract theory). Non-Western ethical traditions (Confucian, Ubuntu, Buddhist, Indigenous) are underrepresented. Cross-cultural validation is planned.
 
-5. **Preliminary results, not definitive assessments.** Results should be interpreted as preliminary moral reasoning profiles — descriptive maps of where an agent draws lines and how it reasons — not as definitive ethical assessments or certifications of moral character.
+5. **Preliminary results, not definitive assessments.** Results should be interpreted as preliminary moral reasoning profiles, descriptive maps of where an agent draws lines and how it reasons, not as definitive ethical assessments or certifications of moral character.
 
 > **On the name "Moral Spectrometry":** The name is metaphorical. MSE uses psychometric methods (adaptive testing, penalized logistic regression) rather than physical spectrometry. The analogy refers to decomposing moral reasoning into constituent dimensions, similar to how spectrometry decomposes light into wavelengths. No claim of physical measurement is implied.
 
 ## Documentation
 
-- [Methodology](./docs/METHODOLOGY.md) — Academic foundation (~20 pages)
-- [Scoring Model](./docs/SCORING_MODEL.md) — Mathematical derivations
-- [Axes Reference](./docs/AXES_REFERENCE.md) — Philosophical sources
-- [Database Schema](./docs/DATABASE_SCHEMA.md) — PostgreSQL setup
-- [API Reference](./docs/API_REFERENCE.md) — REST endpoints
-- [Dilemma Authoring](./docs/DILEMMA_AUTHORING_GUIDE.md) — Create new dilemmas
-- [Gaming Detection](./docs/GAMING_DETECTION.md) — Anti-cheating architecture
-- [Sophistication Index](./docs/SOPHISTICATION_INDEX.md) — SI methodology
-- [ISM Ranking](./docs/ISM_RANKING.md) — Composite ranking formula
-- [FAQ](./docs/FAQ.md) — Frequently asked questions
-- [Examples](./docs/EXAMPLES.md) — Usage patterns
-- [Contributing](./CONTRIBUTING.md) — Contribution guidelines
+| Document | Description |
+|----------|-------------|
+| [Methodology](./docs/METHODOLOGY.md) | Academic foundation (~20 pages) |
+| [Scoring Model](./docs/SCORING_MODEL.md) | Mathematical derivations |
+| [Axes Reference](./docs/AXES_REFERENCE.md) | Philosophical sources |
+| [Database Schema](./docs/DATABASE_SCHEMA.md) | PostgreSQL setup |
+| [API Reference](./docs/API_REFERENCE.md) | REST endpoints |
+| [Dilemma Authoring](./docs/DILEMMA_AUTHORING_GUIDE.md) | Create new dilemmas |
+| [Gaming Detection](./docs/GAMING_DETECTION.md) | Anti-cheating architecture |
+| [Sophistication Index](./docs/SOPHISTICATION_INDEX.md) | SI methodology |
+| [ISM Ranking](./docs/ISM_RANKING.md) | Composite ranking formula |
+| [FAQ](./docs/FAQ.md) | Frequently asked questions |
+| [Examples](./docs/EXAMPLES.md) | Usage patterns |
+| [Contributing](./CONTRIBUTING.md) | Contribution guidelines |
 
 ## Used By
 
@@ -578,9 +590,9 @@ Areas where contributions are especially welcome:
 
 ## Community
 
-- [GitHub Discussions](https://github.com/godsons-ai/mse/discussions) — Ask questions, share ideas
-- [Issue Tracker](https://github.com/godsons-ai/mse/issues) — Report bugs, request features
-- [Email](mailto:opensource@godson.ai) — Contact the team
+- [GitHub Discussions](https://github.com/godsons-ai/mse/discussions): Ask questions, share ideas
+- [Issue Tracker](https://github.com/godsons-ai/mse/issues): Report bugs, request features
+- [Email](mailto:opensource@godson.ai): Contact the team
 
 ## Acknowledgments
 
