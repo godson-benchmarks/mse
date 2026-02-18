@@ -31,7 +31,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "test": "node --test test/adaptive.test.js test/coherence.test.js test/elo-rating.test.js test/gaming-detection.test.js test/grm-scorer.test.js test/parser.test.js test/scorer.test.js test/seeded-random.test.js test/types.test.js",
+    "test": "node --test test/adaptive.test.js test/coherence.test.js test/elo-rating.test.js test/gaming-detection.test.js test/grm-scorer.test.js test/parser.test.js test/scorer.test.js test/seeded-random.test.js test/types.test.js test/coupling.test.js test/mat.test.js test/geometry.test.js test/population.test.js test/coupling-card.test.js test/dual-axis-scorer.test.js",
     "lint": "eslint src/",
     "migrate": "node migrations/migrate.js"
   },

@@ -9,11 +9,15 @@ const { ProceduralAnalyzer } = require('./procedural');
 const { ComparisonAnalyzer } = require('./comparison');
 const { CouplingAnalyzer } = require('./coupling');
 const { MATAnalyzer } = require('./mat');
+const { ProfileGeometryAnalyzer } = require('./geometry');
+const { PopulationAnalyzer } = require('./population');
 
 module.exports = {
   ProfileAnalyzer,
   ProceduralAnalyzer,
   ComparisonAnalyzer,
   CouplingAnalyzer,
-  MATAnalyzer
+  MATAnalyzer,
+  ProfileGeometryAnalyzer,
+  PopulationAnalyzer
 };

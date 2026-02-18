@@ -379,6 +379,97 @@ class DilemmaBank {
     }));
   }
 
+  // ==========================================
+  // v3.0: CROSS-AXIS DILEMMAS
+  // ==========================================
+
+  /**
+   * Get items for an axis including cross-axis items (v3.0+)
+   *
+   * Returns items where the axis appears as either primary or secondary axis.
+   * This is the v3 replacement for getItemsForAxis: items that activate a given
+   * axis are those where axis_id = X OR secondary_axis_id = X.
+   *
+   * @param {number} axisId
+   * @param {Object} options
+   * @param {number} options.versionId - Filter by exam version ID
+   * @param {string[]} options.excludeIds - Item IDs to exclude
+   * @returns {Promise<Object[]>}
+   */
+  async getItemsForAxisV3(axisId, options = {}) {
+    const { versionId = null, excludeIds = [] } = options;
+
+    const versionJoin = versionId
+      ? 'JOIN mse_version_items vi ON di.id = vi.item_id AND vi.version_id = $2'
+      : '';
+
+    let query = `
+      SELECT
+        di.*,
+        df.name as family_name
+      FROM mse_dilemma_items di
+      ${versionJoin}
+      LEFT JOIN mse_dilemma_families df ON di.family_id = df.id
+      WHERE (di.axis_id = $1 OR di.secondary_axis_id = $1)
+        AND di.is_active = true
+    `;
+
+    const params = versionId ? [axisId, versionId] : [axisId];
+    let paramIndex = params.length + 1;
+
+    if (excludeIds.length > 0) {
+      query += ` AND di.id NOT IN (${excludeIds.map((_, i) => `$${paramIndex + i}`).join(',')})`;
+      params.push(...excludeIds);
+    }
+
+    query += ` ORDER BY di.pressure_level ASC`;
+
+    const result = await this.db.query(query, params);
+    return result.rows.map(row => this._formatItem(row));
+  }
+
+  /**
+   * Get items that activate exactly a specific pair of axes (v3.0+)
+   *
+   * Returns only cross-axis items where primary=axisA and secondary=axisB
+   * (or vice versa). Useful for targeted coupling analysis.
+   *
+   * @param {number} primaryAxisId
+   * @param {number} secondaryAxisId
+   * @param {Object} options
+   * @param {number} options.versionId - Filter by exam version ID
+   * @returns {Promise<Object[]>}
+   */
+  async getCrossAxisItems(primaryAxisId, secondaryAxisId, options = {}) {
+    const { versionId = null } = options;
+
+    const versionJoin = versionId
+      ? 'JOIN mse_version_items vi ON di.id = vi.item_id AND vi.version_id = $3'
+      : '';
+
+    const query = `
+      SELECT
+        di.*,
+        df.name as family_name
+      FROM mse_dilemma_items di
+      ${versionJoin}
+      LEFT JOIN mse_dilemma_families df ON di.family_id = df.id
+      WHERE di.is_active = true
+        AND (
+          (di.axis_id = $1 AND di.secondary_axis_id = $2)
+          OR (di.axis_id = $2 AND di.secondary_axis_id = $1)
+        )
+      ORDER BY di.pressure_level ASC
+    `;
+
+    const params = versionId
+      ? [primaryAxisId, secondaryAxisId, versionId]
+      : [primaryAxisId, secondaryAxisId];
+
+    const result = await this.db.query(query, params);
+    return result.rows.map(row => this._formatItem(row));
+  }
+
   /**
    * Format item for API response
    * @private
@@ -393,6 +484,7 @@ class DilemmaBank {
     return {
       id: row.id,
       axis_id: row.axis_id,
+      secondary_axis_id: row.secondary_axis_id || null,
       family_id: row.family_id,
       family_name: row.family_name,
       pressure_level: parseFloat(row.pressure_level),

@@ -310,6 +310,7 @@ const LegalityLevels = {
  * @property {number} [expert_disagreement] - v2.0: 0-1, calibrated difficulty
  * @property {boolean} [requires_residue_recognition] - v2.0: for dirty_hands/tragic items
  * @property {string} [meta_ethical_type] - v2.0: justice, care, virtue, rights, etc.
+ * @property {number} [secondary_axis_id] - v3.0: cross-axis dilemma secondary axis
  */
 
 /**

@@ -6,6 +6,7 @@
  */
 
 const { RunStatus } = require('../types');
+const { DualAxisScorer } = require('./dual-axis-scorer');
 
 class EvaluationSession {
   constructor(repository, dilemmaBank, parser, scorer, adaptiveSelector, config = {}) {
@@ -77,6 +78,10 @@ class EvaluationSession {
 
     // Scoring method tracking (Phase 2: transparency)
     this.grmStats = { llm_scored: 0, heuristic_scored: 0, llm_errors: 0 };
+
+    // v3.0: Cross-axis scoring
+    this.isV3 = false;
+    this.dualAxisScorer = new DualAxisScorer();
   }
 
   /**
@@ -123,12 +128,24 @@ class EvaluationSession {
     // Create run record with version (config includes seed for resume)
     this.runId = await this.repository.createRun(agentId, this.config, this.examVersionId);
 
-    // Detect v2.0 version
+    // Detect version
     this.isV2 = this.examVersionCode && this.examVersionCode.startsWith('v2');
+    this.isV3 = this.examVersionCode && this.examVersionCode.startsWith('v3');
 
     // Load all dilemma items for this version
     for (const axis of this.axes) {
-      if (this.isV2 && this.dilemmaBank.getItemsForAxisV2) {
+      if (this.isV3 && this.dilemmaBank.getItemsForAxisV3) {
+        // v3: includes cross-axis items (primary OR secondary = this axis)
+        const items = await this.dilemmaBank.getItemsForAxisV3(axis.id, {
+          versionId: this.examVersionId
+        });
+        // Deduplicate: cross-axis items appear in both axes' queries
+        for (const item of items) {
+          if (!this.allItems.find(i => i.id === item.id)) {
+            this.allItems.push(item);
+          }
+        }
+      } else if (this.isV2 && this.dilemmaBank.getItemsForAxisV2) {
         const items = await this.dilemmaBank.getItemsForAxisV2(axis.id, {
           versionId: this.examVersionId
         });
@@ -142,8 +159,8 @@ class EvaluationSession {
       this.axisResponses[axis.id] = [];
     }
 
-    // v2.0: Load consistency groups and configure adaptive selector
-    if (this.isV2) {
+    // v2.0+: Load consistency groups and configure adaptive selector
+    if (this.isV2 || this.isV3) {
       await this._loadConsistencyGroups();
     }
 
@@ -168,14 +185,15 @@ class EvaluationSession {
       this.examVersionCode = version?.code || null;
     }
 
-    // Detect v2.0 version
+    // Detect version
     this.isV2 = this.examVersionCode && this.examVersionCode.startsWith('v2');
+    this.isV3 = this.examVersionCode && this.examVersionCode.startsWith('v3');
 
     // Load axes
     this.axes = await this.repository.getAxes();
 
-    // v2.0: Load consistency groups (critical for adaptive logic)
-    if (this.isV2) {
+    // v2.0+: Load consistency groups (critical for adaptive logic)
+    if (this.isV2 || this.isV3) {
       await this._loadConsistencyGroups();
     }
 
@@ -331,6 +349,19 @@ class EvaluationSession {
     }
     this.axisResponses[item.axis_id].push(response);
 
+    // v3.0: For cross-axis items, also track the response under the secondary axis
+    if (this.isV3 && item.secondary_axis_id) {
+      if (!this.axisResponses[item.secondary_axis_id]) {
+        this.axisResponses[item.secondary_axis_id] = [];
+      }
+      // Add weighted copy for the secondary axis
+      this.axisResponses[item.secondary_axis_id].push({
+        ...response,
+        _cross_axis: true,
+        _source_axis_id: item.axis_id
+      });
+    }
+
     return {
       success: true,
       response_id: responseId,
@@ -395,9 +426,9 @@ class EvaluationSession {
       await this.repository.saveAxisScore(this.runId, score);
     }
 
-    // Pre-compute consistency scores for v2 (needed by procedural metrics)
+    // Pre-compute consistency scores for v2+ (needed by procedural metrics)
     let consistencyResults = [];
-    if (this.isV2) {
+    if (this.isV2 || this.isV3) {
       consistencyResults = this._calculateConsistencyScores();
     }
 
@@ -409,8 +440,8 @@ class EvaluationSession {
     );
     await this.repository.saveProceduralScores(this.runId, this.proceduralScores);
 
-    // v2.0: Additional scoring layers (pass pre-computed consistency to avoid recomputation)
-    if (this.isV2) {
+    // v2.0+ additional scoring layers (v3 inherits v2 scoring pipeline)
+    if (this.isV2 || this.isV3) {
       await this._completeV2(consistencyResults);
     }
 
@@ -754,8 +785,8 @@ class EvaluationSession {
       }
     };
 
-    // v2.0: Add additional layers (will be populated after complete())
-    if (this.isV2) {
+    // v2.0+: Add additional layers (will be populated after complete())
+    if (this.isV2 || this.isV3) {
       profile.capacities = null;    // Populated by profile.js from DB
       profile.meta = null;          // Populated by profile.js from DB
     }

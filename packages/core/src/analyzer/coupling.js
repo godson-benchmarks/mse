@@ -689,6 +689,22 @@ function lnGamma(z) {
   return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
 }
 
+/**
+ * Logit transform for b-value vectors.
+ * Converts b-values from [0,1] to (-inf, +inf) via z_i = log(b_i / (1 - b_i)).
+ * Clamped to [0.01, 0.99] before transform to avoid infinities.
+ * Needed for future PCA on the logit-transformed space (proposal Section 5).
+ *
+ * @param {number[]} bValues - Array of b-values in [0, 1]
+ * @returns {number[]} Array of logit-transformed values
+ */
+function logitTransform(bValues) {
+  return bValues.map(b => {
+    const clamped = clamp(b, 0.01, 0.99);
+    return Math.log(clamped / (1 - clamped));
+  });
+}
+
 // --- Simple Utility Functions ---
 
 function clamp(value, min, max) {
@@ -702,10 +718,11 @@ function round4(value) {
 
 module.exports = {
   CouplingAnalyzer,
-  // Export utilities for testing
+  // Export utilities for testing and reuse
   spearmanCorrelation,
   pearsonCorrelation,
   toRanks,
   spearmanPValue,
-  regularizedBeta
+  regularizedBeta,
+  logitTransform
 };

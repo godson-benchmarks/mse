@@ -8,7 +8,8 @@ const {
   pearsonCorrelation,
   toRanks,
   spearmanPValue,
-  regularizedBeta
+  regularizedBeta,
+  logitTransform
 } = require('../src/analyzer/coupling');
 
 // --- Helper: generate synthetic responses for an axis ---
@@ -117,6 +118,41 @@ describe('Statistical Utilities', () => {
       const val = regularizedBeta(0.5, 1, 1);
       assert.ok(Math.abs(val - 0.5) < 0.01, `I(0.5, 1, 1) = ${val} should be ~0.5`);
     });
+  });
+});
+
+describe('logitTransform', () => {
+  it('transforms 0.5 to 0', () => {
+    const result = logitTransform([0.5]);
+    assert.ok(Math.abs(result[0]) < 1e-10, `logit(0.5) = ${result[0]} should be 0`);
+  });
+
+  it('transforms values symmetrically around 0.5', () => {
+    const result = logitTransform([0.3, 0.7]);
+    assert.ok(Math.abs(result[0] + result[1]) < 1e-10,
+      `logit(0.3) + logit(0.7) = ${result[0] + result[1]} should be 0`);
+  });
+
+  it('clamps extreme values to avoid infinities', () => {
+    const result = logitTransform([0, 1]);
+    // 0 clamped to 0.01: logit(0.01) = log(0.01/0.99) ~ -4.595
+    // 1 clamped to 0.99: logit(0.99) = log(0.99/0.01) ~ 4.595
+    assert.ok(isFinite(result[0]), 'logit(0) should be finite after clamping');
+    assert.ok(isFinite(result[1]), 'logit(1) should be finite after clamping');
+    assert.ok(result[0] < -4, `logit(0) clamped = ${result[0]} should be < -4`);
+    assert.ok(result[1] > 4, `logit(1) clamped = ${result[1]} should be > 4`);
+  });
+
+  it('preserves ordering', () => {
+    const result = logitTransform([0.2, 0.4, 0.6, 0.8]);
+    for (let i = 0; i < result.length - 1; i++) {
+      assert.ok(result[i] < result[i + 1],
+        `logit should preserve order: ${result[i]} < ${result[i + 1]}`);
+    }
+  });
+
+  it('returns empty array for empty input', () => {
+    assert.deepStrictEqual(logitTransform([]), []);
   });
 });
 
