@@ -32,6 +32,8 @@ const CapacityAnalyzer = require('./analyzer/capacities');
 const CoherenceAnalyzer = require('./analyzer/coherence');
 const SophisticationAnalyzer = require('./analyzer/sophistication');
 const { ISMCalculator } = require('./analyzer/ism');
+const { CouplingAnalyzer } = require('./analyzer/coupling');
+const { MATAnalyzer } = require('./analyzer/mat');
 
 // LLM Providers for LLMJudge
 const {
@@ -320,6 +322,9 @@ module.exports = {
   CoherenceAnalyzer,
   SophisticationAnalyzer,
   ISMCalculator,
+  // v3.0
+  CouplingAnalyzer,
+  MATAnalyzer,
   // LLM Providers
   LLMProvider,
   AnthropicProvider,

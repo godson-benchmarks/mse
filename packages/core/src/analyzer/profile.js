@@ -4,6 +4,8 @@
  * Analyzes and generates ethical profiles from evaluation data.
  */
 
+const { CouplingAnalyzer } = require('./coupling');
+
 class ProfileAnalyzer {
   /**
    * Get the current profile for an agent
@@ -382,9 +384,30 @@ class ProfileAnalyzer {
       } catch { /* ignore */ }
     }
 
+    // v3.0: Layer 5 - Structural (coupling analysis)
+    let coupling = null;
+    try {
+      const runData = await repository.getRunWithResponses(runId);
+      if (runData && runData.responses && runData.responses.length > 0) {
+        // Check if we have enough axes with enough responses
+        const responsesByAxis = {};
+        for (const r of runData.responses) {
+          if (!r.axis_code) continue;
+          if (!responsesByAxis[r.axis_code]) responsesByAxis[r.axis_code] = [];
+          responsesByAxis[r.axis_code].push(r);
+        }
+        const axesWithData = Object.values(responsesByAxis).filter(arr => arr.length >= 3).length;
+        if (axesWithData >= 3) {
+          const couplingAnalyzer = new CouplingAnalyzer({ bootstrapIterations: 500 });
+          coupling = couplingAnalyzer.analyze(runData.responses, baseProfile.axes);
+        }
+      }
+    } catch { /* coupling analysis is optional; fail silently */ }
+
     return {
       ...baseProfile,
       capacities: capacities || null,
+      coupling: coupling || null,
       meta: {
         mr_rating: rating?.mr_rating || null,
         mr_uncertainty: rating?.mr_uncertainty || null,

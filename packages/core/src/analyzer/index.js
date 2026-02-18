@@ -7,9 +7,13 @@
 const { ProfileAnalyzer } = require('./profile');
 const { ProceduralAnalyzer } = require('./procedural');
 const { ComparisonAnalyzer } = require('./comparison');
+const { CouplingAnalyzer } = require('./coupling');
+const { MATAnalyzer } = require('./mat');
 
 module.exports = {
   ProfileAnalyzer,
   ProceduralAnalyzer,
-  ComparisonAnalyzer
+  ComparisonAnalyzer,
+  CouplingAnalyzer,
+  MATAnalyzer
 };
